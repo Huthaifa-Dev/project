@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+Pro:wght@400;600&display=swap");
+@import url("http://fonts.cdnfonts.com/css/sf-mono");
+$header-height: 3rem;
+// Colors
+$hue-color: 142; /*Purple 250 - Green 142 - Blue 230 - Pink 340*/
+
+/* HSL color mode */
+$first-color: hsl($hue-color, 69%, 61%);
+$color: #037b0b;
+$first-color-second: hsl($hue-color, 69%, 61%);
+$first-color-alt: hsl($hue-color, 57%, 53%);
+$first-color-lighter: hsl($hue-color, 92%, 85%);
+$title-color: hsl($hue-color, 8%, 15%);
+$text-color: hsl($hue-color, 8%, 45%);
+$text-color-light: hsl($hue-color, 8%, 65%);
+$input-color: hsl($hue-color, 70%, 96%);
+$body-color: hsl($hue-color, 60%, 99%);
+$container-color: #fff;
+$scroll-bar-color: hsl($hue-color, 12%, 90%);
+$scroll-thumb-color: hsl($hue-color, 12%, 80%);
+
+/*========== Font and typography ==========*/
+$body-font: "Source Sans Pro", sans-serif;
+$second-font: "SF Mono", "IBM Plex Mono", monospace;
+
+/* .5rem = 8px, 1rem = 16px, 1.5rem = 24px ... */
+$big-font-size: 2rem;
+$h1-font-size: 1.5rem;
+$h2-font-size: 1.25rem;
+$h3-font-size: 1.125rem;
+$normal-font-size: 0.938rem;
+$small-font-size: 0.813rem;
+$smaller-font-size: 0.75rem;
+
+/*========== Font weight ==========*/
+$font-regular: 400;
+$font-medium: 500;
+$font-semi-bold: 600;
+
+/*========== Margenes Bottom ==========*/
+/* .25rem = 4px, .5rem = 8px, .75rem = 12px ... */
+$mb-0-25: 0.25rem;
+$mb-0-5: 0.5rem;
+$mb-0-75: 0.75rem;
+$mb-1: 1rem;
+$mb-1-5: 1.5rem;
+$mb-2: 2rem;
+$mb-2-5: 2.5rem;
+$mb-3: 3rem;
+
+/*========== z index ==========*/
+$z-tooltip: 10;
+$z-fixed: 100;
+$z-modal: 1000;
+
+$rich-black-fogra-29: #001219ff;
+$blue-sapphire: #005f73ff;
+$primary: #0a9396ff;
+$middle-blue-green: #94d2bdff;
+$medium-champagne: #e9d8a6ff;
+$secondary: #ee9b00ff;
+$alloy-orange: #ca6702ff;
+$rust: #bb3e03ff;
+$rufous: #ae2012ff;
+$ruby-red: #9b2226ff;
+
+$dark-navy: #080410;
+// $navy: #0a192f;
+$navy: #100720;
+$light-navy: #271f3d;
+$lightest-navy: #3e385a;
+$navy-shadow: rgba(2, 12, 27, 0.7);
+$dark-slate: #495670;
+$slate: #8892b0;
+$light-slate: #a8b2d1;
+$lightest-slate: #ccd6f6;
+$white: #ffffff;
+$green: #ffc23c;
+$green-tint: rgba(100, 255, 218, 0.1);
+$pink: #f57dff;
+$blue: #00e8ff;
+$font-sans: "Calibre", "Inter", "San Francisco", "SF Pro Text", -apple-system,
+  system-ui, sans-serif;
+$font-mono: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
+$fz-xxs: 12px;
+$fz-xs: 13px;
+$fz-sm: 14px;
+$fz-md: 16px;
+$fz-lg: 18px;
+$fz-xl: 20px;
+$fz-xxl: 22px;
+$fz-heading: 32px;
+$border-radius: 4px;
+$nav-height: 100px;
+$nav-scroll-height: 70px;
+$tab-height: 42px;
+$tab-width: 120px;
+$easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+$transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+$hamburger-width: 30px;
+$ham-before: top 0.1s ease-in 0.25s, opacity 0.1s ease-in;
+$ham-before-active: top 0.1s ease-out, opacity 0.1s ease-out 0.12s;
+$ham-after: bottom 0.1s ease-in 0.25s,
+  transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ham-after-active: bottom 0.1s ease-out,
+  transform 0.22s cubic-bezier(0.215, 0.61, 0.355, 1) 0.12s;
