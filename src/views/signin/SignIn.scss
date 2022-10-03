@@ -1,0 +1,70 @@
+@import "../../assets/styles/variables";
+.signin {
+  background-color: white;
+  padding: $mb-2;
+  border-radius: $mb-1;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: $mb-1-5;
+  &__title {
+    font-size: $mb-3;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      font-size: $mb-2;
+    }
+  }
+  form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: $mb-0-5;
+    .form-group {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      label {
+        font-size: $mb-1;
+        font-weight: 600;
+      }
+
+      .form-control {
+        margin: $mb-0-25 0;
+        padding: $mb-0-5 $mb-0-5;
+        font-size: $fz-md;
+        background: none;
+        border: 1px solid $slate;
+        color: $blue-sapphire;
+        border-radius: $border-radius;
+        resize: none;
+        transition: $transition;
+        &:focus {
+          outline: none;
+          border: 2px solid $primary;
+          text-indent: $mb-0-5;
+        }
+        &:active {
+          border: 1px solid $green;
+        }
+        &--error {
+          border: 1px solid red;
+          color: red;
+        }
+      }
+      .error-message {
+        color: red;
+        font-size: $fz-sm;
+        max-width: 275px;
+      }
+      &.check-box {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+  }
+}

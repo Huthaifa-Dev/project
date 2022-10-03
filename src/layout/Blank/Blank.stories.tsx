@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Blank from "./Blank";
+import Blank from ".";
 
 export default {
   title: "Layout/Blank",

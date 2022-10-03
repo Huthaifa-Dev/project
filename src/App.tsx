@@ -1,16 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
+import SignIn from "./views/signin/SignIn";
 
 const App: React.FC = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
   return (
     <div>
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder="Type here"
-        onChange={(e) => console.log(e.target.value)}
-      />
+      <SignIn />
     </div>
   );
 };
