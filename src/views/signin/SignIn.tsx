@@ -1,4 +1,5 @@
 import React from "react";
+import Blank from "../../layout/Blank/Blank";
 import "./SignIn.css";
 
 type User = {
@@ -9,22 +10,12 @@ export const SignIn: React.VFC = () => {
   const [user, setUser] = React.useState<User>();
 
   return (
-    <div className="wrapper">
-      <div className="body">
-        <form>
-          <label htmlFor="name">
-            Username:
-            <input
-              id="id"
-              name="name"
-              type="text"
-              placeholder="Enter your username"
-              required
-            />
-          </label>
-        </form>
-      </div>
-    </div>
+    <Blank>
+      <form>
+        <label htmlFor="name">Name</label>
+        <input id="name" type="text" />
+      </form>
+    </Blank>
   );
 };
 

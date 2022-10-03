@@ -24,7 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet"
   },
   "eslintConfig": {
     "extends": [
@@ -66,8 +67,14 @@
     "@storybook/react": "^6.5.12",
     "@storybook/testing-library": "^0.0.13",
     "@tailwindcss/forms": "^0.5.3",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
     "autoprefixer": "^10.4.12",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.17",
     "prop-types": "^15.8.1",
     "webpack": "^5.74.0"
