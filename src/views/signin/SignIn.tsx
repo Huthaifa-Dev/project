@@ -1,14 +1,24 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/utils/Button/Button";
 import useInput from "../../hooks/useInput";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import useLogin from "../../hooks/useLogin";
 import Blank from "../../layout/Blank";
 import "./SignIn.scss";
-import { passwordValidation, userValidation } from "./validations";
+import { passwordValidation, userValidation } from "../../helpers/validations";
+import { useSelector } from "react-redux";
+import { User } from "../../types";
+import { RootState } from "../../redux";
 
 export const SignIn: React.VFC = () => {
   const [rememberMe, setRememberMe] = useState<string>("off");
-  // const [user, setUser] = useLocalStorage<User>("user", "");
+  const [user, setUser] = useLogin();
+  const userStore = useSelector<RootState, Partial<User>>(
+    (state) => state.user
+  );
+  useEffect(() => {
+    //login and navigate to home page
+    // navigate
+  }, [user]);
 
   const {
     value: userName,
@@ -25,17 +35,19 @@ export const SignIn: React.VFC = () => {
     hasError: passwordHasError,
   } = useInput(passwordValidation);
 
-  const handleRememberMe = (event: ChangeEvent<HTMLInputElement>) => {
-    setRememberMe(event.target.value);
+  const handleRememberMe = () => {
+    setRememberMe((prev) => (prev === "off" ? "on" : prev));
+    console.log(userStore);
   };
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (userNameHasError || passwordHasError) {
       return;
     }
-    userReset();
-    passwordReset();
+    setUser(userName, password, rememberMe === "on");
+    alert(userName + " " + password + " " + rememberMe);
+    console.log(user);
+    //navigate
   };
 
   const userErrorMessage = (value: string) => {
@@ -79,9 +91,10 @@ export const SignIn: React.VFC = () => {
                 userNameHasError ? "form-control--error" : ""
               }`}
             />
-            <div className="error-message">
-              {userNameHasError && userErrorMessage(userName)}
-            </div>
+
+            {userNameHasError && (
+              <div className="error-message">{userErrorMessage(userName)}</div>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -96,9 +109,10 @@ export const SignIn: React.VFC = () => {
                 passwordHasError ? "form-control--error" : ""
               }`}
             />
-            <div className="error-message">
-              {passwordHasError && passErrorMessage(password)}
-            </div>
+
+            {passwordHasError && (
+              <div className="error-message">{passErrorMessage(password)}</div>
+            )}
           </div>
           <div className="form-group check-box">
             <input

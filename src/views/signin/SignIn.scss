@@ -4,7 +4,7 @@
   padding: $mb-2;
   border-radius: $mb-1;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  min-width: 400px;
+  width: 400px;
   display: flex;
   flex-direction: column;
   gap: $mb-1-5;
@@ -22,7 +22,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: $mb-0-5;
+    gap: $mb-0-75;
     .form-group {
       position: relative;
       display: flex;
@@ -38,32 +38,42 @@
         font-size: $fz-md;
         background: none;
         border: 1px solid $slate;
-        color: $blue-sapphire;
+        color: rgb(0, 132, 255);
         border-radius: $border-radius;
         resize: none;
         transition: $transition;
         &:focus {
           outline: none;
-          border: 2px solid $primary;
+          border: 2px solid rgb(0, 132, 255);
+          color: rgb(0, 132, 255);
           text-indent: $mb-0-5;
         }
         &:active {
           border: 1px solid $green;
         }
         &--error {
-          border: 1px solid red;
-          color: red;
+          border: 1px solid #ff3d3d;
+          color: #ff3d3d;
         }
       }
       .error-message {
-        color: red;
+        color: #ff3d3d;
+        display: flex;
+        align-items: center;
+        gap: $mb-0-5;
         font-size: $fz-sm;
-        max-width: 275px;
+        font-weight: 600;
+        // background-color: $color;
+        &:before {
+          content: url("../../assets/image/warning.svg");
+          min-width: 20px;
+          height: 20px;
+        }
       }
       &.check-box {
         flex-direction: row;
         align-items: center;
-        gap: 1rem;
+        gap: $mb-0-5;
       }
     }
   }
