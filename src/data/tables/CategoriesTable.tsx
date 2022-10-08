@@ -4,6 +4,13 @@ import { useMemo } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import "./Table.scss";
 import { Button } from "../../components/utils/Button/Button";
+import {
+  addCategoryData,
+  deleteCategory,
+} from "../../redux/slices/categorySlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux";
+import toast from "react-hot-toast";
 type Props = {
   data: Category[];
   cols: Column<Category>[];
@@ -11,6 +18,7 @@ type Props = {
 
 const Table = (props: Props) => {
   console.log(props.data);
+  const dispatch = useDispatch<AppDispatch>();
   const data = useMemo(() => props.data, [props.data]);
   const Cols: () => Column<Category>[] = () => props.cols;
   const columns = useMemo(Cols, []);
@@ -19,9 +27,19 @@ const Table = (props: Props) => {
     tableInstance;
 
   const deleteHandler = (data: Row<Category>) => {
-    console.log(data.original);
+    toast.promise(
+      dispatch(deleteCategory({ body: data.original.id })).unwrap(),
+      {
+        loading: "Deleting...",
+        success: <b>{data.original.name} Deleted Successfully</b>,
+        error: <b>Could not Delete Category.</b>,
+      }
+    );
   };
 
+  const editHandler = (data: Row<Category>) => {
+    dispatch(addCategoryData({ body: data.original.id }));
+  };
   return (
     // apply the table props
 
@@ -98,7 +116,15 @@ const Table = (props: Props) => {
                   >
                     ❌
                   </Button>
-                  <Button backgroundColor="white">✏️</Button>
+                  <Button
+                    backgroundColor="white"
+                    onClick={() => {
+                      console.log(row);
+                      editHandler(row);
+                    }}
+                  >
+                    ✏️
+                  </Button>
                 </td>
               </tr>
             );

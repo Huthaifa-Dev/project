@@ -1,47 +1,63 @@
 {
-    "categories": [
-        {
-            "id": 1,
-            "name": "Category 1",
-            "description": "Description 1",
-            "createdAt": "2018-01-01 00:00:00",
-            "updatedAt": "2018-01-01 00:00:00"
-        },
-        {
-            "id": 2,
-            "name": "Category 2",
-            "description": "Description 2",
-            "createdAt": "2018-01-01 00:00:00",
-            "updatedAt": "2018-01-01 00:00:00"
-        }
-    ],
-    "products": [
-        {
-            "id": 1,
-            "name": "Product 1",
-            "description": "Description 1",
-            "price": 100,
-            "category_id": 1,
-            "createdAt": "2018-01-01 00:00:00",
-            "updatedAt": "2018-01-01 00:00:00"
-        },
-        {
-            "id": 2,
-            "name": "Product 2",
-            "description": "Description 2",
-            "price": 200,
-            "category_id": 1,
-            "createdAt": "2018-01-01 00:00:00",
-            "updatedAt": "2018-01-01 00:00:00"
-        },
-        {
-            "id": 3,
-            "name": "Product 3",
-            "description": "Description 3",
-            "price": 300,
-            "category_id": 2,
-            "createdAt": "2018-01-01 00:00:00",
-            "updatedAt": "2018-01-01 00:00:00"
-        }
-    ]
+  "categories": [
+    {
+      "id": 1,
+      "name": "Category 1",
+      "description": "Description 1",
+      "createdAt": "2018-01-01 00:00:00",
+      "updatedAt": "2018-01-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "name": "Category 2",
+      "description": "Description 2",
+      "createdAt": "2018-01-01 00:00:00",
+      "updatedAt": "2018-01-01 00:00:00"
+    },
+    {
+      "1": "",
+      "id": 3
+    },
+    {
+      "2": "",
+      "id": 4
+    },
+    {
+      "1": "",
+      "id": 5
+    },
+    {
+      "2": "",
+      "id": 6
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Product 1",
+      "description": "Description 1",
+      "price": 100,
+      "category_id": 1,
+      "createdAt": "2018-01-01 00:00:00",
+      "updatedAt": "2018-01-01 00:00:00"
+    },
+    {
+      "id": 2,
+      "name": "Product 2",
+      "description": "Description 2",
+      "price": 200,
+      "category_id": 1,
+      "createdAt": "2018-01-01 00:00:00",
+      "updatedAt": "2018-01-01 00:00:00"
+    },
+    {
+      "id": 3,
+      "name": "Product 3",
+      "description": "Description 3",
+      "price": 300,
+      "category_id": 2,
+      "createdAt": "2018-01-01 00:00:00",
+      "updatedAt": "2018-01-01 00:00:00"
+    }
+  ]
 }
