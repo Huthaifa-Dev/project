@@ -1,9 +1,9 @@
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.horizantal-layout {
+  display: grid;
   min-width: 100%;
   min-height: 100vh;
-  background: url(../../assets/image/background.jpg) no-repeat center center
-    fixed;
+  grid-template-rows: auto 1fr;
+  &__content {
+    background: #ffe;
+  }
 }

@@ -1,0 +1,77 @@
+@import "../../assets/styles/variables";
+header {
+  width: 100%;
+}
+.wrapper {
+  font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  * {
+    // border: 1px solid pink;
+  }
+  .header {
+    position: sticky;
+    position: -webkit-sticky;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    &-logo {
+      color: #333;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+    &-link {
+      text-decoration: none;
+      color: #333;
+      button {
+        box-shadow: none;
+        color: #555;
+        transition: $transition;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        img {
+          width: 25px;
+        }
+        &:hover {
+          color: #1ea7fd;
+          box-shadow: 0 15px 10px -15px rgba(darken(#1ea7fd, 10%), 0.35);
+        }
+        // background: red;
+      }
+    }
+  }
+}
+
+img {
+  display: inline-block;
+  vertical-align: top;
+}
+
+h1 {
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  margin: 6px 0 6px 10px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+.welcome {
+  color: #333;
+  font-size: 14px;
+  margin-right: 10px;
+}

@@ -1,0 +1,31 @@
+.table {
+  border-collapse: collapse;
+  //   background: green;
+  width: 50%;
+  &-head {
+    &-row {
+      border: 1px solid #ddd;
+      border-bottom-width: 3px;
+      &__cell {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        background: white;
+        font-weight: 600;
+        text-align: left;
+      }
+    }
+  }
+  &-body {
+    &-row {
+      background-color: #fafafa;
+      &:nth-child(even) {
+        background-color: #fff;
+      }
+      &__cell {
+        border: 1px solid #ddd;
+
+        padding: 0.5rem;
+      }
+    }
+  }
+}

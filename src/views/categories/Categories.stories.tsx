@@ -1,18 +1,20 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { within, userEvent } from "@storybook/testing-library";
-import { Page } from "./Page";
+import Categories from "./Categories";
 
 export default {
   title: "Pages/Page",
-  component: Page,
+  component: Categories,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
-} as ComponentMeta<typeof Page>;
+} as ComponentMeta<typeof Categories>;
 
-const Template: ComponentStory<typeof Page> = (args) => <Page {...args} />;
+const Template: ComponentStory<typeof Categories> = (args) => (
+  <Categories {...args} />
+);
 
 export const LoggedOut = Template.bind({});
 

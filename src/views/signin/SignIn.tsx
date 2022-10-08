@@ -45,8 +45,6 @@ export const SignIn: React.VFC = () => {
       return;
     }
     setUser(userName, password, rememberMe === "on");
-    alert(userName + " " + password + " " + rememberMe);
-    console.log(user);
     //navigate
   };
 
@@ -123,7 +121,9 @@ export const SignIn: React.VFC = () => {
             />
             <label htmlFor="remember">Remember Me?</label>
           </div>
-          <Button primary label="Login" fullWidth size="large" type="submit" />
+          <Button primary fullWidth size="large" type="submit">
+            Login
+          </Button>
         </form>
       </div>
     </Blank>

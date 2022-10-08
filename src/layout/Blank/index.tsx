@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Blank: React.FC<Props> = ({ children }) => {
-  return <div className="wrapper">{children}</div>;
+  return <div className="blank-layout">{children}</div>;
 };
 
 export default Blank;

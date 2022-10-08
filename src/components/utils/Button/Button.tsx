@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import "./button.scss";
 
 interface ButtonProps {
@@ -22,7 +22,7 @@ interface ButtonProps {
   /**
    * Button contents
    */
-  label: string;
+  children?: ReactNode;
   /**
    * Optional click handler
    */
@@ -37,8 +37,8 @@ export const Button = ({
   primary = false,
   size = "medium",
   backgroundColor,
-  label,
   fullWidth = false,
+  children = "Button",
   ...props
 }: ButtonProps) => {
   const mode = primary
@@ -57,7 +57,7 @@ export const Button = ({
       style={{ backgroundColor }}
       {...props}
     >
-      {label}
+      {children}
     </button>
   );
 };

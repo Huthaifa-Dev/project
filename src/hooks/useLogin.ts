@@ -1,28 +1,35 @@
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getUser, validate } from "../data/auth";
 import { userLogin, userLogout } from "../redux/slices/userSlice";
 import useLocalStorage from "./useLocalStorage";
+import toast, { Toaster } from "react-hot-toast";
 
 const useLogin = () => {
   const [user, setUser] = useLocalStorage("user", null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const storeUser = (username: string, password: string, flag: boolean) => {
     if (validate(username, password)) {
       const newUser = getUser(username);
       if (flag) {
         setUser(newUser);
+        toast.success(newUser?.fullName + " has logged in successfully!");
       }
       if (newUser) {
         dispatch(
           userLogin({
             id: newUser.id,
-            name: newUser.fullName,
+            username: newUser.fullName,
             role: newUser.role,
           })
         );
+        navigate("/categories");
+        toast.success("Logged in Successfully");
       }
       return newUser;
     }
+    toast.error("Invalid Username or Password");
     dispatch(userLogout());
     setUser(null);
     return null;
