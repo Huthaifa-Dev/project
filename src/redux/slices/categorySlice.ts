@@ -42,7 +42,7 @@ export const deleteCategory = createAsyncThunk(
 );
 export const addCategoryData = createAsyncThunk(
   "categories/addCategory",
-  async (data: { body: number }) => {
+  async (data: { body: Category }) => {
     try {
       const response = await axios.post(`${CATEGORIES_URL}`, data.body);
       return response.data;

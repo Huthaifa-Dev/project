@@ -71,8 +71,9 @@
         }
       }
       &.check-box {
+        display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: baseline;
         gap: $mb-0-5;
       }
     }

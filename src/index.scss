@@ -6,4 +6,12 @@
 }
 body {
   font-family: $body-font;
+  position: relative;
+  * {
+    font-family: $body-font;
+  }
+}
+
+.blur {
+  filter: blur(5px);
 }

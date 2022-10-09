@@ -37,9 +37,7 @@ const Table = (props: Props) => {
     );
   };
 
-  const editHandler = (data: Row<Category>) => {
-    dispatch(addCategoryData({ body: data.original.id }));
-  };
+  const editHandler = (data: Row<Category>) => {};
   return (
     // apply the table props
 
