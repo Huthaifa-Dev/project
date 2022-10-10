@@ -22,7 +22,6 @@ const Categories: React.VFC = () => {
   const categories = useSelector(selectCategories);
   const [form, setForm] = React.useState<boolean>(false);
   const [edittingID, setEdittingID] = React.useState<string>("");
-  const [deletingID, setDeletingID] = React.useState<string>("");
   const {
     register,
     watch,
@@ -61,15 +60,10 @@ const Categories: React.VFC = () => {
   const handleCloseNewForm = () => {
     setForm(false);
     setEdittingID("");
-    setDeletingID("");
   };
   const handleOpenEditForm = (data: { id: string }) => {
     setForm(true);
     setEdittingID(data.id);
-  };
-  const handleOpenDeleteForm = (data: { id: string }) => {
-    setForm(true);
-    setDeletingID(data.id);
   };
 
   const search = watch("search");
@@ -108,25 +102,17 @@ const Categories: React.VFC = () => {
             </div>
           </div>
           <Table
-            onDelete={(data: { id: string }) => {
-              handleOpenDeleteForm(data);
-            }}
             data={filteredCategories}
             cols={cols}
             onEditCell={handleOpenEditForm}
             onSortHandler={(data: { id: string }) => {
               onSortHandler(data.id);
             }}
+            onDelete={(data: { id: string }) => {}}
           />
         </div>
       </div>
-      {form && (
-        <Form
-          onClose={handleCloseNewForm}
-          ID={edittingID}
-          DELETE={deletingID}
-        />
-      )}
+      {form && <Form onClose={handleCloseNewForm} ID={edittingID} />}
     </Horizantal>
   );
 };

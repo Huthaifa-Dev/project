@@ -16,6 +16,7 @@ import { createDate, isDate } from "../../helpers/date";
 type Props = {
   data: Category[];
   cols: Column<Category>[];
+  onDelete: (data: { id: string }) => void;
   onEditCell: (data: { id: string }) => void;
   onSortHandler: (data: { id: string }) => void;
 };
@@ -37,14 +38,7 @@ const Table = (props: Props) => {
     tableInstance;
 
   const deleteHandler = (data: Row<Category>) => {
-    toast.promise(
-      dispatch(deleteCategory({ body: data.original.id })).unwrap(),
-      {
-        loading: "Deleting...",
-        success: <b>{data.original.name} Deleted Successfully</b>,
-        error: <b>Could not Delete Category.</b>,
-      }
-    );
+    props.onDelete({ id: data.original.id });
   };
 
   const onSortHandler = (col: string) => {

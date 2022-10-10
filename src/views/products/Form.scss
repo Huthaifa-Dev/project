@@ -1,0 +1,46 @@
+@import "../../assets/styles/variables";
+.form-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  label {
+    font-size: $mb-1;
+    font-weight: 600;
+    margin-top: $mb-0-5;
+  }
+  .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    &:focus {
+      outline: none;
+      border: 1px solid #007bff;
+    }
+  }
+  .form-control--error {
+    border: 1px solid #ff3d3d;
+  }
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: baseline;
+    width: 100%;
+    flex: 1;
+    .error-message {
+      color: #ff3d3d;
+      display: flex;
+      align-items: center;
+      gap: $mb-0-5;
+      font-size: $fz-sm;
+      font-weight: 600;
+      // background-color: $color;
+      &:before {
+        content: url("../../assets/image/warning.svg");
+        min-width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
