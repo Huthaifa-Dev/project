@@ -9,13 +9,12 @@ const useLogin = () => {
   const [user, setUser] = useLocalStorage("user", null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const storeUser = (username: string, password: string, flag: boolean) => {
+  const storeUser = (username: string, password: string) => {
     if (validate(username, password)) {
       const newUser = getUser(username);
-      if (flag) {
-        setUser(newUser);
-        toast.success(newUser?.fullName + " has logged in successfully!");
-      }
+      setUser(newUser);
+      toast.success(newUser?.fullName + " has logged in successfully!");
+
       if (newUser) {
         dispatch(
           userLogin({

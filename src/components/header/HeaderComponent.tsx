@@ -13,6 +13,7 @@ interface HeaderProps {
 }
 
 const HeaderComponent = ({ user, onLogin, onLogout }: HeaderProps) => {
+  console.log(user);
   return (
     <header>
       <div className="wrapper">
@@ -41,7 +42,7 @@ const HeaderComponent = ({ user, onLogin, onLogout }: HeaderProps) => {
           </Link>
         </div>
         <div>
-          {user ? (
+          {user?.username ? (
             <>
               <span className="welcome">
                 Welcome, <b>{user?.username}</b>!

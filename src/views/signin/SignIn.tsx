@@ -43,7 +43,7 @@ export const SignIn: React.VFC = () => {
     if (userNameHasError || passwordHasError) {
       return;
     }
-    setUser(userName, password, rememberMe === "on");
+    setUser(userName, password);
     //navigate
   };
 
