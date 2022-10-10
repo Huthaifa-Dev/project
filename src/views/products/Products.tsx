@@ -4,22 +4,22 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Column } from "react-table";
 import { Button } from "../../components/utils/Button/Button";
-import Table from "../../data/tables/CategoriesTable";
+import Table from "../../data/tables/ProductsTable";
 import useInput from "../../hooks/useInput";
 import Horizantal from "../../layout/Horizantal";
 import { AppDispatch, RootState } from "../../redux";
 import {
-  getCategories,
-  selectCategories,
-  sortCategories,
-} from "../../redux/slices/categorySlice";
-import { Category } from "../../types";
-import "./Categories.scss";
+  getProducts,
+  selectProducts,
+  sortProducts,
+} from "../../redux/slices/productSlice";
+import { Product } from "../../types";
+import "./Products.scss";
 import Form from "./Form";
 
 const Categories: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const categories = useSelector(selectCategories);
+  const products = useSelector(selectProducts);
   const [form, setForm] = React.useState<boolean>(false);
   const [edittingID, setEdittingID] = React.useState<string>("");
   const {
@@ -32,22 +32,38 @@ const Categories: React.VFC = () => {
     },
   });
 
-  const cols: Column<Category>[] = [
+  const cols: Column<Product>[] = [
     {
-      Header: "Category Name",
+      Header: "Code",
+      accessor: "code",
+    },
+    {
+      Header: "Name",
       accessor: "name",
     },
     {
-      Header: "Created At",
-      accessor: "createdAt",
+      Header: "Category",
+      accessor: "category",
+    },
+    {
+      Header: "Product Description",
+      accessor: "description",
+    },
+    {
+      Header: "tax(%)",
+      accessor: "tax",
+    },
+    {
+      Header: "Price",
+      accessor: "price",
     },
   ];
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getProducts());
   }, [dispatch]);
 
   const onSortHandler = (id: string) => {
-    toast.promise(dispatch(sortCategories({ id })), {
+    toast.promise(dispatch(sortProducts({ id })), {
       loading: "Sorting...",
       success: "Sorted",
       error: "Error",
@@ -68,8 +84,15 @@ const Categories: React.VFC = () => {
 
   const search = watch("search");
   console.log(search);
-  const filteredCategories = categories.filter((category) => {
-    return category.name.toLowerCase().includes(search.toLowerCase());
+  const filteredProducts = products.filter((product) => {
+    return (
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      product.code.toLowerCase().includes(search.toLowerCase()) ||
+      product.category.toLowerCase().includes(search.toLowerCase()) ||
+      product.description?.toLowerCase().includes(search.toLowerCase()) ||
+      product.tax.toString().includes(search.toLowerCase()) ||
+      product.price.toString().includes(search.toLowerCase())
+    );
   });
 
   return (
@@ -102,7 +125,7 @@ const Categories: React.VFC = () => {
             </div>
           </div>
           <Table
-            data={filteredCategories}
+            data={filteredProducts}
             cols={cols}
             onEditCell={handleOpenEditForm}
             onSortHandler={(data: { id: string }) => {

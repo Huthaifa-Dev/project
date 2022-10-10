@@ -1,29 +1,88 @@
-import { Category } from "../../types";
+import { Category, Product } from "../../types";
 import { Column, Row, useTable } from "react-table";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import "./Table.scss";
 import { Button } from "../../components/utils/Button/Button";
 import { BiSortDown, BiSortAlt2, BiSortUp } from "react-icons/bi";
 import { createDate, isDate } from "../../helpers/date";
+import { arrayOf } from "prop-types";
 
 type Props = {
-  data: Category[];
-  cols: Column<Category>[];
+  data: Product[];
+  cols: Column<Product>[];
   onDelete: (data: { id: string }) => void;
   onEditCell: (data: { id: string }) => void;
   onSortHandler: (data: { id: string }) => void;
 };
 
-type nameSort = "name" | "nameDec" | "normal";
-type createdAtSort = "createdAt" | "createdAtDec" | "normal";
+interface Sorting {
+  name: "name" | "nameDec" | "normal";
+  price: "price" | "priceDec" | "normal";
+  category: "category" | "categoryDec" | "normal";
+  tax: "tax" | "taxDec" | "normal";
+  description: "description" | "descriptionDec" | "normal";
+  code: "code" | "codeDec" | "normal";
+}
+
+const initialState: Sorting = {
+  name: "normal",
+  price: "normal",
+  category: "normal",
+  tax: "normal",
+  description: "normal",
+  code: "normal",
+};
+
+const sortReducer = (state, action) => {
+  switch (action.type) {
+    case "name":
+      return state.name === "name"
+        ? { ...initialState, name: "nameDec" }
+        : { ...initialState, name: "name" };
+
+    case "code":
+      return state.code === "code"
+        ? { ...initialState, code: "codeDec" }
+        : { ...initialState, code: "code" };
+
+    case "description":
+      return state.description === "description"
+        ? { ...initialState, description: "descriptionDec" }
+        : { ...initialState, description: "description" };
+
+    case "price":
+      return state.price === "price"
+        ? { ...initialState, price: "priceDec" }
+        : { ...initialState, price: "price" };
+
+    case "tax":
+      return state.tax === "tax"
+        ? { ...initialState, tax: "taxDec" }
+        : { ...initialState, tax: "tax" };
+    case "category":
+      return state.category === "category"
+        ? { ...initialState, category: "categoryDec" }
+        : { ...initialState, category: "category" };
+    default:
+      return state;
+  }
+};
 
 const Table = (props: Props) => {
-  const [nameCol, setNameCol] = useState<nameSort>("normal");
-  const [createdAtCol, setCreatedAtCol] = useState<createdAtSort>("normal");
+  const [state, dispatchSort] = useReducer(sortReducer, initialState);
+  const [sortFlag, setSortFlag] = useState("normal");
+  useEffect(() => {
+    // console.log("setSortFlag", sortFlag);
+    const array = Object.entries(state);
+    const sortValue = array.find((item) => item[1] !== "normal");
+    if (sortValue) {
+      props.onSortHandler({ id: sortValue?.[1] as string });
+    }
+  }, [sortFlag]);
 
   const data = useMemo(() => props.data, [props.data]);
-  const Cols: () => Column<Category>[] = () => props.cols;
+  const Cols: () => Column<Product>[] = () => props.cols;
   const columns = useMemo(Cols, []);
 
   const tableInstance = useTable({ columns, data });
@@ -35,27 +94,8 @@ const Table = (props: Props) => {
   };
 
   const onSortHandler = (col: string) => {
-    let value = "name";
-    if (col === "name") {
-      if (nameCol === "name") {
-        setNameCol("nameDec");
-        value = "nameDec";
-      } else {
-        setNameCol("name");
-        value = "name";
-      }
-      setCreatedAtCol("normal");
-    } else {
-      if (createdAtCol === "createdAt") {
-        setCreatedAtCol("createdAtDec");
-        value = "createdAtDec";
-      } else {
-        setCreatedAtCol("createdAt");
-        value = "createdAt";
-      }
-      setNameCol("normal");
-    }
-    props.onSortHandler({ id: value });
+    dispatchSort({ type: col });
+    setSortFlag((prev) => (prev === "normal" ? "sort" : "normal"));
   };
 
   const editHandler = (data: Row<Category>) => {
@@ -88,38 +128,24 @@ const Table = (props: Props) => {
                       // Render the header
                       column.render("Header")
                     }
-                    {column.id === "name" && (
+                    {
                       <Button
                         onClick={() => {
                           onSortHandler(column.id);
                         }}
-                        data-active={nameCol === "normal" ? false : true}
+                        data-active={
+                          state[column.id] === "normal" ? false : true
+                        }
                       >
-                        {nameCol === "name" ? (
+                        {state[column.id] === column.id ? (
                           <BiSortDown />
-                        ) : nameCol === "nameDec" ? (
+                        ) : state[column.id] === column.id.concat("Dec") ? (
                           <BiSortUp />
                         ) : (
                           <BiSortAlt2 />
                         )}
                       </Button>
-                    )}
-                    {column.id === "createdAt" && (
-                      <Button
-                        onClick={() => {
-                          onSortHandler(column.id);
-                        }}
-                        data-active={createdAtCol === "normal" ? false : true}
-                      >
-                        {createdAtCol === "createdAt" ? (
-                          <BiSortDown />
-                        ) : createdAtCol === "createdAtDec" ? (
-                          <BiSortUp />
-                        ) : (
-                          <BiSortAlt2 />
-                        )}
-                      </Button>
-                    )}
+                    }
                   </th>
                 ))
               }
@@ -163,7 +189,7 @@ const Table = (props: Props) => {
                   <Button
                     backgroundColor="white"
                     onClick={() => {
-                      deleteHandler(row);
+                      //   deleteHandler(row);
                     }}
                   >
                     ❌
@@ -171,7 +197,7 @@ const Table = (props: Props) => {
                   <Button
                     backgroundColor="white"
                     onClick={() => {
-                      editHandler(row);
+                      //   editHandler(row);
                     }}
                   >
                     ✏️

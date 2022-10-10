@@ -34,7 +34,7 @@ const HeaderComponent = ({ user, onLogin, onLogout }: HeaderProps) => {
               Categories
             </Button>
           </Link>
-          <Link to="/product" className="header-link">
+          <Link to="/products" className="header-link">
             <Button>
               <img alt="ProPhoto" src={ProPhoto} />
               Products

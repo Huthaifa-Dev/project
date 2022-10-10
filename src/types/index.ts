@@ -9,17 +9,21 @@ export interface User {
 export type Category = {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   createdAt: number;
   updatedAt: number;
 };
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  description: string;
+  description?: string;
+  code: string;
+  color?: string;
+  image?: string;
+  category: string;
+  stock?: number;
+  expire?: number;
   price: number;
-  category: Partial<Category>;
-  createdAt: string;
-  updatedAt: string;
+  tax: number;
 }
