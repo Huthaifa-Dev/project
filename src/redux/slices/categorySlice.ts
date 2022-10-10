@@ -6,7 +6,8 @@ import Categories from "../../views/categories/Categories";
 import { RootState } from "..";
 import { createDate } from "../../helpers/date";
 
-const CATEGORIES_URL = "http://localhost:3001/categories";
+const CATEGORIES_URL =
+  "https://fts-product-manager-data.herokuapp.com/categories";
 
 interface STATE {
   categories: Category[];
