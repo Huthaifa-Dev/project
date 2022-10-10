@@ -110,6 +110,11 @@ export const productSilice = createSlice({
     builder.addCase(sortProducts.fulfilled, (state, action) => {
       state.products = action.payload as Product[];
     });
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      state.products = state.products.filter(
+        (c) => c.id !== action.meta.arg.body
+      );
+    });
   },
 });
 

@@ -22,6 +22,7 @@ const Categories: React.VFC = () => {
   const products = useSelector(selectProducts);
   const [form, setForm] = React.useState<boolean>(false);
   const [edittingID, setEdittingID] = React.useState<string>("");
+  const [deletingID, setDeletingID] = React.useState<string>("");
   const {
     register,
     watch,
@@ -76,10 +77,15 @@ const Categories: React.VFC = () => {
   const handleCloseNewForm = () => {
     setForm(false);
     setEdittingID("");
+    setDeletingID("");
   };
   const handleOpenEditForm = (data: { id: string }) => {
     setForm(true);
     setEdittingID(data.id);
+  };
+  const handleOpenDeleteForm = (data: { id: string }) => {
+    setForm(true);
+    setDeletingID(data.id);
   };
 
   const search = watch("search");
@@ -131,11 +137,19 @@ const Categories: React.VFC = () => {
             onSortHandler={(data: { id: string }) => {
               onSortHandler(data.id);
             }}
-            onDelete={(data: { id: string }) => {}}
+            onDelete={(data: { id: string }) => {
+              handleOpenDeleteForm(data);
+            }}
           />
         </div>
       </div>
-      {form && <Form onClose={handleCloseNewForm} ID={edittingID} />}
+      {form && (
+        <Form
+          onClose={handleCloseNewForm}
+          ID={edittingID}
+          DELETE={deletingID}
+        />
+      )}
     </Horizantal>
   );
 };

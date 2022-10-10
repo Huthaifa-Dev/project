@@ -89,7 +89,7 @@ const Table = (props: Props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
 
-  const deleteHandler = (data: Row<Category>) => {
+  const deleteHandler = (data: Row<Product>) => {
     props.onDelete({ id: data.original.id });
   };
 
@@ -189,7 +189,7 @@ const Table = (props: Props) => {
                   <Button
                     backgroundColor="white"
                     onClick={() => {
-                      //   deleteHandler(row);
+                      deleteHandler(row);
                     }}
                   >
                     ❌

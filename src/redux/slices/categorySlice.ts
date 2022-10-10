@@ -137,7 +137,6 @@ export const categorySlice = createSlice({
       state.categories = state.categories.filter(
         (c) => c.id !== action.meta.arg.body
       );
-      console.log(state.categories, action.meta.arg.body);
     });
     builder.addCase(addCategoryData.fulfilled, (state, action) => {
       state.categories.push(
