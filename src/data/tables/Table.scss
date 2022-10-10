@@ -1,3 +1,4 @@
+@import "../../assets/styles/variables";
 .table {
   border-collapse: collapse;
   //   background: green;
@@ -5,12 +6,33 @@
     &-row {
       border: 1px solid #ddd;
       border-bottom-width: 3px;
+
       &__cell {
         border: 1px solid #ddd;
         padding: 0.5rem;
         background: white;
         font-weight: 600;
         text-align: left;
+        position: relative;
+        button {
+          position: absolute;
+          padding-right: 0.5rem;
+          right: 0;
+          top: 0;
+          background: none;
+          outline: none;
+          border: none;
+          box-shadow: none;
+          font-size: 1rem;
+          color: #6e6e6e;
+          opacity: 0.5;
+          transition: $transition;
+          &[data-active="true"] {
+            opacity: 1;
+            scale: 1.2;
+            color: #0697ff;
+          }
+        }
       }
     }
   }

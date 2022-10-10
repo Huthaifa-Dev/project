@@ -7,11 +7,11 @@ export interface User {
 }
 
 export type Category = {
-  id: number;
+  id: string;
   name: string;
   description: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export interface Product {

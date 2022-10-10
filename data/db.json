@@ -1,18 +1,25 @@
 {
   "categories": [
     {
-      "id": 1,
-      "name": "Category 1",
-      "description": "Description 1",
-      "createdAt": "2018-01-01 00:00:00",
-      "updatedAt": "2018-01-01 00:00:00"
+      "id": "New date",
+      "name": "New date",
+      "description": "",
+      "createdAt": 1665382877158,
+      "updatedAt": 1665382877158
     },
     {
-      "id": 2,
-      "name": "Category 2",
-      "description": "Description 2",
-      "createdAt": "2018-01-01 00:00:00",
-      "updatedAt": "2018-01-01 00:00:00"
+      "id": "Huthaifa Salman",
+      "name": "Huthaifa Salman",
+      "description": "",
+      "createdAt": 1665383395771,
+      "updatedAt": 1665383395771
+    },
+    {
+      "id": "THis is cooooooool",
+      "name": "THis is cooooooool",
+      "description": "",
+      "createdAt": 1665383411985,
+      "updatedAt": 1665383411985
     }
   ],
   "products": [

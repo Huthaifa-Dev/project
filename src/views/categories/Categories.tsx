@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from "../../redux";
 import {
   getCategories,
   selectCategories,
+  sortCategories,
 } from "../../redux/slices/categorySlice";
 import { Category } from "../../types";
 import "./Categories.scss";
@@ -20,9 +21,10 @@ const Categories: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const categories = useSelector(selectCategories);
   const [form, setForm] = React.useState<boolean>(false);
+  const [edittingID, setEdittingID] = React.useState<string>("");
   const {
     register,
-    handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -41,20 +43,34 @@ const Categories: React.VFC = () => {
     },
   ];
   useEffect(() => {
-    toast.promise(dispatch(getCategories()), {
-      loading: "Fetching...",
-      success: <b>Categories Saved Successfully</b>,
-      error: <b>Could not save Categories.</b>,
-    });
+    dispatch(getCategories());
   }, [dispatch]);
 
-  const handleAddCategory = () => {
+  const onSortHandler = (id: string) => {
+    toast.promise(dispatch(sortCategories({ id })), {
+      loading: "Sorting...",
+      success: "Sorted",
+      error: "Error",
+    });
+  };
+
+  const handleOpenNewForm = () => {
     setForm(true);
   };
-  const handleClose = () => {
+  const handleCloseNewForm = () => {
     setForm(false);
+    setEdittingID("");
   };
-  console.log(categories);
+  const handleOpenEditForm = (data: { id: string }) => {
+    setForm(true);
+    setEdittingID(data.id);
+  };
+
+  const search = watch("search");
+  const filteredCategories = categories.filter((category) =>
+    category.id.includes(search)
+  );
+
   return (
     <Horizantal>
       <div className={`container ${form ? "blur" : ""}`}>
@@ -63,7 +79,7 @@ const Categories: React.VFC = () => {
             <Button
               primary
               backgroundColor="#1f1f1f"
-              onClick={handleAddCategory}
+              onClick={handleOpenNewForm}
             >
               Add Category
             </Button>
@@ -73,28 +89,28 @@ const Categories: React.VFC = () => {
               </label>
               <input
                 {...register("search", {
-                  required: "Name is required",
-                  minLength: {
-                    value: 4,
-                    message: "Name must be at least 4 characters long",
-                  },
                   maxLength: {
                     value: 20,
-                    message: "Name must be at most 20 characters long",
+                    message: "Search must be at most 20 characters long",
                   },
                 })}
                 type="text"
-                id="name"
-                className={`form-control ${
-                  errors.search ? "form-control--error" : ""
-                }`}
+                id="search"
+                className={`form-control`}
               />
             </div>
           </div>
-          <Table data={categories} cols={cols} />
+          <Table
+            data={filteredCategories}
+            cols={cols}
+            onEditCell={handleOpenEditForm}
+            onSortHandler={(data: { id: string }) => {
+              onSortHandler(data.id);
+            }}
+          />
         </div>
       </div>
-      {form && <Form onClose={handleClose} />}
+      {form && <Form onClose={handleCloseNewForm} ID={edittingID} />}
     </Horizantal>
   );
 };

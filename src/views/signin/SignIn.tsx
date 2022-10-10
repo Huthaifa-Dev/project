@@ -37,7 +37,6 @@ export const SignIn: React.VFC = () => {
 
   const handleRememberMe = () => {
     setRememberMe((prev) => (prev === "off" ? "on" : prev));
-    console.log(userStore);
   };
   const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -13,7 +13,6 @@ interface HeaderProps {
 
 const Header = ({ user, onLogin, onLogout }: HeaderProps) => {
   const dispatch = useDispatch();
-  console.log(user);
   const [localUser, setLocalUser] = useLocalStorage("user", null);
   const onLogoutHandler = () => {
     dispatch(userLogout());

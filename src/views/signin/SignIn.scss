@@ -27,6 +27,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      gap: $mb-0-25;
       label {
         font-size: $mb-1;
         font-weight: 600;
