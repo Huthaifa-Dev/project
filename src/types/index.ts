@@ -17,13 +17,19 @@ export type Category = {
 export interface Product {
   id: string;
   name: string;
-  description?: string;
+  price: number;
+  rawPrice: number;
+  tax: number;
+  category: string;
   code: string;
+  description?: string;
   color?: string;
   image?: string;
-  category: string;
   stock?: number;
   expire?: number;
-  price: number;
-  tax: number;
 }
+
+export type Option = {
+  value: string;
+  label: string;
+};

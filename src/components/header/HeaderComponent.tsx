@@ -13,7 +13,6 @@ interface HeaderProps {
 }
 
 const HeaderComponent = ({ user, onLogin, onLogout }: HeaderProps) => {
-  console.log(user);
   return (
     <header>
       <div className="wrapper">

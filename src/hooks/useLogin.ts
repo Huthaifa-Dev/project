@@ -24,7 +24,6 @@ const useLogin = () => {
           })
         );
         navigate("/categories");
-        toast.success("Logged in Successfully");
       }
       return newUser;
     }

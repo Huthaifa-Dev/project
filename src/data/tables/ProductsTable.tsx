@@ -98,7 +98,7 @@ const Table = (props: Props) => {
     setSortFlag((prev) => (prev === "normal" ? "sort" : "normal"));
   };
 
-  const editHandler = (data: Row<Category>) => {
+  const editHandler = (data: Row<Product>) => {
     props.onEditCell({ id: data.original.id });
   };
   return (
@@ -197,7 +197,7 @@ const Table = (props: Props) => {
                   <Button
                     backgroundColor="white"
                     onClick={() => {
-                      //   editHandler(row);
+                      editHandler(row);
                     }}
                   >
                     ✏️

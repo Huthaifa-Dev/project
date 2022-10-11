@@ -89,7 +89,6 @@ const Categories: React.VFC = () => {
   };
 
   const search = watch("search");
-  console.log(search);
   const filteredProducts = products.filter((product) => {
     return (
       product.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -111,7 +110,7 @@ const Categories: React.VFC = () => {
               backgroundColor="#1f1f1f"
               onClick={handleOpenNewForm}
             >
-              Add Category
+              Add Product
             </Button>
             <div className="actions__search">
               <label className="label" htmlFor="search">

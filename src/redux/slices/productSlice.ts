@@ -3,6 +3,7 @@ import { Product } from "../../types";
 import axios from "axios";
 import { RootState } from "..";
 import { createDate } from "../../helpers/date";
+import { createProduct } from "../../helpers/product";
 
 const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";
 
@@ -66,15 +67,26 @@ export const deleteProduct = createAsyncThunk(
 );
 export const editProductData = createAsyncThunk(
   "categories/editProduct",
-  async (data: { id: string; newName: string }) => {
+  async (data: { id: string; newProduct: Partial<Product> }) => {
     try {
-      const category = await axios.get(`${PRODUCTS_URL}/${data.id}`);
-      category.data.name = data.newName;
-      category.data.id = data.newName;
-      category.data.updatedAt = Date.now();
+      const product = await axios.get(`${PRODUCTS_URL}/${data.id}`);
+      product.data = { ...data.newProduct };
+      if (
+        product.data.price !== undefined &&
+        product.data.rawPrice !== undefined
+      ) {
+        product.data.price = data.newProduct.price;
+        product.data.rawPrice = data.newProduct.rawPrice;
+        const newTax = (
+          (product.data.price / product.data.rawPrice - 1) *
+          100
+        ).toFixed(2);
+        product.data.tax = parseInt(newTax);
+      }
+
       const response = await axios.put(
         `${PRODUCTS_URL}/${data.id}`,
-        category.data
+        product.data
       );
       return response.data;
     } catch (error) {
@@ -82,13 +94,13 @@ export const editProductData = createAsyncThunk(
     }
   }
 );
-export const addProduct = createAsyncThunk(
-  "categories/addProduct",
-  async (data: { name: string }) => {
+export const addProductData = createAsyncThunk(
+  "categories/addProductData",
+  async (data: Partial<Product>) => {
     try {
-      //   const category = createdData(data);
-      //   const response = await axios.post(`${CATEGORIES_URL}`, category);
-      //   return response.data;
+      const product = createProduct(data as Product);
+      const response = await axios.post(`${PRODUCTS_URL}`, product);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
@@ -113,6 +125,14 @@ export const productSilice = createSlice({
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
       state.products = state.products.filter(
         (c) => c.id !== action.meta.arg.body
+      );
+    });
+    builder.addCase(addProductData.fulfilled, (state, action) => {
+      state.products = [...state.products, action.payload as Product];
+    });
+    builder.addCase(editProductData.fulfilled, (state, action) => {
+      state.products = state.products.map((c) =>
+        c.id === action.meta.arg.id ? (action.payload as Product) : c
       );
     });
   },

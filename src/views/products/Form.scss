@@ -1,8 +1,13 @@
 @import "../../assets/styles/variables";
 .form-group {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  // align-items: flex-start;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+  section {
+    width: 100%;
+  }
   label {
     font-size: $mb-1;
     font-weight: 600;
@@ -28,7 +33,12 @@
     align-items: baseline;
     width: 100%;
     flex: 1;
+    position: relative;
+    margin-bottom: 0.5rem;
     .error-message {
+      position: absolute;
+      bottom: -1.25rem;
+      left: 0;
       color: #ff3d3d;
       display: flex;
       align-items: center;

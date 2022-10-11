@@ -8,12 +8,13 @@ interface Props {
   onClose: () => void;
   onSubmit: () => void;
   title: string;
+  width?: string;
 }
-const Modal = ({ children, onClose, onSubmit, title }: Props) => {
+const Modal = ({ children, onClose, onSubmit, title, width }: Props) => {
   return createPortal(
     <>
-      <div className="container">
-        <div className="modal">
+      <div className="container" style={{ width: "100%" }}>
+        <div className="modal" style={{ width: width }}>
           <header className="modal__title">
             <p>{title}</p>
             <Button backgroundColor="white" onClick={onClose}>
