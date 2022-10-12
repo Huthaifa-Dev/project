@@ -1,7 +1,8 @@
 @import "../../assets/styles/variables";
 header {
   width: 100%;
-  z-index: 10;
+  z-index: 9999;
+  position: sticky;
 }
 .wrapper {
   font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;

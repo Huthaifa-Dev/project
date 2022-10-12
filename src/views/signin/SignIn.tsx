@@ -2,19 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../../components/utils/Button/Button";
 import useInput from "../../hooks/useInput";
 import useLogin from "../../hooks/useLogin";
-import Blank from "../../layout/Blank";
 import "./SignIn.scss";
 import { passwordValidation, userValidation } from "../../helpers/validations";
-import { useSelector } from "react-redux";
-import { User } from "../../types";
-import { RootState } from "../../redux";
 
 export const SignIn: React.VFC = () => {
   const [rememberMe, setRememberMe] = useState<string>("off");
   const [user, setUser] = useLogin();
-  const userStore = useSelector<RootState, Partial<User>>(
-    (state) => state.user
-  );
+
   useEffect(() => {
     //login and navigate to home page
     // navigate
@@ -24,14 +18,12 @@ export const SignIn: React.VFC = () => {
     value: userName,
     onChange: changeUserName,
     onBlur: blurUserName,
-    reset: userReset,
     hasError: userNameHasError,
   } = useInput(userValidation);
   const {
     value: password,
     onChange: changePassword,
     onBlur: blurPassword,
-    reset: passwordReset,
     hasError: passwordHasError,
   } = useInput(passwordValidation);
 
@@ -69,63 +61,61 @@ export const SignIn: React.VFC = () => {
     }
   };
   return (
-    <Blank>
-      <div className="signin">
-        <h1 className="signin__title">
-          Sign In<span>👋</span>
-        </h1>
-        <form onSubmit={submitHandler}>
-          <div className="form-group">
-            <label htmlFor="username">User Name</label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-              value={userName}
-              onChange={changeUserName}
-              onBlur={blurUserName}
-              className={`form-control ${
-                userNameHasError ? "form-control--error" : ""
-              }`}
-            />
+    <div className="signin">
+      <h1 className="signin__title">
+        Sign In<span>👋</span>
+      </h1>
+      <form onSubmit={submitHandler}>
+        <div className="form-group">
+          <label htmlFor="username">User Name</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter your username"
+            value={userName}
+            onChange={changeUserName}
+            onBlur={blurUserName}
+            className={`form-control ${
+              userNameHasError ? "form-control--error" : ""
+            }`}
+          />
 
-            {userNameHasError && (
-              <div className="error-message">{userErrorMessage(userName)}</div>
-            )}
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={changePassword}
-              onBlur={blurPassword}
-              className={`form-control ${
-                passwordHasError ? "form-control--error" : ""
-              }`}
-            />
+          {userNameHasError && (
+            <div className="error-message">{userErrorMessage(userName)}</div>
+          )}
+        </div>
+        <div className="form-group">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={changePassword}
+            onBlur={blurPassword}
+            className={`form-control ${
+              passwordHasError ? "form-control--error" : ""
+            }`}
+          />
 
-            {passwordHasError && (
-              <div className="error-message">{passErrorMessage(password)}</div>
-            )}
-          </div>
-          <div className="form-group check-box">
-            <input
-              id="remember"
-              type="checkbox"
-              onChange={handleRememberMe}
-              value={rememberMe}
-            />
-            <label htmlFor="remember">Remember Me?</label>
-          </div>
-          <Button primary fullWidth size="large" type="submit">
-            Login
-          </Button>
-        </form>
-      </div>
-    </Blank>
+          {passwordHasError && (
+            <div className="error-message">{passErrorMessage(password)}</div>
+          )}
+        </div>
+        <div className="form-group check-box">
+          <input
+            id="remember"
+            type="checkbox"
+            onChange={handleRememberMe}
+            value={rememberMe}
+          />
+          <label htmlFor="remember">Remember Me?</label>
+        </div>
+        <Button primary fullWidth size="large" type="submit">
+          Login
+        </Button>
+      </form>
+    </div>
   );
 };
 

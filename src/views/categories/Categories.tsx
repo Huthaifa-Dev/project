@@ -5,9 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Column } from "react-table";
 import { Button } from "../../components/utils/Button/Button";
 import Table from "../../data/tables/CategoriesTable";
-import useInput from "../../hooks/useInput";
-import Horizantal from "../../layout/Horizantal";
-import { AppDispatch, RootState } from "../../redux";
+import { AppDispatch } from "../../redux";
 import {
   getCategories,
   selectCategories,
@@ -79,7 +77,7 @@ const Categories: React.VFC = () => {
   });
 
   return (
-    <Horizantal>
+    <>
       <div className={`container ${form ? "blur" : ""}`}>
         <div className="content">
           <div className="actions">
@@ -127,7 +125,7 @@ const Categories: React.VFC = () => {
           DELETE={deletingID}
         />
       )}
-    </Horizantal>
+    </>
   );
 };
 

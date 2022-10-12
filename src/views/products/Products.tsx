@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Column } from "react-table";
 import { Button } from "../../components/utils/Button/Button";
 import Table from "../../data/tables/ProductsTable";
-import useInput from "../../hooks/useInput";
-import Horizantal from "../../layout/Horizantal";
-import { AppDispatch, RootState } from "../../redux";
+import { AppDispatch } from "../../redux";
 import {
   getProducts,
   selectProducts,
@@ -17,21 +15,41 @@ import { Product } from "../../types";
 import "./Products.scss";
 import Form from "./Form";
 
-const Categories: React.VFC = () => {
+const defaultValues = {
+  search: "",
+  startDate: 0,
+  endDate: 0,
+};
+
+type FormValues = {
+  search: string;
+  startDate: number;
+  endDate: number;
+};
+
+const updateData = (data) => {
+  return data;
+};
+
+const Products: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(selectProducts);
+  const [filteredData, setFilteredData] = useState<Product[]>(products);
   const [form, setForm] = React.useState<boolean>(false);
   const [edittingID, setEdittingID] = React.useState<string>("");
   const [deletingID, setDeletingID] = React.useState<string>("");
   const {
     register,
-    watch,
+    handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      search: "",
-    },
+  } = useForm<FormValues>({
+    defaultValues,
   });
+  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
+    useForm<FormValues>({
+      defaultValues,
+    });
 
   const cols: Column<Product>[] = [
     {
@@ -87,50 +105,139 @@ const Categories: React.VFC = () => {
     setForm(true);
     setDeletingID(data.id);
   };
+  const handleDateFilter = (data: FormValues) => {
+    const { startDate, endDate } = data;
+    console.log({ 1: !startDate, 2: !endDate });
+    if (!startDate && !endDate) {
+      setFilteredData(products);
+    }
+    setFilteredData(() => {
+      return products.filter((product) => {
+        //return the product if the expire attribute is grater than startDate
+        if (product.expire !== undefined) {
+          if (endDate !== 0) {
+            // console.log("Expire attribute is set to " + endDate.toString());
+            return product.expire > startDate && product.expire < endDate;
+          }
+          // console.log("Expire attribute is grater than startDate");
+          return product.expire > startDate;
+        }
+        // console.log("Expire attribute is grater than endDate");
+        return false;
+      });
+    });
+  };
 
-  const search = watch("search");
-  const filteredProducts = products.filter((product) => {
-    return (
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      product.code.toLowerCase().includes(search.toLowerCase()) ||
-      product.category.toLowerCase().includes(search.toLowerCase()) ||
-      product.description?.toLowerCase().includes(search.toLowerCase()) ||
-      product.tax.toString().includes(search.toLowerCase()) ||
-      product.price.toString().includes(search.toLowerCase())
-    );
-  });
-
+  const handleSearch = (data: FormValues) => {
+    const { search } = data;
+    if (search === "") {
+      setFilteredData(products);
+    }
+    setFilteredData(() => {
+      return products.filter((product) => {
+        return (
+          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.code.toLowerCase().includes(search.toLowerCase()) ||
+          product.category.toLowerCase().includes(search.toLowerCase()) ||
+          product.description?.toLowerCase().includes(search.toLowerCase()) ||
+          product.tax.toString().includes(search.toLowerCase()) ||
+          product.price.toString().includes(search.toLowerCase())
+        );
+      });
+    });
+  };
   return (
-    <Horizantal>
+    <>
       <div className={`container ${form ? "blur" : ""}`}>
         <div className="content">
           <div className="actions">
-            <Button
-              primary
-              backgroundColor="#1f1f1f"
-              onClick={handleOpenNewForm}
-            >
-              Add Product
-            </Button>
-            <div className="actions__search">
-              <label className="label" htmlFor="search">
-                Search:
-              </label>
-              <input
-                {...register("search", {
-                  maxLength: {
-                    value: 20,
-                    message: "Search must be at most 20 characters long",
-                  },
-                })}
-                type="text"
-                id="search"
-                className={`form-control`}
-              />
+            <div className="col">
+              <Button
+                primary
+                backgroundColor="#1f1f1f"
+                onClick={handleOpenNewForm}
+              >
+                Add Product
+              </Button>
+            </div>
+            <div className="col">
+              <div className="actions__expire">
+                <p className="label">Expiration Date:</p>
+                <label className="label" htmlFor="startDate">
+                  From:
+                </label>
+                <div className="form-group-wrapper">
+                  <input
+                    {...register("startDate", {
+                      min: {
+                        value: 1,
+                        message: "Product raw price must be at least 1$",
+                      },
+                    })}
+                    type="date"
+                    id="startDate"
+                    className={`form-control ${
+                      errors.startDate ? "form-control--error" : ""
+                    }`}
+                  />
+                  {errors.startDate && (
+                    <p className="error-message">{errors.startDate.message}</p>
+                  )}
+                </div>
+                <label className="label" htmlFor="endDate">
+                  To:
+                </label>
+                <div className="form-group-wrapper">
+                  <input
+                    {...register("endDate", {
+                      min: {
+                        value: getValues("startDate"),
+                        message: "End Date must be more than start day.",
+                      },
+                    })}
+                    type="date"
+                    id="endDate"
+                    className={`form-control ${
+                      errors.endDate ? "form-control--error" : ""
+                    }`}
+                  />
+                  {errors.endDate && (
+                    <p className="error-message">{errors.endDate.message}</p>
+                  )}
+                </div>
+                <Button
+                  // backgroundColor="#1f1f1f"
+                  onClick={handleSubmit((data) => {
+                    handleDateFilter(data);
+                  })}
+                >
+                  Apply Filter
+                </Button>
+              </div>
+              <div className="actions__search">
+                <form
+                  onSubmit={handleSubmitSearch((data) => {
+                    handleSearch(data);
+                  })}
+                >
+                  <label htmlFor="search">Search:</label>
+                  <input
+                    {...registerSearch("search", {
+                      maxLength: {
+                        value: 20,
+                        message: "Search must be at most 20 characters long",
+                      },
+                    })}
+                    type="text"
+                    id="search"
+                    className={`form-control`}
+                  />
+                </form>
+              </div>
             </div>
           </div>
           <Table
-            data={filteredProducts}
+            data={filteredData}
             cols={cols}
             onEditCell={handleOpenEditForm}
             onSortHandler={(data: { id: string }) => {
@@ -149,8 +256,8 @@ const Categories: React.VFC = () => {
           DELETE={deletingID}
         />
       )}
-    </Horizantal>
+    </>
   );
 };
 
-export default Categories;
+export default Products;

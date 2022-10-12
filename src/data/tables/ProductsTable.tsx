@@ -7,6 +7,7 @@ import { Button } from "../../components/utils/Button/Button";
 import { BiSortDown, BiSortAlt2, BiSortUp } from "react-icons/bi";
 import { createDate, isDate } from "../../helpers/date";
 import { arrayOf } from "prop-types";
+import { Link } from "react-router-dom";
 
 type Props = {
   data: Product[];
@@ -82,6 +83,7 @@ const Table = (props: Props) => {
   }, [sortFlag]);
 
   const data = useMemo(() => props.data, [props.data]);
+  //   console.log(data);
   const Cols: () => Column<Product>[] = () => props.cols;
   const columns = useMemo(Cols, []);
 
@@ -181,6 +183,7 @@ const Table = (props: Props) => {
                         {isDate(cell.column.id)
                           ? createDate(new Date(cell.value))
                           : cell.render("Cell")}
+                        {cell.column.id === "price" && "$"}
                       </td>
                     );
                   })
@@ -194,14 +197,11 @@ const Table = (props: Props) => {
                   >
                     ❌
                   </Button>
-                  <Button
-                    backgroundColor="white"
-                    onClick={() => {
-                      editHandler(row);
-                    }}
-                  >
-                    ✏️
-                  </Button>
+                  <Link to={`/products/${row.original.id}/edit`}>
+                    <Button backgroundColor="white" onClick={() => {}}>
+                      ✏️
+                    </Button>
+                  </Link>
                 </td>
               </tr>
             );

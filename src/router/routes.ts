@@ -1,11 +1,11 @@
 import { RouteObject, useRoutes } from "react-router-dom";
-import SignIn from "../views/signin/SignIn";
+import SignInPage from "../views/signin/";
 
 const PageRoutes = () => {
   const routes: RouteObject[] = [
     {
       path: "/signin",
-      element: typeof SignIn,
+      element: typeof SignInPage,
     },
   ];
   return useRoutes(routes);

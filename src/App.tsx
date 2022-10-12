@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import SignIn from "./views/signin/SignIn";
-import Categories from "./views/categories/Categories";
-import Products from "./views/products/Products";
+import SignInPage from "./views/signin/";
+import CategoriesPage from "./views/categories/";
+import ProductsPage from "./views/products/";
 import Home from "./views/home/Home";
 import { Provider, useDispatch } from "react-redux";
 import { store } from "./redux";
@@ -25,9 +25,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Navigate replace to="/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/categories" element={<Categories />} />
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:productId/edit" element={<Home />} />
+          <Route path="/categories" element={<CategoriesPage />} />
         </Routes>
         <Toaster position="bottom-center" />
       </div>
