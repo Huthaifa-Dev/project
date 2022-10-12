@@ -29,7 +29,26 @@ export interface Product {
   expire?: number;
 }
 
-export type Option = {
-  value: string;
+export type Option<T> = {
+  value: T;
   label: string;
 };
+
+export type Color =
+  | "red"
+  | "green"
+  | "blue"
+  | "yellow"
+  | "orange"
+  | "purple"
+  | "pink";
+
+export const COLORS: Option<Color>[] = [
+  { value: "red", label: "Red" },
+  { value: "blue", label: "Blue" },
+  { value: "green", label: "Green" },
+  { value: "yellow", label: "Yellow" },
+  { value: "orange", label: "Orange" },
+  { value: "purple", label: "Purple" },
+  { value: "pink", label: "Pink" },
+];

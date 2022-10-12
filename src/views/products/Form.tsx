@@ -11,7 +11,7 @@ import {
   editProductData,
 } from "../../redux/slices/productSlice";
 import "./Form.scss";
-import { Category, Option, Product } from "../../types";
+import { Category, COLORS, Option, Product } from "../../types";
 import {
   getCategories,
   selectCategories,
@@ -26,6 +26,7 @@ const defaultValues = {
   stack: 0,
   expire: 0,
   description: "",
+  color: "",
 };
 
 type FormValues = {
@@ -37,6 +38,7 @@ type FormValues = {
   stack: number;
   expire: number;
   description: string;
+  color: string;
 };
 
 const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
@@ -80,10 +82,10 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     onClose();
   };
 
-  const options: Option[] = [
+  const options: Option<Partial<Category>>[] = [
     ...categories.map((category: Category) => {
       return {
-        value: category.id,
+        value: category.id as Partial<Category>,
         label: category.name,
       };
     }),
@@ -95,6 +97,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
       onClose={onClose}
       onSubmit={handleSubmit((data) => {
         submitHandler(data);
+        console.log(data);
       })}
       width={DELETE ? "400px" : "500px"}
     >
@@ -164,7 +167,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                   {...register("price", {
                     required: "Product Name is required",
                     min: {
-                      value: getValues("rawPrice"),
+                      value: getValues("rawPrice") + 1,
                       message: "Product price must be more than raw price",
                     },
                   })}
@@ -202,6 +205,34 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
               </div>
             </section>
             <section>
+              <label htmlFor="color">Choose color to Display in POS: </label>
+              <div className="form-group-wrapper">
+                <div className="color-picker">
+                  {COLORS.map((color, index) => (
+                    <div key={color.value} className="color-picker__item">
+                      <label
+                        htmlFor={color.value}
+                        style={{ background: color.value }}
+                      >
+                        C{index}
+                      </label>
+                      <input
+                        // add ref for color picker from the useForm hook
+                        {...register("color")}
+                        type="radio"
+                        value={color.value}
+                        id={color.value}
+                      />
+                      <div className="dot">☝️</div>
+                    </div>
+                  ))}
+                </div>
+                {errors.color && (
+                  <p className="error-message">{errors.color.message}</p>
+                )}
+              </div>
+            </section>
+            <section>
               <label htmlFor="category">Category: </label>
               <div className="form-group-wrapper">
                 <select
@@ -213,7 +244,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                   }`}
                 >
                   {options.map((value) => (
-                    <option key={value.value} value={value.value}>
+                    <option key={value.value.id} value={value.value.id}>
                       {value.label}
                     </option>
                   ))}
@@ -250,14 +281,24 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
             <section>
               <label htmlFor="expire">Expiration Date: </label>
 
-              <input
-                {...register("expire")}
-                type="date"
-                id="expire"
-                className={`form-control ${
-                  errors.expire ? "form-control--error" : ""
-                }`}
-              />
+              <div className="form-group-wrapper">
+                <input
+                  {...register("expire", {
+                    min: {
+                      value: new Date(Date.now()).toUTCString(),
+                      message: "Expiration date must be in the future",
+                    },
+                  })}
+                  type="date"
+                  id="expire"
+                  className={`form-control ${
+                    errors.expire ? "form-control--error" : ""
+                  }`}
+                />
+                {errors.expire && (
+                  <p className="error-message">{errors.expire.message}</p>
+                )}
+              </div>
             </section>
           </div>
         </form>
