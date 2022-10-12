@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/utils/Modal/Modal";
 import { AppDispatch } from "../../redux";
-import Select from "react-select";
+import InputMask from "react-input-mask";
 import {
   addProductData,
   deleteProduct,
@@ -16,6 +16,29 @@ import {
   getCategories,
   selectCategories,
 } from "../../redux/slices/categorySlice";
+
+const defaultValues = {
+  name: "",
+  rawPrice: 0,
+  price: 0,
+  code: "",
+  category: "",
+  stack: 0,
+  expire: 0,
+  description: "",
+};
+
+type FormValues = {
+  name: string;
+  rawPrice: number;
+  price: number;
+  code: string;
+  category: string;
+  stack: number;
+  expire: number;
+  description: string;
+};
+
 const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   onClose,
   ID,
@@ -30,19 +53,9 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     register,
     handleSubmit,
     getValues,
+    control,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: "",
-      rawPrice: 0,
-      price: 0,
-      code: "",
-      category: "",
-      stack: 0,
-      expire: 0,
-      description: "",
-    },
-  });
+  } = useForm<FormValues>({ defaultValues });
 
   const submitHandler = (data: Partial<Product>) => {
     if (DELETE) {
@@ -169,19 +182,19 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
             <section>
               <label htmlFor="code">Code: </label>
               <div className="form-group-wrapper">
-                <input
-                  {...register("code", {
-                    required: "Product Name is required",
-                    min: {
-                      value: 1,
-                      message: "Code length must be at least 1$",
-                    },
-                  })}
-                  type="text"
-                  id="code"
-                  className={`form-control ${
-                    errors.code ? "form-control--error" : ""
-                  }`}
+                <Controller
+                  control={control}
+                  name="code"
+                  defaultValue={getValues("code")}
+                  render={({ field }) => (
+                    <InputMask
+                      mask="aaaa-aaaa-9999"
+                      {...field}
+                      className={`form-control ${
+                        errors.code ? "form-control--error" : ""
+                      }`}
+                    />
+                  )}
                 />
                 {errors.code && (
                   <p className="error-message">{errors.code.message}</p>
