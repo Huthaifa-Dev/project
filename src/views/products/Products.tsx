@@ -28,10 +28,6 @@ type FormValues = {
   endDate: number;
 };
 
-const updateData = (data) => {
-  return data;
-};
-
 const Products: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(selectProducts);
@@ -114,19 +110,16 @@ const Products: React.VFC = () => {
     setFilteredData(() => {
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
-        if (product.expire !== undefined) {
-          if (endDate !== 0) {
-            // console.log("Expire attribute is set to " + endDate.toString());
+        if (product.expire) {
+          if (endDate) {
             return (
               product.expire > startDate &&
               product.expire < endDate &&
               searchProducts(product, search)
             );
           }
-          // console.log("Expire attribute is grater than startDate");
           return product.expire > startDate && searchProducts(product, search);
         }
-        // console.log("Expire attribute is grater than endDate");
         return searchProducts(product, search);
       });
     });
@@ -173,7 +166,7 @@ const Products: React.VFC = () => {
                     {...register("endDate", {
                       min: {
                         value: getValues("startDate"),
-                        message: "End Date must be more than start day.",
+                        message: "To > From",
                       },
                     })}
                     type="date"
@@ -187,7 +180,7 @@ const Products: React.VFC = () => {
                   )}
                 </div>
                 <Button
-                  // backgroundColor="#1f1f1f"
+                  backgroundColor="white"
                   onClick={handleSubmit((data) => {
                     handleFilter(data);
                   })}

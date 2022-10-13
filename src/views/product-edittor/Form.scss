@@ -1,0 +1,136 @@
+@import "../../assets/styles/variables";
+.page-form {
+  width: 40%;
+  min-width: 300px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  * {
+    margin: 0;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    .title {
+      font-size: $fz-lg;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: $fz-xxl;
+      // font-weight: 600;
+    }
+  }
+}
+.form-group {
+  display: flex;
+  // align-items: flex-start;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+  section {
+    width: 100%;
+  }
+  label {
+    font-size: $mb-1;
+    font-weight: 600;
+    margin-top: $mb-0-5;
+  }
+  .form-control {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    &:focus {
+      outline: none;
+      border: 1px solid #007bff;
+    }
+  }
+  .form-control--error {
+    border: 1px solid #ff3d3d;
+  }
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: baseline;
+    width: 100%;
+    flex: 1;
+    position: relative;
+    margin-bottom: 0.5rem;
+    .error-message {
+      position: absolute;
+      bottom: -1.25rem;
+      left: 0;
+      color: #ff3d3d;
+      display: flex;
+      align-items: center;
+      gap: $mb-0-5;
+      font-size: $fz-sm;
+      font-weight: 600;
+      // background-color: $color;
+      &:before {
+        content: url("../../assets/image/warning.svg");
+        min-width: 20px;
+        height: 20px;
+      }
+    }
+    .color-picker {
+      display: flex;
+      border-radius: 0.5rem;
+      width: 100%;
+      // overflow: hidden;
+      padding: 0;
+      margin-top: 0.5rem;
+      * {
+        margin: 0;
+      }
+      &__item {
+        position: relative;
+        width: 100%;
+        &:nth-child(1) {
+          label {
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+          }
+        }
+        &:last-child {
+          label {
+            border-top-right-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+          }
+        }
+        label {
+          height: 45px;
+          // border-radius: 50%;
+          // border: 1px solid #ccc;
+          display: flex;
+          cursor: pointer;
+          // position: relative;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: 600;
+        }
+        .dot {
+          width: 10px;
+          height: 10px;
+          left: calc(50% - 10px);
+          bottom: -10px;
+          border-radius: 50%;
+          visibility: hidden;
+          position: absolute;
+        }
+        input {
+          appearance: none;
+          display: none;
+        }
+        input:checked + .dot {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
