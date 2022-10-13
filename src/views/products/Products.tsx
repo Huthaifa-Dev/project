@@ -14,6 +14,7 @@ import {
 import { Product } from "../../types";
 import "./Products.scss";
 import Form from "./Form";
+import { searchProducts } from "../../helpers/validations";
 
 const defaultValues = {
   search: "",
@@ -25,10 +26,6 @@ type FormValues = {
   search: string;
   startDate: number;
   endDate: number;
-};
-
-const updateData = (data) => {
-  return data;
 };
 
 const Products: React.VFC = () => {
@@ -46,10 +43,6 @@ const Products: React.VFC = () => {
   } = useForm<FormValues>({
     defaultValues,
   });
-  const { register: registerSearch, handleSubmit: handleSubmitSearch } =
-    useForm<FormValues>({
-      defaultValues,
-    });
 
   const cols: Column<Product>[] = [
     {
@@ -80,6 +73,9 @@ const Products: React.VFC = () => {
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
+  useEffect(() => {
+    setFilteredData(products);
+  }, [products]);
 
   const onSortHandler = (id: string) => {
     toast.promise(dispatch(sortProducts({ id })), {
@@ -105,47 +101,30 @@ const Products: React.VFC = () => {
     setForm(true);
     setDeletingID(data.id);
   };
-  const handleDateFilter = (data: FormValues) => {
-    const { startDate, endDate } = data;
-    console.log({ 1: !startDate, 2: !endDate });
-    if (!startDate && !endDate) {
+  const handleFilter = (data: FormValues) => {
+    const { startDate, endDate, search } = data;
+    if (search === "" && !startDate && !endDate) {
       setFilteredData(products);
     }
+
     setFilteredData(() => {
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
-        if (product.expire !== undefined) {
-          if (endDate !== 0) {
-            // console.log("Expire attribute is set to " + endDate.toString());
-            return product.expire > startDate && product.expire < endDate;
+        if (product.expire) {
+          if (endDate) {
+            return (
+              product.expire > startDate &&
+              product.expire < endDate &&
+              searchProducts(product, search)
+            );
           }
-          // console.log("Expire attribute is grater than startDate");
-          return product.expire > startDate;
+          return product.expire > startDate && searchProducts(product, search);
         }
-        // console.log("Expire attribute is grater than endDate");
-        return false;
+        return searchProducts(product, search);
       });
     });
   };
 
-  const handleSearch = (data: FormValues) => {
-    const { search } = data;
-    if (search === "") {
-      setFilteredData(products);
-    }
-    setFilteredData(() => {
-      return products.filter((product) => {
-        return (
-          product.name.toLowerCase().includes(search.toLowerCase()) ||
-          product.code.toLowerCase().includes(search.toLowerCase()) ||
-          product.category.toLowerCase().includes(search.toLowerCase()) ||
-          product.description?.toLowerCase().includes(search.toLowerCase()) ||
-          product.tax.toString().includes(search.toLowerCase()) ||
-          product.price.toString().includes(search.toLowerCase())
-        );
-      });
-    });
-  };
   return (
     <>
       <div className={`container ${form ? "blur" : ""}`}>
@@ -168,12 +147,7 @@ const Products: React.VFC = () => {
                 </label>
                 <div className="form-group-wrapper">
                   <input
-                    {...register("startDate", {
-                      min: {
-                        value: 1,
-                        message: "Product raw price must be at least 1$",
-                      },
-                    })}
+                    {...register("startDate")}
                     type="date"
                     id="startDate"
                     className={`form-control ${
@@ -192,7 +166,7 @@ const Products: React.VFC = () => {
                     {...register("endDate", {
                       min: {
                         value: getValues("startDate"),
-                        message: "End Date must be more than start day.",
+                        message: "To > From",
                       },
                     })}
                     type="date"
@@ -206,33 +180,27 @@ const Products: React.VFC = () => {
                   )}
                 </div>
                 <Button
-                  // backgroundColor="#1f1f1f"
+                  backgroundColor="white"
                   onClick={handleSubmit((data) => {
-                    handleDateFilter(data);
+                    handleFilter(data);
                   })}
                 >
                   Apply Filter
                 </Button>
               </div>
               <div className="actions__search">
-                <form
-                  onSubmit={handleSubmitSearch((data) => {
-                    handleSearch(data);
+                <label htmlFor="search">Search:</label>
+                <input
+                  {...register("search", {
+                    maxLength: {
+                      value: 20,
+                      message: "Search must be at most 20 characters long",
+                    },
                   })}
-                >
-                  <label htmlFor="search">Search:</label>
-                  <input
-                    {...registerSearch("search", {
-                      maxLength: {
-                        value: 20,
-                        message: "Search must be at most 20 characters long",
-                      },
-                    })}
-                    type="text"
-                    id="search"
-                    className={`form-control`}
-                  />
-                </form>
+                  type="text"
+                  id="search"
+                  className={`form-control`}
+                />
               </div>
             </div>
           </div>

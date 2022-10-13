@@ -16,13 +16,6 @@ const initialState: STATE = {
   products: [],
   status: "idle",
 };
-// const createdData = (data: { name: string }) => ({
-//   id: data.name,
-//   name: data.name,
-//   description: "",
-//   createdAt: Date.now(),
-//   updatedAt: Date.now(),
-// });
 
 export const getProducts = createAsyncThunk(
   "categories/getProducts",
@@ -88,6 +81,7 @@ export const editProductData = createAsyncThunk(
         `${PRODUCTS_URL}/${data.id}`,
         product.data
       );
+      console.log(response);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -114,10 +108,7 @@ export const productSilice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload as Product[];
-    });
-    builder.addCase(getProducts.rejected, (state, action) => {
-      state.products = initialState.products;
-      state.status = initialState.status;
+      state.status = "idle";
     });
     builder.addCase(sortProducts.fulfilled, (state, action) => {
       state.products = action.payload as Product[];
@@ -131,9 +122,13 @@ export const productSilice = createSlice({
       state.products = [...state.products, action.payload as Product];
     });
     builder.addCase(editProductData.fulfilled, (state, action) => {
-      state.products = state.products.map((c) =>
-        c.id === action.meta.arg.id ? (action.payload as Product) : c
-      );
+      console.log(state.products, action.payload);
+      state.products = state.products.map((c) => {
+        if (c.id === action.meta.arg.id) {
+          return action.payload as Product;
+        }
+        return c;
+      });
     });
   },
 });
