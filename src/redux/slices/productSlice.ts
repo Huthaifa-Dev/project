@@ -16,13 +16,6 @@ const initialState: STATE = {
   products: [],
   status: "idle",
 };
-// const createdData = (data: { name: string }) => ({
-//   id: data.name,
-//   name: data.name,
-//   description: "",
-//   createdAt: Date.now(),
-//   updatedAt: Date.now(),
-// });
 
 export const getProducts = createAsyncThunk(
   "categories/getProducts",
@@ -114,10 +107,7 @@ export const productSilice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.products = action.payload as Product[];
-    });
-    builder.addCase(getProducts.rejected, (state, action) => {
-      state.products = initialState.products;
-      state.status = initialState.status;
+      state.status = "idle";
     });
     builder.addCase(sortProducts.fulfilled, (state, action) => {
       state.products = action.payload as Product[];

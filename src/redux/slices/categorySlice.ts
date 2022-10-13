@@ -123,12 +123,6 @@ export const categorySlice = createSlice({
     builder.addCase(getCategories.fulfilled, (state, action) => {
       state.categories = action.payload as Category[];
     });
-    builder.addCase(getCategories.rejected, (state, action) => {
-      state.categories = initialState.categories;
-      state.status = initialState.status;
-    });
-    builder.addCase(getCategories.pending, (state, action) => {});
-
     builder.addCase(sortCategories.fulfilled, (state, action) => {
       state.categories = action.payload as Category[];
     });
