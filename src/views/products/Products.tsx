@@ -104,23 +104,28 @@ const Products: React.VFC = () => {
   const handleFilter = (data: FormValues) => {
     const { startDate, endDate, search } = data;
     if (search === "" && !startDate && !endDate) {
+      console.log("no filter", products, filteredData, data);
       setFilteredData(products);
+      return;
     }
 
-    setFilteredData(() => {
+    setFilteredData((prev) => {
+      console.log("filter", products, filteredData, prev, data);
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
+        let flag = true;
         if (product.expire) {
-          if (endDate) {
-            return (
-              product.expire > startDate &&
-              product.expire < endDate &&
-              searchProducts(product, search)
-            );
+          // if the expire attribute is valid
+          if (startDate) {
+            // if the expire attribute is grater than startDate
+            flag = flag && product.expire > startDate;
+            if (endDate) {
+              // if the expire attribute is less than endDate
+              flag = flag && product.expire < endDate;
+            }
           }
-          return product.expire > startDate && searchProducts(product, search);
         }
-        return searchProducts(product, search);
+        return flag && searchProducts(product, search);
       });
     });
   };
