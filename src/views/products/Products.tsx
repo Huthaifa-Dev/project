@@ -104,13 +104,11 @@ const Products: React.VFC = () => {
   const handleFilter = (data: FormValues) => {
     const { startDate, endDate, search } = data;
     if (search === "" && !startDate && !endDate) {
-      
       setFilteredData(products);
       return;
     }
 
     setFilteredData((prev) => {
-      
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
         let flag = true;
