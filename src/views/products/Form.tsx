@@ -97,7 +97,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
       onClose={onClose}
       onSubmit={handleSubmit((data) => {
         submitHandler(data);
-        console.log(data);
+        
       })}
       width={DELETE ? "400px" : "500px"}
     >
