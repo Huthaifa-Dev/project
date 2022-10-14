@@ -46,9 +46,6 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   ID,
   DELETE,
 }) => {
-  useEffect(() => {
-    dispatch(getCategories());
-  }, []);
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -58,7 +55,9 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     control,
     formState: { errors },
   } = useForm<FormValues>({ defaultValues });
-
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
   const submitHandler = (data: Partial<Product>) => {
     if (DELETE) {
       toast.promise(dispatch(deleteProduct({ body: DELETE })).unwrap(), {
@@ -97,7 +96,6 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
       onClose={onClose}
       onSubmit={handleSubmit((data) => {
         submitHandler(data);
-        console.log(data);
       })}
       width={DELETE ? "400px" : "500px"}
     >
