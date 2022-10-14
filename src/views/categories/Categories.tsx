@@ -71,7 +71,7 @@ const Categories: React.VFC = () => {
   };
 
   const search = watch("search");
-  console.log(search);
+  
   const filteredCategories = categories.filter((category) => {
     return category.name.toLowerCase().includes(search.toLowerCase());
   });
