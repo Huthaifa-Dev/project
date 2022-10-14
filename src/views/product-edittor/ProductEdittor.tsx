@@ -47,7 +47,7 @@ import { Button } from "../../components/utils/Button/Button";
 const ProductsPage: React.VFC = () => {
   const navigate = useNavigate();
   const ID = useParams<{ productId: string }>();
-  console.log(ID);
+  
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch<AppDispatch>();
   const {
