@@ -81,7 +81,7 @@ export const editProductData = createAsyncThunk(
         `${PRODUCTS_URL}/${data.id}`,
         product.data
       );
-      
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -122,7 +122,6 @@ export const productSilice = createSlice({
       state.products = [...state.products, action.payload as Product];
     });
     builder.addCase(editProductData.fulfilled, (state, action) => {
-      
       state.products = state.products.map((c) => {
         if (c.id === action.meta.arg.id) {
           return action.payload as Product;
