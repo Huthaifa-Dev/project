@@ -58,14 +58,15 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   useEffect(() => {
     dispatch(getCategories());
   }, []);
+  console.log(DELETE);
   const submitHandler = (data: Partial<Product>) => {
-    if (DELETE) {
+    if (DELETE !== "" && DELETE !== undefined) {
       toast.promise(dispatch(deleteProduct({ body: DELETE })).unwrap(), {
         loading: "Deleting...",
         success: <b>{DELETE} Deleted Successfully</b>,
         error: <b>Could not Delete Category.</b>,
       });
-    } else if (ID) {
+    } else if (ID !== "" && ID !== undefined) {
       toast.promise(dispatch(editProductData({ id: ID, newProduct: data })), {
         loading: "Editing...",
         success: "Edited",

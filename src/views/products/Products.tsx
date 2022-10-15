@@ -95,11 +95,11 @@ const Products: React.VFC = () => {
   };
   const handleOpenEditForm = (data: { id: string }) => {
     setForm(true);
-    setEdittingID(data.id);
+    setEdittingID(`${data.id}`);
   };
   const handleOpenDeleteForm = (data: { id: string }) => {
     setForm(true);
-    setDeletingID(data.id);
+    setDeletingID(`${data.id}`);
   };
   const handleFilter = (data: FormValues) => {
     const { startDate, endDate, search } = data;
