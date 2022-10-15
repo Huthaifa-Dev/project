@@ -22,7 +22,10 @@ export const getProducts = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(PRODUCTS_URL);
-      return [...response.data];
+      const result = Object.keys(response.data).map(
+        (key) => response.data[key]
+      );
+      return [...result];
     } catch (error) {
       console.log(error);
       return initialState;
