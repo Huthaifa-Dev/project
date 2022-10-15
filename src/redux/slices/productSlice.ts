@@ -5,7 +5,7 @@ import { RootState } from "..";
 import { createProduct } from "../../helpers/product";
 
 const PRODUCTS_URL =
-  "https://product-manager-1903f-default-rtdb.firebaseio.com/products";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/products.json";
 
 interface STATE {
   products: Product[];

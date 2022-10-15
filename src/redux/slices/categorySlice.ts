@@ -4,7 +4,7 @@ import axios from "axios";
 import { RootState } from "..";
 
 const CATEGORIES_URL =
-  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories.json";
 
 interface STATE {
   categories: Category[];
