@@ -2,14 +2,9 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import Modal from "../../components/utils/Modal/Modal";
 import { AppDispatch } from "../../redux";
 import InputMask from "react-input-mask";
-import {
-  addProductData,
-  deleteProduct,
-  editProductData,
-} from "../../redux/slices/productSlice";
+import { editProductData } from "../../redux/slices/productSlice";
 import "./Form.scss";
 import { Category, COLORS, Option, Product } from "../../types";
 import {
@@ -47,7 +42,7 @@ import { Button } from "../../components/utils/Button/Button";
 const ProductsPage: React.VFC = () => {
   const navigate = useNavigate();
   const ID = useParams<{ productId: string }>();
-  
+
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -60,7 +55,7 @@ const ProductsPage: React.VFC = () => {
 
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
 
   const options: Option<Partial<Category>>[] = [
     ...categories.map((category: Category) => {

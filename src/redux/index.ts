@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { Category, User } from "../types";
 import { categorySlice } from "./slices/categorySlice";
 import { productSilice } from "./slices/productSlice";
 import { userSlice } from "./slices/userSlice";
