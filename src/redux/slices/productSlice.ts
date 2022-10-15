@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Product } from "../../types";
 import axios from "axios";
 import { RootState } from "..";
-import { createDate } from "../../helpers/date";
 import { createProduct } from "../../helpers/product";
 
-const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";
+const PRODUCTS_URL =
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/products";
 
 interface STATE {
   products: Product[];
@@ -81,7 +81,6 @@ export const editProductData = createAsyncThunk(
         `${PRODUCTS_URL}/${data.id}`,
         product.data
       );
-
       return response.data;
     } catch (error) {
       console.log(error);

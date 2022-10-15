@@ -1,13 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Category } from "../../types";
 import axios from "axios";
-import toast from "react-hot-toast";
-import Categories from "../../views/categories/Categories";
 import { RootState } from "..";
-import { createDate } from "../../helpers/date";
 
 const CATEGORIES_URL =
-  "https://fts-product-manager-data.herokuapp.com/categories";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories";
 
 interface STATE {
   categories: Category[];

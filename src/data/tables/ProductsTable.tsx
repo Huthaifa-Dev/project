@@ -1,4 +1,4 @@
-import { Category, Product } from "../../types";
+import { Product } from "../../types";
 import { Column, Row, useTable } from "react-table";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { nanoid } from "@reduxjs/toolkit";
@@ -6,7 +6,6 @@ import "./Table.scss";
 import { Button } from "../../components/utils/Button/Button";
 import { BiSortDown, BiSortAlt2, BiSortUp } from "react-icons/bi";
 import { createDate, isDate } from "../../helpers/date";
-import { arrayOf } from "prop-types";
 import { Link } from "react-router-dom";
 
 type Props = {
@@ -74,7 +73,6 @@ const Table = (props: Props) => {
   const [state, dispatchSort] = useReducer(sortReducer, initialState);
   const [sortFlag, setSortFlag] = useState("normal");
   useEffect(() => {
-    // console.log("setSortFlag", sortFlag);
     const array = Object.entries(state);
     const sortValue = array.find((item) => item[1] !== "normal");
     if (sortValue) {
@@ -83,7 +81,6 @@ const Table = (props: Props) => {
   }, [sortFlag]);
 
   const data = useMemo(() => props.data, [props.data]);
-  //   console.log(data);
   const Cols: () => Column<Product>[] = () => props.cols;
   const columns = useMemo(Cols, []);
 
