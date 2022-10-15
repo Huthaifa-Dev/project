@@ -63,15 +63,14 @@ const Categories: React.VFC = () => {
   };
   const handleOpenEditForm = (data: { id: string }) => {
     setForm(true);
-    setEdittingID(data.id);
+    setEdittingID(`${data.id}`);
   };
   const handleOpenDeleteForm = (data: { id: string }) => {
     setForm(true);
-    setDeletingID(data.id);
+    setDeletingID(`${data.id}`);
   };
 
   const search = watch("search");
-  
   const filteredCategories = categories.filter((category) => {
     return category.name.toLowerCase().includes(search.toLowerCase());
   });
