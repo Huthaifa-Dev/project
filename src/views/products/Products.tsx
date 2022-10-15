@@ -95,11 +95,11 @@ const Products: React.VFC = () => {
   };
   const handleOpenEditForm = (data: { id: string }) => {
     setForm(true);
-    setEdittingID(`${data.id}`);
+    setEdittingID(data.id);
   };
   const handleOpenDeleteForm = (data: { id: string }) => {
     setForm(true);
-    setDeletingID(`${data.id}`);
+    setDeletingID(data.id);
   };
   const handleFilter = (data: FormValues) => {
     const { startDate, endDate, search } = data;
@@ -108,7 +108,7 @@ const Products: React.VFC = () => {
       return;
     }
 
-    setFilteredData((prev) => {
+    setFilteredData(() => {
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
         let flag = true;

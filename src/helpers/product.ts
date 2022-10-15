@@ -1,4 +1,3 @@
-import { nanoid } from "@reduxjs/toolkit";
 import { Product } from "../types";
 
 export const createProduct = (data: Product): Product => {
@@ -10,7 +9,6 @@ export const createProduct = (data: Product): Product => {
   const newProduct = {
     ...data,
     code: newCode,
-    id: nanoid(),
     tax: parseInt(newTax),
     // expire: newDate,
   };

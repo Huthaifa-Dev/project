@@ -5,7 +5,7 @@ import { RootState } from "..";
 import { createProduct } from "../../helpers/product";
 
 const PRODUCTS_URL =
-  "https://product-manager-1903f-default-rtdb.firebaseio.com/products.json";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/products";
 
 interface STATE {
   products: Product[];
@@ -21,10 +21,12 @@ export const getProducts = createAsyncThunk(
   "categories/getProducts",
   async () => {
     try {
-      const response = await axios.get(PRODUCTS_URL);
-      const result = Object.keys(response.data).map(
-        (key) => response.data[key]
-      );
+      const response = await axios.get(PRODUCTS_URL + ".json");
+      const result = Object.keys(response.data).map((key) => {
+        const product = response.data[key];
+        product.id = key;
+        return product;
+      });
       return [...result];
     } catch (error) {
       console.log(error);
@@ -54,7 +56,7 @@ export const deleteProduct = createAsyncThunk(
   "categories/deleteProduct",
   async (data: { body: string }) => {
     try {
-      const response = await axios.delete(`${PRODUCTS_URL}/${data.body}`);
+      const response = await axios.delete(`${PRODUCTS_URL}/${data.body}.json`);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -65,7 +67,7 @@ export const editProductData = createAsyncThunk(
   "categories/editProduct",
   async (data: { id: string; newProduct: Partial<Product> }) => {
     try {
-      const product = await axios.get(`${PRODUCTS_URL}/${data.id}`);
+      const product = await axios.get(`${PRODUCTS_URL}/${data.id}` + ".json");
       product.data = { ...data.newProduct };
       if (
         product.data.price !== undefined &&
@@ -81,7 +83,7 @@ export const editProductData = createAsyncThunk(
       }
 
       const response = await axios.put(
-        `${PRODUCTS_URL}/${data.id}`,
+        `${PRODUCTS_URL}/${data.id}` + ".json",
         product.data
       );
       return response.data;
@@ -95,7 +97,7 @@ export const addProductData = createAsyncThunk(
   async (data: Partial<Product>) => {
     try {
       const product = createProduct(data as Product);
-      const response = await axios.post(`${PRODUCTS_URL}`, product);
+      const response = await axios.post(`${PRODUCTS_URL}` + ".json", product);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -121,7 +123,11 @@ export const productSilice = createSlice({
       );
     });
     builder.addCase(addProductData.fulfilled, (state, action) => {
-      state.products = [...state.products, action.payload as Product];
+      const product = {
+        ...action.meta.arg,
+        id: action.payload.name,
+      } as Product;
+      state.products.push(createProduct(product) as Product);
     });
     builder.addCase(editProductData.fulfilled, (state, action) => {
       state.products = state.products.map((c) => {

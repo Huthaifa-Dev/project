@@ -4,7 +4,7 @@ import axios from "axios";
 import { RootState } from "..";
 
 const CATEGORIES_URL =
-  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories.json";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories";
 
 interface STATE {
   categories: Category[];
@@ -27,10 +27,12 @@ export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async () => {
     try {
-      const response = await axios.get(CATEGORIES_URL);
-      const result = Object.keys(response.data).map(
-        (key) => response.data[key]
-      );
+      const response = await axios.get(CATEGORIES_URL + ".json");
+      const result = Object.keys(response.data).map((key) => {
+        const category = response.data[key];
+        category.id = key;
+        return category;
+      });
 
       return [...result];
     } catch (error) {
@@ -61,7 +63,9 @@ export const deleteCategory = createAsyncThunk(
   "categories/deleteCategory",
   async (data: { body: string }) => {
     try {
-      const response = await axios.delete(`${CATEGORIES_URL}/${data.body}`);
+      const response = await axios.delete(
+        `${CATEGORIES_URL}/${data.body}` + ".json"
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -72,12 +76,14 @@ export const editCategoryData = createAsyncThunk(
   "categories/editCategory",
   async (data: { id: string; newName: string }) => {
     try {
-      const category = await axios.get(`${CATEGORIES_URL}/${data.id}`);
+      const category = await axios.get(
+        `${CATEGORIES_URL}/${data.id}` + ".json"
+      );
       category.data.name = data.newName;
       category.data.id = data.newName;
       category.data.updatedAt = Date.now();
       const response = await axios.put(
-        `${CATEGORIES_URL}/${data.id}`,
+        `${CATEGORIES_URL}/${data.id}` + ".json",
         category.data
       );
       return response.data;
@@ -91,7 +97,10 @@ export const addCategoryData = createAsyncThunk(
   async (data: { name: string }) => {
     try {
       const category = createdData(data);
-      const response = await axios.post(`${CATEGORIES_URL}`, category);
+      const response = await axios.post(
+        `${CATEGORIES_URL}` + ".json",
+        category
+      );
       return response.data;
     } catch (error) {
       console.log(error);
