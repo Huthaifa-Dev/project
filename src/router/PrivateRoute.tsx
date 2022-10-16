@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { selectUser } from "../redux/slices/userSlice";
 
 interface Props {
-  children: React.ReactElement<any, any> | null;
+  children: React.ReactElement | null;
 }
 const PrivateRoute: React.VFC<Props> = ({ children }) => {
   const { user } = useSelector(selectUser);
