@@ -7,12 +7,18 @@ import toast, { Toaster } from "react-hot-toast";
 
 const useLogin = () => {
   const [user, setUser] = useLocalStorage("user", null);
+  const [localUser, setLocalUser] = useLocalStorage("localUser", null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const storeUser = (username: string, password: string) => {
-    if (validate(username, password)) {
+  const storeUser = (username?: string, password?: string) => {
+    if (!password && !username && localUser.username) {
+      setUser(localUser);
+      navigate("/home");
+      return localUser;
+    } else if (username && password && validate(username, password)) {
       const newUser = getUser(username);
       setUser(newUser);
+      setLocalUser(newUser);
       toast.success(newUser?.fullName + " has logged in successfully!");
 
       if (newUser) {

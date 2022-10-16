@@ -1,11 +1,12 @@
 import React, { lazy, Suspense, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Provider, useDispatch } from "react-redux";
 import { store } from "./redux";
 import { userLogin } from "./redux/slices/userSlice";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "./router/PrivateRoute";
+import useLogin from "./hooks/useLogin";
 const SignInPage = lazy(() => import("./views/signin/index"));
 const CategoriesPage = lazy(() => import("./views/categories/index"));
 const ProductsPage = lazy(() => import("./views/products/index"));
@@ -14,18 +15,26 @@ const Home = lazy(() => import("./views/home/Home"));
 const Loading = lazy(() => import("./components/utils/Loading/LoadingPage"));
 const App: React.FC = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useLocalStorage("user", null);
+  const [localUser, setLocalUser] = useLocalStorage("localUser", null);
+  const [user, setUser] = useLogin();
+  const navigate = useNavigate();
   useEffect(() => {
-    if (user) {
-      dispatch(
-        userLogin({ id: user.id, username: user.fullName, role: user.role })
-      );
+    if (localUser) {
+      dispatch(userLogin({ ...user }));
+      navigate("/home");
     }
+    return () => {
+      if (localUser) {
+        // console.log("localUser", localUser);
+        setUser();
+        dispatch(userLogin({ ...localUser }));
+      }
+    };
   }, []);
   return (
     <Provider store={store}>
       <div>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<></>}>
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
             <Route

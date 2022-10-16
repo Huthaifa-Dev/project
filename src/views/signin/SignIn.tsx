@@ -4,15 +4,11 @@ import useInput from "../../hooks/useInput";
 import useLogin from "../../hooks/useLogin";
 import "./SignIn.scss";
 import { passwordValidation, userValidation } from "../../helpers/validations";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export const SignIn: React.VFC = () => {
   const [rememberMe, setRememberMe] = useState<string>("off");
   const [user, setUser] = useLogin();
-
-  useEffect(() => {
-    //login and navigate to home page
-    // navigate
-  }, [user]);
 
   const {
     value: userName,
