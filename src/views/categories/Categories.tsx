@@ -24,6 +24,8 @@ const Categories: React.VFC = () => {
   const {
     register,
     watch,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -61,6 +63,13 @@ const Categories: React.VFC = () => {
   const handleOpenNewForm = () => {
     setForm(true);
   };
+  const handleSearchButton = () => {
+    const search = getValues("search");
+    console.log(search);
+    if (search.length !== 0) {
+      setValue("search", "");
+    }
+  };
   const handleCloseNewForm = () => {
     setForm(false);
     setEdittingID("");
@@ -96,17 +105,26 @@ const Categories: React.VFC = () => {
               <label className="label" htmlFor="search">
                 Search:
               </label>
-              <input
-                {...register("search", {
-                  maxLength: {
-                    value: 20,
-                    message: "Search must be at most 20 characters long",
-                  },
-                })}
-                type="text"
-                id="search"
-                className={`form-control`}
-              />
+              <div className="actions__search__input">
+                <input
+                  {...register("search", {
+                    maxLength: {
+                      value: 20,
+                      message: "Search must be at most 20 characters long",
+                    },
+                  })}
+                  type="text"
+                  id="search"
+                  className={`form-control`}
+                />
+                <Button
+                  type="button"
+                  onClick={handleSearchButton}
+                  backgroundColor="white"
+                >
+                  {getValues("search").length === 0 ? "🔍" : "❌"}
+                </Button>
+              </div>
             </div>
           </div>
           <Table

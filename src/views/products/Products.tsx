@@ -39,6 +39,7 @@ const Products: React.VFC = () => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
@@ -127,7 +128,13 @@ const Products: React.VFC = () => {
       });
     });
   };
-
+  const handleSearchButton = () => {
+    const search = getValues("search");
+    console.log(search);
+    if (search.length !== 0) {
+      setValue("search", "");
+    }
+  };
   return (
     <>
       <div className={`container ${form ? "blur" : ""}`}>
@@ -193,17 +200,26 @@ const Products: React.VFC = () => {
               </div>
               <div className="actions__search">
                 <label htmlFor="search">Search:</label>
-                <input
-                  {...register("search", {
-                    maxLength: {
-                      value: 20,
-                      message: "Search must be at most 20 characters long",
-                    },
-                  })}
-                  type="text"
-                  id="search"
-                  className={`form-control`}
-                />
+                <div className="actions__search__input">
+                  <input
+                    {...register("search", {
+                      maxLength: {
+                        value: 20,
+                        message: "Search must be at most 20 characters long",
+                      },
+                    })}
+                    type="text"
+                    id="search"
+                    className={`form-control`}
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleSearchButton}
+                    backgroundColor="white"
+                  >
+                    {getValues("search").length === 0 ? "🔍" : "❌"}
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
