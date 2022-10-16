@@ -1,16 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/utils/Modal/Modal";
-import { AppDispatch } from "../../redux";
+import { AppDispatch, RootState } from "../../redux";
 import {
   addCategoryData,
+  categorySlice,
   deleteCategory,
-  editCategory,
   editCategoryData,
+  selectCatagoryById,
 } from "../../redux/slices/categorySlice";
-import { Category } from "../../types";
 import "./Form.scss";
 const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   onClose,
@@ -18,13 +18,17 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   DELETE,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  // find the category of id ID from categories array
+  const category = useSelector((state: RootState) =>
+    selectCatagoryById(state, ID || "")
+  );
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: "",
+      name: category?.name || "",
     },
   });
 

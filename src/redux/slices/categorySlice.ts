@@ -163,7 +163,10 @@ export const selectCategories = (state: RootState) =>
   state.categories.categories;
 export const selectCategoriesStatus = (state: RootState) =>
   state.categories.status;
-
+export const selectCatagoryById = (state: RootState, id: string) => {
+  return state.categories.categories.find((c) => c.id === id);
+};
 export const { addCategory, editCategory, removeCategory } =
   categorySlice.actions;
+
 // export default categorySlice.reducer;
