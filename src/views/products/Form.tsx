@@ -53,6 +53,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     handleSubmit,
     getValues,
     control,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({ defaultValues });
   useEffect(() => {
@@ -143,9 +144,8 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                 <input
                   {...register("rawPrice", {
                     required: "Product raw price is required",
-                    min: {
-                      value: 1,
-                      message: "Product raw price must be at least 1$",
+                    validate: (value) => {
+                      return value >= 0 || "Product price must be more than 0";
                     },
                   })}
                   type="number"
@@ -165,9 +165,12 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                 <input
                   {...register("price", {
                     required: "Product Name is required",
-                    min: {
-                      value: getValues("rawPrice") + 1,
-                      message: "Product price must be more than raw price",
+                    validate: (value) => {
+                      const rawPrice = watch("rawPrice");
+                      if (+value > 0 && +value < +rawPrice) {
+                        return "Product price must be more than raw price";
+                      }
+                      return value >= 0 || "Product price must be more than 0";
                     },
                   })}
                   type="number"

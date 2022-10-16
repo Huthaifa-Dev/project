@@ -123,7 +123,7 @@ export const productSilice = createSlice({
     });
     builder.addCase(editProductData.fulfilled, (state, action) => {
       state.products = state.products.map((c) => {
-        if (c.id === action.meta.arg.id) {
+        if (+c.id === +action.meta.arg.id) {
           return action.payload as Product;
         }
         return c;
@@ -133,3 +133,9 @@ export const productSilice = createSlice({
 });
 
 export const selectProducts = (state: RootState) => state.products.products;
+export const selectProductById = (state: RootState, id: string) => {
+  return state.products.products.find((p) => {
+    console.log(`selectProductById(${id}): ${p.id} --> ${id === p.id}`);
+    return +p.id === +id;
+  });
+};
