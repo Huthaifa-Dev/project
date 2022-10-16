@@ -42,10 +42,15 @@ const Categories: React.VFC = () => {
     },
   ];
   useEffect(() => {
-    dispatch(getCategories());
+    toast.promise(dispatch(getCategories()), {
+      loading: "Loading Categories...",
+      success: "\u{1F6AB} Categories Loaded",
+      error: "\u{1F6AB} Failed to load Categories",
+    });
   }, [dispatch]);
 
   const onSortHandler = (id: string) => {
+    console.log("onSortHandler", id);
     toast.promise(dispatch(sortCategories({ id })), {
       loading: "Sorting...",
       success: "Sorted",
