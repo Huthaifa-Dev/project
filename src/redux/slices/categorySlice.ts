@@ -124,6 +124,13 @@ export const categorySlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getCategories.fulfilled, (state, action) => {
       state.categories = action.payload as Category[];
+      state.status = "idle";
+    });
+    builder.addCase(getCategories.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getCategories.rejected, (state) => {
+      state.status = "failed";
     });
     builder.addCase(sortCategories.fulfilled, (state, action) => {
       state.categories = action.payload as Category[];
@@ -154,6 +161,8 @@ export const categorySlice = createSlice({
 
 export const selectCategories = (state: RootState) =>
   state.categories.categories;
+export const selectCategoriesStatus = (state: RootState) =>
+  state.categories.status;
 
 export const { addCategory, editCategory, removeCategory } =
   categorySlice.actions;

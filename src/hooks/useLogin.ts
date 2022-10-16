@@ -36,6 +36,7 @@ const useLogin = () => {
     toast.error("Invalid Username or Password");
     dispatch(userLogout());
     setUser(null);
+    setLocalUser(null);
     return null;
   };
 
