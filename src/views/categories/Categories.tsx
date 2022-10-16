@@ -44,8 +44,8 @@ const Categories: React.VFC = () => {
   useEffect(() => {
     toast.promise(dispatch(getCategories()), {
       loading: "Loading Categories...",
-      success: "\u{1F6AB} Categories Loaded",
-      error: "\u{1F6AB} Failed to load Categories",
+      success: " Categories Loaded",
+      error: " Failed to load Categories",
     });
   }, [dispatch]);
 

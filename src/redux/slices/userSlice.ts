@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import { User } from "../../types";
 
 type State = Partial<User>;
@@ -19,5 +20,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const selectUser = (state: State) => state;
+export const selectUser = (state: RootState) => state;
 export const { userLogin, userLogout } = userSlice.actions;

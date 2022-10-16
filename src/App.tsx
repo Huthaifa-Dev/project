@@ -5,6 +5,7 @@ import { store } from "./redux";
 import { userLogin } from "./redux/slices/userSlice";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { Toaster } from "react-hot-toast";
+import PrivateRoute from "./router/PrivateRoute";
 const SignInPage = lazy(() => import("./views/signin/index"));
 const CategoriesPage = lazy(() => import("./views/categories/index"));
 const ProductsPage = lazy(() => import("./views/products/index"));
@@ -27,14 +28,39 @@ const App: React.FC = () => {
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/home"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
             <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/products" element={<ProductsPage />} />
+            <Route
+              path="/products"
+              element={
+                <PrivateRoute>
+                  <ProductsPage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/products/:productId/edit"
-              element={<ProductsEditPage />}
+              element={
+                <PrivateRoute>
+                  <ProductsEditPage />
+                </PrivateRoute>
+              }
             />
-            <Route path="/categories" element={<CategoriesPage />} />
+            <Route
+              path="/categories"
+              element={
+                <PrivateRoute>
+                  <CategoriesPage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </Suspense>
         <Toaster position="bottom-center" />
