@@ -9,8 +9,7 @@ interface Props {
 }
 const PrivateRoute: React.VFC<Props> = ({ children }) => {
   const [user, setUser] = useLocalStorage("localUser", null);
-
-  return user.role ? children : <Navigate to="/sign-in" />;
+  return user?.role ? children : <Navigate to="/sign-in" />;
 };
 
 export default PrivateRoute;
