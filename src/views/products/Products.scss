@@ -54,28 +54,6 @@
           }
         }
       }
-      &__search {
-        min-width: 35%;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        justify-content: flex-end;
-        position: relative;
-
-        &::after {
-          content: "🔍";
-          position: absolute;
-          right: 0.5rem;
-          top: 0.5rem;
-          width: 20px;
-          height: 1px;
-          // background-color: #eee;
-        }
-        label {
-          font-size: 1.25rem;
-          font-weight: 600;
-        }
-      }
     }
   }
 }
