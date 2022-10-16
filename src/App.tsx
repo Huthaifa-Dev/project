@@ -20,16 +20,9 @@ const App: React.FC = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (localUser) {
-      dispatch(userLogin({ ...user }));
-      navigate("/home");
+      dispatch(userLogin({ ...localUser }));
+      // navigate("/home");
     }
-    return () => {
-      if (localUser) {
-        // console.log("localUser", localUser);
-        setUser();
-        dispatch(userLogin({ ...localUser }));
-      }
-    };
   }, []);
   return (
     <Provider store={store}>
