@@ -15,7 +15,6 @@ import { Product } from "../../types";
 import "./Products.scss";
 import Form from "./Form";
 import { searchProducts } from "../../helpers/validations";
-
 const defaultValues = {
   search: "",
   startDate: 0,
@@ -72,7 +71,11 @@ const Products: React.VFC = () => {
     },
   ];
   useEffect(() => {
-    dispatch(getProducts());
+    toast.promise(dispatch(getProducts()), {
+      loading: "Loading Products...",
+      success: " Products Loaded",
+      error: " Failed to load Products",
+    });
   }, [dispatch]);
   useEffect(() => {
     setFilteredData(products);

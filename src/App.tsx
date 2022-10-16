@@ -7,6 +7,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "./router/PrivateRoute";
 import useLogin from "./hooks/useLogin";
+import Horizantal from "./layout/Horizantal/";
 const SignInPage = lazy(() => import("./views/signin/index"));
 const CategoriesPage = lazy(() => import("./views/categories/index"));
 const ProductsPage = lazy(() => import("./views/products/index"));
@@ -27,7 +28,13 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <div>
-        <Suspense fallback={<></>}>
+        <Suspense
+          fallback={
+            <Horizantal>
+              <Loading />
+            </Horizantal>
+          }
+        >
           <Routes>
             <Route path="/" element={<Navigate replace to="/home" />} />
             <Route
