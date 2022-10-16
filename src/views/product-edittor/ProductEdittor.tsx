@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../../redux";
+import { AppDispatch, RootState } from "../../redux";
 import InputMask from "react-input-mask";
-import { editProductData } from "../../redux/slices/productSlice";
+import {
+  editProductData,
+  selectProductById,
+} from "../../redux/slices/productSlice";
 import "./Form.scss";
 import { Category, COLORS, Option, Product } from "../../types";
 import {
@@ -38,11 +41,14 @@ type FormValues = {
 
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/utils/Button/Button";
+import { watch } from "fs";
 
 const ProductsPage: React.VFC = () => {
   const navigate = useNavigate();
   const ID = useParams<{ productId: string }>();
-
+  const product = useSelector((state: RootState) =>
+    selectProductById(state, ID.productId || "")
+  );
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -50,9 +56,9 @@ const ProductsPage: React.VFC = () => {
     handleSubmit,
     getValues,
     control,
+    watch,
     formState: { errors },
-  } = useForm<FormValues>({ defaultValues });
-
+  } = useForm<FormValues>({ defaultValues: product });
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -89,7 +95,7 @@ const ProductsPage: React.VFC = () => {
     >
       <header>
         <h1>Edit Product : </h1>
-        <p className="title">{ID.productId}</p>
+        <p className="title">{product?.name}</p>
       </header>
       <div className="form-group">
         <section>
@@ -124,9 +130,8 @@ const ProductsPage: React.VFC = () => {
             <input
               {...register("rawPrice", {
                 required: "Product raw price is required",
-                min: {
-                  value: 1,
-                  message: "Product raw price must be at least 1$",
+                validate: (value) => {
+                  return value >= 0 || "Product price must be more than 0";
                 },
               })}
               type="number"
@@ -145,10 +150,13 @@ const ProductsPage: React.VFC = () => {
           <div className="form-group-wrapper">
             <input
               {...register("price", {
-                required: "Product Name is required",
-                min: {
-                  value: getValues("rawPrice") + 1,
-                  message: "Product price must be more than raw price",
+                required: "Product Price is required",
+                validate: (value) => {
+                  const rawPrice = watch("rawPrice");
+                  if (+value > 0 && +value < +rawPrice) {
+                    return "Product price must be more than raw price";
+                  }
+                  return value >= 0 || "Product price must be more than 0";
                 },
               })}
               type="number"
