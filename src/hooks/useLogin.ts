@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUser, validate } from "../data/auth";
 import { userLogin, userLogout } from "../redux/slices/userSlice";
 import useLocalStorage from "./useLocalStorage";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const useLogin = () => {
   const [user, setUser] = useLocalStorage("user", null);
@@ -12,8 +12,16 @@ const useLogin = () => {
   const navigate = useNavigate();
   const storeUser = (username?: string, password?: string) => {
     if (!password && !username && localUser.username) {
-      setUser(localUser);
-      navigate("/home");
+      console.log("localUser", getUser(localUser.username));
+      setUser(getUser(localUser.username));
+      dispatch(
+        userLogin({
+          id: localUser.id,
+          username: localUser.fullName,
+          role: localUser.role,
+        })
+      );
+
       return localUser;
     } else if (username && password && validate(username, password)) {
       const newUser = getUser(username);

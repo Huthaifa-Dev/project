@@ -13,10 +13,12 @@ interface HeaderProps {
 
 const Header = ({ user, onLogin, onLogout }: HeaderProps) => {
   const dispatch = useDispatch();
-  const [localUser, setLocalUser] = useLocalStorage("user", null);
+  const [localUser, setLocalUser] = useLocalStorage("localUser", null);
+  const [storageUser, setStorageUser] = useLocalStorage("user", null);
   const onLogoutHandler = () => {
     dispatch(userLogout());
     setLocalUser(null);
+    setStorageUser(null);
     onLogout();
   };
   const onLoginHandler = () => {

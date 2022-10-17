@@ -52,7 +52,6 @@ const Categories: React.VFC = () => {
   }, [dispatch]);
 
   const onSortHandler = (id: string) => {
-    console.log("onSortHandler", id);
     toast.promise(dispatch(sortCategories({ id })), {
       loading: "Sorting...",
       success: "Sorted",
@@ -65,7 +64,6 @@ const Categories: React.VFC = () => {
   };
   const handleSearchButton = () => {
     const search = getValues("search");
-    console.log(search);
     if (search.length !== 0) {
       setValue("search", "");
     }

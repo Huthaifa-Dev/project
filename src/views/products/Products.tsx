@@ -133,7 +133,6 @@ const Products: React.VFC = () => {
   };
   const handleSearchButton = () => {
     const search = getValues("search");
-    console.log(search);
     if (search.length !== 0) {
       setValue("search", "");
     }

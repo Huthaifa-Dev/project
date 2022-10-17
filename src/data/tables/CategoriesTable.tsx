@@ -25,7 +25,6 @@ const Table = (props: Props) => {
   const data = useMemo(() => props.data, [props.data]);
   const Cols: () => Column<Category>[] = () => props.cols;
   const columns = useMemo(Cols, []);
-
   const tableInstance = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;

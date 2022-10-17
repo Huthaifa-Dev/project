@@ -18,10 +18,9 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const [localUser, setLocalUser] = useLocalStorage("localUser", null);
   const [user, setUser] = useLogin();
-  const navigate = useNavigate();
   useEffect(() => {
     if (localUser) {
-      dispatch(userLogin({ ...localUser }));
+      setUser();
       // navigate("/home");
     }
   }, []);
