@@ -135,7 +135,6 @@ export const productSilice = createSlice({
 export const selectProducts = (state: RootState) => state.products.products;
 export const selectProductById = (state: RootState, id: string) => {
   return state.products.products.find((p) => {
-    console.log(`selectProductById(${id}): ${p.id} --> ${id === p.id}`);
     return +p.id === +id;
   });
 };
