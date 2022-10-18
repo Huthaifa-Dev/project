@@ -21,7 +21,7 @@ const useLogin = () => {
           role: localUser.role,
         })
       );
-
+        
       return localUser;
     } else if (username && password && validate(username, password)) {
       const newUser = getUser(username);
