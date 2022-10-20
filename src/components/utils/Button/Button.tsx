@@ -7,6 +7,7 @@ interface ButtonProps {
    * Is this the principal call to action on the page?
    */
   primary?: boolean;
+  disabled?: boolean;
   /**
    * Is this the full width on the page?
    */
@@ -35,6 +36,7 @@ interface ButtonProps {
 export const Button = ({
   type = "button",
   primary = false,
+  disabled = false,
   size = "medium",
   backgroundColor,
   fullWidth = false,
@@ -48,6 +50,7 @@ export const Button = ({
   return (
     <button
       type={type}
+      disabled={disabled}
       className={[
         "storybook-button",
         `storybook-button--${size}`,

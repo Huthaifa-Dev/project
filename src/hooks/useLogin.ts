@@ -12,7 +12,6 @@ const useLogin = () => {
   const navigate = useNavigate();
   const storeUser = (username?: string, password?: string) => {
     if (!password && !username && localUser.username) {
-      console.log("localUser", getUser(localUser.username));
       setUser(getUser(localUser.username));
       dispatch(
         userLogin({

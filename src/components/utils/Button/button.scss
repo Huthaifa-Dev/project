@@ -7,6 +7,11 @@
   cursor: pointer;
   display: inline-block;
   line-height: 1;
+  &:disabled {
+    background-color: #aaa;
+    color: #888;
+    cursor: not-allowed;
+  }
 }
 
 .storybook-button--primary {

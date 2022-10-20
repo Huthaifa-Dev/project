@@ -49,4 +49,24 @@
       }
     }
   }
+  &-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      .pegination {
+        display: flex;
+        gap: 0.5rem;
+        align-items: baseline;
+        select {
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 0.25rem;
+        }
+      }
+    }
+  }
 }
