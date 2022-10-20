@@ -1,28 +1,32 @@
 import React from "react";
-// import { ComponentStory, ComponentMeta } from "@storybook/react";
-// import { within, userEvent } from "@storybook/testing-library";
-// import Categories from "./Categories";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import Products from "./index";
 
-// export default {
-//   title: "Pages/Page",
-//   component: Categories,
-//   parameters: {
-//     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
-//     layout: "fullscreen",
-//   },
-// } as ComponentMeta<typeof Categories>;
+import { Provider } from "react-redux";
+import { store } from "../../redux";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
-// const Template: ComponentStory<typeof Categories> = (args) => (
-//   <Categories {...args} />
-// );
+export default {
+  title: "Views/Products",
+  component: Products,
+  parameters: {
+    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
+    layout: "fullscreen",
+  },
+} as ComponentMeta<typeof Products>;
 
-// export const LoggedOut = Template.bind({});
+const AppWrapper = (args) => (
+  <Provider store={store}>
+    <MemoryRouter>
+      <Routes>
+        <Route path="/" element={<Products {...args} />} />
+      </Routes>
+    </MemoryRouter>
+  </Provider>
+);
 
-// export const LoggedIn = Template.bind({});
+const Template: ComponentStory<typeof AppWrapper> = (args) => (
+  <AppWrapper {...args} />
+);
 
-// // More on interaction testing: https://storybook.js.org/docs/react/writing-tests/interaction-testing
-// LoggedIn.play = async ({ canvasElement }) => {
-//   const canvas = within(canvasElement);
-//   const loginButton = await canvas.getByRole("button", { name: /Log in/i });
-//   await userEvent.click(loginButton);
-// };
+export const addProductform = Template.bind({});
