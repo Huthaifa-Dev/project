@@ -127,6 +127,7 @@ const Categories: React.VFC = () => {
           </div>
           <Table
             onDelete={(data: { id: string }) => {
+              // console.log(data);
               handleOpenDeleteForm(data);
             }}
             data={filteredCategories}

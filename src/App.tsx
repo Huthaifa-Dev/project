@@ -1,13 +1,14 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Provider, useDispatch } from "react-redux";
-import { store } from "./redux";
-import { userLogin } from "./redux/slices/userSlice";
+import { AppDispatch, store } from "./redux";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { Toaster } from "react-hot-toast";
 import PrivateRoute from "./router/PrivateRoute";
 import useLogin from "./hooks/useLogin";
 import Horizantal from "./layout/Horizantal/";
+import { getCategories } from "./redux/slices/categorySlice";
+import { getProducts } from "./redux/slices/productSlice";
 const SignInPage = lazy(() => import("./views/signin/index"));
 const CategoriesPage = lazy(() => import("./views/categories/index"));
 const ProductsPage = lazy(() => import("./views/products/index"));
@@ -15,7 +16,7 @@ const ProductsEditPage = lazy(() => import("./views/product-edittor/index"));
 const Home = lazy(() => import("./views/home/Home"));
 const Loading = lazy(() => import("./components/utils/Loading/LoadingPage"));
 const App: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [localUser, setLocalUser] = useLocalStorage("localUser", null);
   const [user, setUser] = useLogin();
   useEffect(() => {
@@ -23,6 +24,8 @@ const App: React.FC = () => {
       setUser();
       // navigate("/home");
     }
+    dispatch(getCategories());
+    dispatch(getProducts());
   }, []);
   return (
     <Provider store={store}>
@@ -35,6 +38,7 @@ const App: React.FC = () => {
           }
         >
           <Routes>
+            <Route path="/sign-in" element={<SignInPage />} />
             <Route path="/" element={<Navigate replace to="/home" />} />
             <Route
               path="/home"
@@ -44,7 +48,6 @@ const App: React.FC = () => {
                 </PrivateRoute>
               }
             />
-            <Route path="/sign-in" element={<SignInPage />} />
             <Route
               path="/products"
               element={

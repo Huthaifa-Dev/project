@@ -27,13 +27,7 @@ export const getCategories = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(CATEGORIES_URL);
-      const result = Object.keys(response.data).map((key) => {
-        const category = response.data[key];
-        category.id = key;
-        return category;
-      });
-
-      return [...result];
+      return [...response.data];
     } catch (error) {
       console.log(error);
       return initialState;
