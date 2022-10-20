@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Product } from "../../types";
 import axios from "axios";
 import { RootState } from "..";
-import { createDate } from "../../helpers/date";
 import { createProduct } from "../../helpers/product";
 
 const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";

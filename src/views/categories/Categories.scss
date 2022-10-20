@@ -14,41 +14,6 @@
       display: flex;
       justify-content: space-between;
       gap: 1rem;
-      &__search {
-        min-width: 35%;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        &__input {
-          display: flex;
-          position: relative;
-          .form-control {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 0.25rem;
-            border-top-right-radius: 0px;
-            border-bottom-right-radius: 0px;
-            border-right: none;
-
-            &:focus {
-              outline: none;
-              border: 1px solid #007bff;
-            }
-          }
-          button {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            border-left: none;
-          }
-        }
-        label {
-          font-size: 1.25rem;
-          font-weight: 600;
-        }
-      }
     }
   }
 }

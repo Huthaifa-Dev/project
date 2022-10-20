@@ -62,12 +62,7 @@ const Categories: React.VFC = () => {
   const handleOpenNewForm = () => {
     setForm(true);
   };
-  const handleSearchButton = () => {
-    const search = getValues("search");
-    if (search.length !== 0) {
-      setValue("search", "");
-    }
-  };
+
   const handleCloseNewForm = () => {
     setForm(false);
     setEdittingID("");
@@ -83,6 +78,11 @@ const Categories: React.VFC = () => {
   };
 
   const search = watch("search");
+  const handleSearchButton = () => {
+    if (search.length !== 0) {
+      setValue("search", "");
+    }
+  };
   const filteredCategories = categories.filter((category) => {
     return category.name.toLowerCase().includes(search.toLowerCase());
   });
