@@ -6,10 +6,10 @@ import Modal from "../../components/utils/Modal/Modal";
 import { AppDispatch, RootState } from "../../redux";
 import {
   addCategoryData,
-  categorySlice,
   deleteCategory,
   editCategoryData,
   selectCatagoryById,
+  selectCategories,
 } from "../../redux/slices/categorySlice";
 import "./Form.scss";
 const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
@@ -22,6 +22,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   const category = useSelector((state: RootState) =>
     selectCatagoryById(state, ID || "")
   );
+  const categories = useSelector(selectCategories);
   const {
     register,
     handleSubmit,
@@ -74,18 +75,19 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
           })}
         >
           <div className="form-group">
-            <label htmlFor="name">Category Name:</label>
+            <label htmlFor="name">Category Name: </label>
             <div className="form-group-wrapper">
               <input
                 {...register("name", {
                   required: "Name is required",
-                  minLength: {
-                    value: 4,
-                    message: "Name must be at least 4 characters long",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Name must be at most 20 characters long",
+                  validate: (data) => {
+                    if (data === "") {
+                      return "Name is required";
+                    } else if (
+                      categories.find((category) => category.name === data)
+                    ) {
+                      return "This category already exist";
+                    }
                   },
                 })}
                 type="text"
