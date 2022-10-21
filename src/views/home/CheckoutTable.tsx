@@ -133,7 +133,12 @@ const Table = (props: Props) => {
                   key={nanoid()}
                 >
                   <td className="checkoutTable-body-row__cell delete">
-                    Delete
+                    <Button
+                      className="delete"
+                      onClick={() => changeQuantity(row.original, 0)}
+                    >
+                      ❌
+                    </Button>
                   </td>
                   {
                     // Loop over the rows cells
@@ -186,6 +191,9 @@ const Table = (props: Props) => {
                                 --
                               </Button>
                             </form>
+                          ) : cell.column.id === "total" ||
+                            cell.column.id === "price" ? (
+                            `$${cell.value}`
                           ) : (
                             cell.render("Cell")
                           )}
