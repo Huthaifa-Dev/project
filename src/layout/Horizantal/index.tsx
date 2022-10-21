@@ -26,7 +26,10 @@ const Blank: React.FC<Props> = ({ children }) => {
   return (
     <div className="horizantal-layout">
       <Header user={userStore} onLogin={onLogin} onLogout={onLogout} />
-      <div className="horizantal-layout__content">{children}</div>
+      <div className="horizantal-layout__content">
+        <div className="background"></div>
+        <div className="content">{children}</div>
+      </div>
     </div>
   );
 };

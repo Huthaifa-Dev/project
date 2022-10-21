@@ -52,3 +52,17 @@ export const COLORS: Option<Color>[] = [
   { value: "purple", label: "Purple" },
   { value: "pink", label: "Pink" },
 ];
+
+export type Cart = {
+  id: string;
+  createdAt: number;
+  items: CartItem[];
+};
+
+export type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  total: number;
+};

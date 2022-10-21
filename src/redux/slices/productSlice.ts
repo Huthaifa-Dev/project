@@ -5,6 +5,7 @@ import { RootState } from "..";
 import { createProduct } from "../../helpers/product";
 
 const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";
+// const PRODUCTS_URL = "http://localhost:8000/products";
 
 interface STATE {
   products: Product[];

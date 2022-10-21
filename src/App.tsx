@@ -9,6 +9,7 @@ import useLogin from "./hooks/useLogin";
 import Horizantal from "./layout/Horizantal/";
 import { getCategories } from "./redux/slices/categorySlice";
 import { getProducts } from "./redux/slices/productSlice";
+import { getCarts } from "./redux/slices/cartSlice";
 const SignInPage = lazy(() => import("./views/signin/index"));
 const CategoriesPage = lazy(() => import("./views/categories/index"));
 const ProductsPage = lazy(() => import("./views/products/index"));
@@ -26,6 +27,7 @@ const App: React.FC = () => {
     }
     dispatch(getCategories());
     dispatch(getProducts());
+    dispatch(getCarts());
   }, []);
   return (
     <Provider store={store}>

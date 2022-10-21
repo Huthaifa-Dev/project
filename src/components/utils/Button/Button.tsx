@@ -12,6 +12,7 @@ interface ButtonProps {
    * Is this the full width on the page?
    */
   fullWidth?: boolean;
+  className?: string;
   /**
    * What background color to use
    */
@@ -40,6 +41,7 @@ export const Button = ({
   size = "medium",
   backgroundColor,
   fullWidth = false,
+  className = "",
   children = "Button",
   ...props
 }: ButtonProps) => {
@@ -56,6 +58,7 @@ export const Button = ({
         `storybook-button--${size}`,
         mode,
         width,
+        className,
       ].join(" ")}
       style={{ backgroundColor }}
       {...props}

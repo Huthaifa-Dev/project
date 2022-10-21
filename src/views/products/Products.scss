@@ -15,7 +15,12 @@
       justify-content: space-between;
       align-items: flex-end;
       gap: 1rem;
-
+      border-collapse: collapse;
+      box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+      background: rgba($color: #ffffff, $alpha: 1);
+      border: 1px solid #ccc;
+      border-radius: 0.25rem;
+      padding: 0.25rem;
       &__search {
         min-width: 35%;
         display: flex;

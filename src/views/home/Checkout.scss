@@ -1,0 +1,96 @@
+@import "../../assets/styles/variables";
+.checkout {
+  box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 100%;
+  &__header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 0px 10px -5px rgb(0 0 0 / 50%);
+    .cart-filter {
+      display: flex;
+      // overflow-x: scroll;
+      gap: 0.5rem;
+      align-items: center;
+      &__item {
+        transition: $transition;
+        border-radius: 0.25rem;
+        position: relative;
+        cursor: pointer;
+        label {
+          border-bottom: 3px solid rgb(46, 194, 46);
+          background-color: #ddd;
+          color: #555;
+          padding: 0.4rem 1rem;
+          border-radius: 0.25rem;
+          display: flex;
+          cursor: pointer;
+          // position: relative;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          font-size: 1.2rem;
+          min-width: 50px;
+          display: flex;
+          justify-content: center;
+          align-items: baseline;
+          gap: 0.75rem;
+          span {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #999;
+          }
+        }
+        input {
+          appearance: none;
+          display: none;
+        }
+        input:checked + label {
+          background-color: #444;
+          border-bottom: 3px solid crimson;
+          color: white;
+        }
+      }
+      &__action {
+        transition: $transition;
+
+        border-bottom: 3px solid rgb(46, 194, 46);
+        background-color: #ddd;
+        color: #555;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        margin: 0;
+        &:hover {
+          background-color: #888;
+          border-bottom: 3px solid rgb(232, 93, 121);
+          color: white;
+        }
+      }
+    }
+  }
+  &__body {
+    padding: 1rem;
+    background-color: #f1f1f1;
+    color: #444;
+    flex: 1;
+    overflow-y: auto;
+  }
+  &__footer {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .row {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

@@ -1,6 +1,10 @@
 @import "../../assets/styles/variables";
 .table {
   border-collapse: collapse;
+  box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
   //   background: green;
   &-head {
     &-row {
@@ -40,7 +44,7 @@
     &-row {
       background-color: #fafafa;
       &:nth-child(even) {
-        background-color: #fff;
+        background-color: #f0f0f0;
       }
       &__cell {
         border: 1px solid #ddd;
@@ -50,6 +54,12 @@
     }
   }
   &-controls {
+    border-collapse: collapse;
+    box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+    background: rgba($color: #ffffff, $alpha: 0.8);
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.25rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
