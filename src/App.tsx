@@ -25,15 +25,14 @@ const App: React.FC = () => {
       setUser();
       // navigate("/home");
     }
-
     const promise = Promise.all([
       dispatch(getCategories()),
       dispatch(getProducts()),
       dispatch(getCarts()),
     ]);
     toast.promise(promise, {
-      loading: "Loading...",
-      success: "Loaded",
+      loading: "Loading Data...",
+      success: "Data Loaded",
       error: "Error",
     });
   }, []);

@@ -157,10 +157,16 @@ const POSPage: React.VFC = () => {
                     ></div>
                     <div className="product-card__body">
                       {/* <img /> */}
-                      <div className="product-description">{product.name}</div>
+                      <div className="product-name">{product.name}</div>
+                      <div className="product-price">${product.price}</div>
+                      {product.expire && (
+                        <div className="product-expire">
+                          {new Date(product.expire).toLocaleDateString()}
+                        </div>
+                      )}
                       <Button
                         type="button"
-                        backgroundColor="white"
+                        className="add-to-cart"
                         onClick={() => {
                           handleAddProduct({ id: product.id });
                         }}
