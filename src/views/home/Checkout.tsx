@@ -12,6 +12,24 @@ import {
 import { CartItem } from "../../types";
 import "./Checkout.scss";
 import Table from "./CheckoutTable";
+const COLS: Column<CartItem>[] = [
+  {
+    Header: "Product Name",
+    accessor: "name",
+  },
+  {
+    Header: "Price",
+    accessor: "price",
+  },
+  {
+    Header: "Quantity",
+    accessor: "quantity",
+  },
+  {
+    Header: "Total",
+    accessor: "total",
+  },
+];
 const Checkout: React.VFC = () => {
   const carts = useSelector(cartsSelector);
   const dispatch = useDispatch<AppDispatch>();
@@ -28,71 +46,21 @@ const Checkout: React.VFC = () => {
     });
   };
   const handleDeleteCart = () => {
-    toast.promise(dispatch(deleteCart({ body: `${carts.length}` })), {
-      loading: `Deleting Cart ${carts.length} ...`,
-      success: "Deleted Cart successfully",
-      error: "There was an error",
-    });
+    toast
+      .promise(dispatch(deleteCart({ body: `${carts.length}` })), {
+        loading: `Deleting Cart ${carts.length} ...`,
+        success: "Deleted Cart successfully",
+        error: "There was an error",
+      })
+      .then(() => {
+        setActiveCart("1");
+      });
   };
   const handleSubmitCart = () => {
     console.log("submit");
   };
 
-  const COLS: Column<CartItem>[] = [
-    {
-      Header: "Product Name",
-      accessor: "name",
-    },
-    {
-      Header: "Price",
-      accessor: "price",
-    },
-    {
-      Header: "Quantity",
-      accessor: "quantity",
-    },
-    {
-      Header: "Total",
-      accessor: "total",
-    },
-  ];
-  const data: CartItem[] = [
-    {
-      id: "1",
-      name: "Product 1",
-      price: 100,
-      quantity: 1,
-      total: 100,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-  ];
+  const data = carts.find((cart) => cart.id === activeCart)?.items;
   return (
     <div className="checkout">
       <header className="checkout__header">
@@ -134,7 +102,16 @@ const Checkout: React.VFC = () => {
         </div>
       </header>
       <body className="checkout__body">
-        <Table cols={COLS} data={data} onDelete={() => {}} />
+        {data && data.length !== 0 ? (
+          <Table
+            cart={carts.find((cart) => cart.id === activeCart)}
+            cols={COLS}
+            data={data}
+            onDelete={() => {}}
+          />
+        ) : (
+          <div className="checkout__body__empty">No items in cart</div>
+        )}
       </body>
       <footer className="checkout__footer">
         <div className="checkout__footer--data"></div>

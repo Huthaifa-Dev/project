@@ -3,7 +3,7 @@ import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { Provider, useDispatch } from "react-redux";
 import { AppDispatch, store } from "./redux";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import PrivateRoute from "./router/PrivateRoute";
 import useLogin from "./hooks/useLogin";
 import Horizantal from "./layout/Horizantal/";
@@ -25,9 +25,16 @@ const App: React.FC = () => {
       setUser();
       // navigate("/home");
     }
-    dispatch(getCategories());
-    dispatch(getProducts());
-    dispatch(getCarts());
+    const promise = Promise.all([
+      dispatch(getCategories()),
+      dispatch(getProducts()),
+      dispatch(getCarts()),
+    ]);
+    toast.promise(promise, {
+      loading: "Loading Data...",
+      success: "Data Loaded",
+      error: "Error",
+    });
   }, []);
   return (
     <Provider store={store}>

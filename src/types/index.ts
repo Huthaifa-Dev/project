@@ -57,6 +57,7 @@ export type Cart = {
   id: string;
   createdAt: number;
   items: CartItem[];
+  total: number;
 };
 
 export type CartItem = {

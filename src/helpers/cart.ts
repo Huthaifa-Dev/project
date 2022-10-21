@@ -5,5 +5,6 @@ export const createCart: (data: string) => Cart = (data) => {
     id: data,
     createdAt: Date.now(),
     items: [],
+    total: 0,
   };
 };
