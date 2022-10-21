@@ -12,6 +12,24 @@ import {
 import { CartItem } from "../../types";
 import "./Checkout.scss";
 import Table from "./CheckoutTable";
+const COLS: Column<CartItem>[] = [
+  {
+    Header: "Product Name",
+    accessor: "name",
+  },
+  {
+    Header: "Price",
+    accessor: "price",
+  },
+  {
+    Header: "Quantity",
+    accessor: "quantity",
+  },
+  {
+    Header: "Total",
+    accessor: "total",
+  },
+];
 const Checkout: React.VFC = () => {
   const carts = useSelector(cartsSelector);
   const dispatch = useDispatch<AppDispatch>();
@@ -41,62 +59,6 @@ const Checkout: React.VFC = () => {
   const handleSubmitCart = () => {
     console.log("submit");
   };
-
-  const COLS: Column<CartItem>[] = [
-    {
-      Header: "Product Name",
-      accessor: "name",
-    },
-    {
-      Header: "Price",
-      accessor: "price",
-    },
-    {
-      Header: "Quantity",
-      accessor: "quantity",
-    },
-    {
-      Header: "Total",
-      accessor: "total",
-    },
-  ];
-  // const data: CartItem[] = [
-  //   {
-  //     id: "1",
-  //     name: "Product 1",
-  //     price: 100,
-  //     quantity: 1,
-  //     total: 100,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Product 2",
-  //     price: 200,
-  //     quantity: 1,
-  //     total: 200,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Product 2",
-  //     price: 200,
-  //     quantity: 1,
-  //     total: 200,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Product 2",
-  //     price: 200,
-  //     quantity: 1,
-  //     total: 200,
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Product 2",
-  //     price: 200,
-  //     quantity: 1,
-  //     total: 200,
-  //   },
-  // ];
 
   const data = carts.find((cart) => cart.id === activeCart)?.items;
   return (
@@ -141,7 +103,12 @@ const Checkout: React.VFC = () => {
       </header>
       <body className="checkout__body">
         {data && data.length !== 0 ? (
-          <Table cols={COLS} data={data} onDelete={() => {}} />
+          <Table
+            cart={carts.find((cart) => cart.id === activeCart)}
+            cols={COLS}
+            data={data}
+            onDelete={() => {}}
+          />
         ) : (
           <div className="checkout__body__empty">No items in cart</div>
         )}

@@ -1,26 +1,85 @@
-import { CartItem, Category } from "../../types";
+import { Cart, CartItem, Category } from "../../types";
 import { Column, Row, useTable } from "react-table";
 import { useMemo } from "react";
 import { nanoid } from "@reduxjs/toolkit";
 import { Button } from "../../components/utils/Button/Button";
 import { createDate, isDate } from "../../helpers/date";
 import "./CheckoutTable.scss";
+import toast from "react-hot-toast";
+import { AppDispatch } from "../../redux";
+import { useDispatch } from "react-redux";
+import {
+  removeProductFromCart,
+  updateProductFromCart,
+} from "../../redux/slices/cartSlice";
+import { useForm } from "react-hook-form";
 type Props = {
   data: CartItem[];
   cols: Column<CartItem>[];
   onDelete: (data: { id: string }) => void;
+  cart?: Cart;
 };
 
 const Table = (props: Props) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      quantity: 1,
+    },
+  });
+
+  const dispatch = useDispatch<AppDispatch>();
   const data = useMemo(() => props.data, [props.data]);
   const Cols: () => Column<CartItem>[] = () => props.cols;
   const columns = useMemo(Cols, []);
   const tableInstance = useTable({ columns, data });
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableInstance;
-
+  const cart = props.cart;
   const deleteHandler = (data: Row<Category>) => {
     props.onDelete({ id: data.original.id });
+  };
+
+  const changeLocalQuantity = (ROW: Row<CartItem>) => {
+    const product = ROW.original;
+    const quantity = ROW.original.quantity;
+    if (quantity > 0) {
+      data[data.indexOf(product)].quantity = quantity;
+    }
+  };
+  const changeQuantity = (data: CartItem, value: number, sum?: boolean) => {
+    let newQuantity = data.quantity;
+    if (sum) {
+      newQuantity = data.quantity + value;
+    } else {
+      newQuantity = value;
+    }
+    const newItem = {
+      ...data,
+      quantity: newQuantity,
+      total: data.price * newQuantity,
+    };
+
+    if (cart) {
+      if (newItem.quantity > 0) {
+        toast.promise(
+          dispatch(updateProductFromCart({ body: newItem, cart: cart })),
+          {
+            loading: "Loading",
+            success: "Success",
+            error: "Error",
+          }
+        );
+      } else {
+        toast.promise(
+          dispatch(removeProductFromCart({ body: newItem, cart: cart })),
+          {
+            loading: "Loading",
+            success: "Success",
+            error: "Error",
+          }
+        );
+      }
+    }
   };
 
   return (
@@ -37,6 +96,8 @@ const Table = (props: Props) => {
                 {...headerGroup.getHeaderGroupProps()}
                 key={nanoid()}
               >
+                <th className="checkoutTable-head-row__cell delete">Delete</th>
+
                 {
                   // Loop over the headers in each row
                   headerGroup.headers.map((column) => (
@@ -53,7 +114,6 @@ const Table = (props: Props) => {
                     </th>
                   ))
                 }
-                <th className="checkoutTable-head-row__cell delete">Delete</th>
               </tr>
             ))
           }
@@ -72,6 +132,9 @@ const Table = (props: Props) => {
                   {...row.getRowProps()}
                   key={nanoid()}
                 >
+                  <td className="checkoutTable-body-row__cell delete">
+                    Delete
+                  </td>
                   {
                     // Loop over the rows cells
                     row.cells.map((cell) => {
@@ -83,15 +146,46 @@ const Table = (props: Props) => {
                           key={nanoid()}
                         >
                           {cell.column.id === "quantity" ? (
-                            <div className="quantity-actions">
-                              <Button className="quantity-actions__button">
+                            <form
+                              className="quantity-actions"
+                              //   onSubmit={(e) => {
+                              //     e.preventDefault();
+                              //     handleSubmit((data) => {
+                              //       changeQuantity(row.original, data.quantity);
+                              //     });
+                              //   }}
+                            >
+                              <Button
+                                className="quantity-actions__button"
+                                onClick={() => {
+                                  changeQuantity(row.original, 1, true);
+                                }}
+                              >
                                 +
                               </Button>
-                              <input type="number" value={cell.value} />
-                              <Button className="quantity-actions__button">
+                              <input
+                                //   {...register("quantity")}
+                                value={cell.value}
+                                onChange={(e) => {
+                                  changeQuantity(
+                                    row.original,
+                                    parseInt(e.target.value)
+                                  );
+                                }}
+                                onBlur={(e) => {
+                                  console.log("blur");
+                                }}
+                                type="number"
+                              />
+                              <Button
+                                className="quantity-actions__button"
+                                onClick={() => {
+                                  changeQuantity(row.original, -1, true);
+                                }}
+                              >
                                 --
                               </Button>
-                            </div>
+                            </form>
                           ) : (
                             cell.render("Cell")
                           )}
@@ -99,9 +193,6 @@ const Table = (props: Props) => {
                       );
                     })
                   }
-                  <td className="checkoutTable-body-row__cell delete">
-                    Delete
-                  </td>
                 </tr>
               );
             })

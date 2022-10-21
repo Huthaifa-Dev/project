@@ -92,6 +92,60 @@ export const addProductToCart = createAsyncThunk(
   }
 );
 
+export const removeProductFromCart = createAsyncThunk(
+  "carts/removeProductFromCart",
+  async (data: { body: CartItem; cart: Cart }) => {
+    try {
+      const newItems = data.cart.items.filter(
+        (item) => item.id !== data.body.id
+      );
+      const newCart = {
+        id: data.cart.id,
+        createdAt: data.cart.createdAt,
+        items: newItems,
+        total: data.cart.total - data.body.total,
+      };
+      // console.log(newCart);
+      const response = await axios.patch(
+        `${CARTS_URL}/${data.cart.id}`,
+        newCart
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const updateProductFromCart = createAsyncThunk(
+  "carts/updateProductFromCart",
+  async (data: { body: CartItem; cart: Cart }) => {
+    try {
+      const newItems = data.cart.items.map((item) => {
+        if (item.id === data.body.id) {
+          return data.body;
+        } else {
+          return item;
+        }
+      });
+      const newCart = {
+        id: data.cart.id,
+        createdAt: data.cart.createdAt,
+        items: newItems,
+        total: data.cart.total + data.body.total,
+      };
+      // console.log(data, newItems, newCart);
+      const response = await axios.patch(
+        `${CARTS_URL}/${data.cart.id}`,
+        newCart
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -110,6 +164,24 @@ export const cartSlice = createSlice({
       state.status = "idle";
     });
     builder.addCase(addProductToCart.fulfilled, (state, action) => {
+      state.carts = state.carts.map((cart) => {
+        if (cart.id === action.payload.id) {
+          return action.payload;
+        }
+        return cart;
+      });
+      state.status = "idle";
+    });
+    builder.addCase(removeProductFromCart.fulfilled, (state, action) => {
+      state.carts = state.carts.map((cart) => {
+        if (cart.id === action.payload.id) {
+          return action.payload;
+        }
+        return cart;
+      });
+      state.status = "idle";
+    });
+    builder.addCase(updateProductFromCart.fulfilled, (state, action) => {
       state.carts = state.carts.map((cart) => {
         if (cart.id === action.payload.id) {
           return action.payload;
