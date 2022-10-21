@@ -53,6 +53,7 @@ const Table = (props: Props) => {
                     </th>
                   ))
                 }
+                <th className="checkoutTable-head-row__cell delete">Delete</th>
               </tr>
             ))
           }
@@ -81,11 +82,26 @@ const Table = (props: Props) => {
                           {...cell.getCellProps()}
                           key={nanoid()}
                         >
-                          {cell.render("Cell")}
+                          {cell.column.id === "quantity" ? (
+                            <div className="quantity-actions">
+                              <Button className="quantity-actions__button">
+                                +
+                              </Button>
+                              <input type="number" value={cell.value} />
+                              <Button className="quantity-actions__button">
+                                --
+                              </Button>
+                            </div>
+                          ) : (
+                            cell.render("Cell")
+                          )}
                         </td>
                       );
                     })
                   }
+                  <td className="checkoutTable-body-row__cell delete">
+                    Delete
+                  </td>
                 </tr>
               );
             })

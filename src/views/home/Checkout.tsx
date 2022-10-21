@@ -28,11 +28,15 @@ const Checkout: React.VFC = () => {
     });
   };
   const handleDeleteCart = () => {
-    toast.promise(dispatch(deleteCart({ body: `${carts.length}` })), {
-      loading: `Deleting Cart ${carts.length} ...`,
-      success: "Deleted Cart successfully",
-      error: "There was an error",
-    });
+    toast
+      .promise(dispatch(deleteCart({ body: `${carts.length}` })), {
+        loading: `Deleting Cart ${carts.length} ...`,
+        success: "Deleted Cart successfully",
+        error: "There was an error",
+      })
+      .then(() => {
+        setActiveCart("1");
+      });
   };
   const handleSubmitCart = () => {
     console.log("submit");
