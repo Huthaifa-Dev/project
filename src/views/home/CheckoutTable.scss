@@ -1,0 +1,69 @@
+@import "../../assets/styles/variables";
+.checkoutTable {
+  border-collapse: collapse;
+  border-radius: 0.25rem;
+  width: 100%;
+  position: relative;
+  //   background: green;
+  text-align: left;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  &-head {
+    display: block;
+    width: 100%;
+
+    &-row {
+      border-bottom-width: 3px;
+      width: 100%;
+      display: flex;
+      &__cell {
+        flex: 1;
+        padding: 0.5rem;
+        font-weight: 600;
+        position: relative;
+        // uppercase
+        text-transform: uppercase;
+        button {
+          position: absolute;
+          padding-right: 0.5rem;
+          right: 0;
+          top: 0;
+          background: none;
+          outline: none;
+          border: none;
+          box-shadow: none;
+          font-size: 1rem;
+          color: #6e6e6e;
+          opacity: 0.5;
+          transition: $transition;
+          &[data-active="true"] {
+            opacity: 1;
+            scale: 1.2;
+            color: #0697ff;
+          }
+        }
+      }
+    }
+  }
+  &-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    &-row {
+      box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+      border-radius: 0.25rem;
+      display: flex;
+      width: 100%;
+      //   height: 50px;
+      background-color: white;
+      //   border: 1px solid #ddd;
+      padding: 0.5rem 0;
+      &__cell {
+        flex: 1;
+        padding: 0.5rem;
+      }
+    }
+  }
+}

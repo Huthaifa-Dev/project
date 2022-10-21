@@ -4,6 +4,7 @@ import axios from "axios";
 import { RootState } from "..";
 const CATEGORIES_URL =
   "https://fts-product-manager-data.herokuapp.com/categories";
+// const CATEGORIES_URL = "http://localhost:8000/categories";
 
 interface STATE {
   categories: Category[];
