@@ -5,31 +5,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../../components/utils/Button/Button";
 import Modal from "../../components/utils/Modal/Modal";
 import { AppDispatch } from "../../redux";
+import { addProductToCart, cartsSelector } from "../../redux/slices/cartSlice";
 import { selectCategories } from "../../redux/slices/categorySlice";
 import { selectProducts } from "../../redux/slices/productSlice";
 import { Category, Option } from "../../types";
+
+const ALL = {
+  value: "🏠",
+  label: "All",
+} as Option<Partial<Category>>;
+
 const POSPage: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { register, watch, getValues, setValue } = useForm({
     defaultValues: {
       search: "",
+      cart: "1",
     },
   });
+  // page state
   const [categoryState, setCategoryState] = useState("All");
   const [popUp, setPopUp] = useState(false);
+  const [addProduct, setAddProduct] = useState("");
 
+  // data selectors
+  const carts = useSelector(cartsSelector);
   const categories = useSelector(selectCategories);
-  const ALL = {
-    value: "🏠",
-    label: "All",
-  } as Option<Partial<Category>>;
   let products = useSelector(selectProducts);
+
+  // products filter by category
   products =
     categoryState === "All"
       ? products
       : categoryState !== ""
       ? products.filter((product) => product.category === categoryState)
       : products;
+
+  // Category filter options
   const categoryOptions: Option<Partial<Category>>[] = [
     ...categories.map((category: Category) => {
       return {
@@ -40,10 +52,13 @@ const POSPage: React.VFC = () => {
   ];
   categoryOptions.unshift(ALL);
 
+  // Search for products
   const search = watch("search");
   products = products.filter((product) => {
     return product.name.toLowerCase().includes(search.toLowerCase());
   });
+
+  // Events Handlers
   const handleSearchButton = () => {
     if (search.length !== 0) {
       setValue("search", "");
@@ -53,12 +68,28 @@ const POSPage: React.VFC = () => {
     setCategoryState(e.target.value);
   };
   const handleAddProduct = (data: { id: string }) => {
+    setAddProduct(data.id);
     setPopUp(true);
   };
   const handleClosePopUp = () => {
+    setAddProduct("");
     setPopUp(false);
   };
-  const handleAddToCart = () => {};
+  const handleAddToCart = () => {
+    const addedProduct = products.find((product) => product.id === addProduct);
+    const cart = carts.find((cart) => cart.id === getValues("cart"));
+    if (addedProduct && cart) {
+      toast.promise(
+        dispatch(addProductToCart({ body: addedProduct, cart: cart })),
+        {
+          loading: "Adding to cart...",
+          success: "Added to cart",
+          error: "Error",
+        }
+      );
+      setPopUp(false);
+    }
+  };
 
   return (
     <>
@@ -150,7 +181,23 @@ const POSPage: React.VFC = () => {
           onSubmit={handleAddToCart}
           title="Choose a cart"
         >
-          <></>
+          <select
+            className="cart-form"
+            {...register("cart", {
+              required: "Please select a cart",
+            })}
+          >
+            {carts.map((cart) => (
+              <option key={cart.id} value={cart.id}>
+                Cart {cart.id} created at{" "}
+                {new Date(cart.createdAt).toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
+              </option>
+            ))}
+          </select>
         </Modal>
       )}
     </>

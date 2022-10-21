@@ -180,3 +180,17 @@
     }
   }
 }
+select.cart-form {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  width: 100%;
+  &:focus {
+    outline: none;
+    border: 1px solid #007bff;
+  }
+  // style options
+  option {
+    padding: 0.5rem;
+  }
+}

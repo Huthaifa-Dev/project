@@ -56,43 +56,45 @@ const Checkout: React.VFC = () => {
       accessor: "total",
     },
   ];
-  const data: CartItem[] = [
-    {
-      id: "1",
-      name: "Product 1",
-      price: 100,
-      quantity: 1,
-      total: 100,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-    {
-      id: "2",
-      name: "Product 2",
-      price: 200,
-      quantity: 1,
-      total: 200,
-    },
-  ];
+  // const data: CartItem[] = [
+  //   {
+  //     id: "1",
+  //     name: "Product 1",
+  //     price: 100,
+  //     quantity: 1,
+  //     total: 100,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Product 2",
+  //     price: 200,
+  //     quantity: 1,
+  //     total: 200,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Product 2",
+  //     price: 200,
+  //     quantity: 1,
+  //     total: 200,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Product 2",
+  //     price: 200,
+  //     quantity: 1,
+  //     total: 200,
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Product 2",
+  //     price: 200,
+  //     quantity: 1,
+  //     total: 200,
+  //   },
+  // ];
+
+  const data = carts.find((cart) => cart.id === activeCart)?.items;
   return (
     <div className="checkout">
       <header className="checkout__header">
@@ -134,7 +136,11 @@ const Checkout: React.VFC = () => {
         </div>
       </header>
       <body className="checkout__body">
-        <Table cols={COLS} data={data} onDelete={() => {}} />
+        {data && data.length !== 0 ? (
+          <Table cols={COLS} data={data} onDelete={() => {}} />
+        ) : (
+          <div className="checkout__body__empty">No items in cart</div>
+        )}
       </body>
       <footer className="checkout__footer">
         <div className="checkout__footer--data"></div>
