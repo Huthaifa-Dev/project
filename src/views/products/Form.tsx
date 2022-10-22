@@ -10,6 +10,7 @@ import {
   deleteProduct,
   editProductData,
   selectProductById,
+  selectProducts,
 } from "../../redux/slices/productSlice";
 import "./Form.scss";
 import {
@@ -48,6 +49,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   DELETE,
 }) => {
   const categories = useSelector(selectCategories);
+  const products = useSelector(selectProducts);
   const product = useSelector((state: RootState) => {
     if (DELETE) {
       return selectProductById(state, DELETE);
@@ -73,6 +75,13 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
         error: <b>Could not Delete Category.</b>,
       });
     } else {
+      // check if code is unique or not from the products list in the store
+      const isCodeUnique = products.find((p) => p.code === data.code);
+      if (isCodeUnique) {
+        toast.error("Code is not unique");
+        return;
+      }
+
       const storageRef = ref(storage, "images/" + getValues("image")[0].name);
       uploadBytes(storageRef, getValues("image")[0]).then((snapshot) => {
         getDownloadURL(storageRef).then((url) => {
@@ -202,7 +211,16 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                   render={({ field }) => (
                     <InputMask
                       mask="aaaa-aaaa-9999"
-                      {...field}
+                      {...register("code", {
+                        required: "Product code is required",
+                        validate: (value) => {
+                          if (value.includes("_")) {
+                            return "Code must be 14 characters long";
+                          } else {
+                            return true;
+                          }
+                        },
+                      })}
                       className={`form-control ${
                         errors.code ? "form-control--error" : ""
                       }`}
