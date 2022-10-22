@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Column } from "react-table";
 import { Button } from "../../components/utils/Button/Button";
-import Table from "../../data/tables/CategoriesTable";
+import Table from "../../components/utils/Table/Table";
 import { AppDispatch } from "../../redux";
+import { ColumnDef } from "@tanstack/react-table";
 import {
   getCategories,
   selectCategories,
@@ -77,6 +77,18 @@ const Categories: React.VFC = () => {
     return category.name.toLowerCase().includes(search.toLowerCase());
   });
 
+  const cols: ColumnDef<Category>[] = [
+    {
+      header: "Name",
+      footer: (props) => props.column.id,
+      accessorKey: "name",
+    },
+    {
+      header: "Created At",
+      footer: (props) => props.column.id,
+      accessorKey: "createdAt",
+    },
+  ];
   return (
     <>
       <div className={`container ${form ? "blur" : ""}`}>
@@ -116,15 +128,10 @@ const Categories: React.VFC = () => {
             </div>
           </div>
           <Table
-            onDelete={(data: { id: string }) => {
-              // console.log(data);
-              handleOpenDeleteForm(data);
-            }}
+            cols={cols}
+            onDelete={(data) => {}}
             data={filteredCategories}
             onEditCell={handleOpenEditForm}
-            onSortHandler={(data: { id: string }) => {
-              onSortHandler(data.id);
-            }}
           />
         </div>
       </div>

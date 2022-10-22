@@ -1,6 +1,9 @@
 @import "../../assets/styles/variables";
 .page-form {
   width: 40%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.25rem;
   min-width: 300px;
   margin: 2rem auto;
   display: flex;
@@ -10,6 +13,7 @@
     margin: 0;
   }
   header {
+    box-shadow: none;
     display: flex;
     justify-content: space-between;
     align-items: center;

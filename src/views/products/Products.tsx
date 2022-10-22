@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Column } from "react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../../components/utils/Button/Button";
-import Table from "../../data/tables/ProductsTable";
+import Table from "../../components/utils/Table/Table";
 import { AppDispatch } from "../../redux";
 import {
   getProducts,
@@ -15,6 +15,7 @@ import { Product } from "../../types";
 import "./Products.scss";
 import Form from "./Form";
 import { searchProducts } from "../../helpers/validations";
+import { useNavigate } from "react-router-dom";
 const defaultValues = {
   search: "",
   startDate: 0,
@@ -29,6 +30,7 @@ type FormValues = {
 
 const Products: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const products = useSelector(selectProducts);
   const [filteredData, setFilteredData] = useState<Product[]>(products);
   const [form, setForm] = React.useState<boolean>(false);
@@ -44,30 +46,36 @@ const Products: React.VFC = () => {
     defaultValues,
   });
 
-  const cols: Column<Product>[] = [
+  const cols: ColumnDef<Product>[] = [
     {
-      Header: "Code",
-      accessor: "code",
+      header: "Code",
+      footer: (props) => props.column.id,
+      accessorKey: "code",
     },
     {
-      Header: "Name",
-      accessor: "name",
+      header: "Name",
+      footer: (props) => props.column.id,
+      accessorKey: "name",
     },
     {
-      Header: "Category",
-      accessor: "category",
+      header: "Category",
+      footer: (props) => props.column.id,
+      accessorKey: "category",
     },
     {
-      Header: "Product Description",
-      accessor: "description",
+      header: "Product Description",
+      footer: (props) => props.column.id,
+      accessorKey: "description",
     },
     {
-      Header: "tax(%)",
-      accessor: "tax",
+      header: "tax(%)",
+      footer: (props) => props.column.id,
+      accessorKey: "tax",
     },
     {
-      Header: "Price",
-      accessor: "price",
+      header: "Price",
+      footer: (props) => props.column.id,
+      accessorKey: "price",
     },
   ];
   useEffect(() => {
@@ -81,14 +89,6 @@ const Products: React.VFC = () => {
     setFilteredData(products);
   }, [products]);
 
-  const onSortHandler = (id: string) => {
-    toast.promise(dispatch(sortProducts({ id })), {
-      loading: "Sorting...",
-      success: "Sorted",
-      error: "Error",
-    });
-  };
-
   const handleOpenNewForm = () => {
     setForm(true);
   };
@@ -96,10 +96,6 @@ const Products: React.VFC = () => {
     setForm(false);
     setEdittingID("");
     setDeletingID("");
-  };
-  const handleOpenEditForm = (data: { id: string }) => {
-    setForm(true);
-    setEdittingID(data.id);
   };
   const handleOpenDeleteForm = (data: { id: string }) => {
     setForm(true);
@@ -131,6 +127,7 @@ const Products: React.VFC = () => {
       });
     });
   };
+
   const handleSearchButton = () => {
     const search = getValues("search");
     if (search.length !== 0) {
@@ -226,13 +223,13 @@ const Products: React.VFC = () => {
             </div>
           </div>
           <Table
+            cols={cols}
             data={filteredData}
-            onEditCell={handleOpenEditForm}
-            onSortHandler={(data: { id: string }) => {
-              onSortHandler(data.id);
+            onEditCell={(data) => {
+              navigate(`/products/${data.id}/edit`);
             }}
-            onDelete={(data: { id: string }) => {
-              handleOpenDeleteForm(data);
+            onDelete={(data) => {
+              handleOpenDeleteForm({ id: data.id });
             }}
           />
         </div>

@@ -1,9 +1,8 @@
-import { Category } from "../../types";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./Table.scss";
-import { Button } from "../../components/utils/Button/Button";
+import { Button } from "../Button/Button";
 import { BiSortDown, BiSortAlt2, BiSortUp } from "react-icons/bi";
-import { createDate, isDate } from "../../helpers/date";
+import { createDate, isDate } from "../../../helpers/date";
 import {
   ColumnDef,
   flexRender,
@@ -14,14 +13,14 @@ import {
   Row,
 } from "@tanstack/react-table";
 
-type Props = {
-  data: Category[];
-  onDelete: (data: { id: string }) => void;
-  onEditCell: (data: { id: string }) => void;
-  onSortHandler: (data: { id: string }) => void;
-};
+interface Props<T> {
+  data: T[];
+  cols: ColumnDef<T>[];
+  onDelete: (data: T) => void;
+  onEditCell: (data: T) => void;
+}
 
-const Table = (props: Props) => {
+function Table<T>(props: Props<T>) {
   // pegnate
   const [page, setPage] = useState({
     start: 0,
@@ -37,27 +36,13 @@ const Table = (props: Props) => {
   };
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [data, setData] = useState<Category[]>([]);
+  const [data, setData] = useState<T[]>([]);
 
   useEffect(() => {
     setData(props.data.slice(page.start, page.end));
   }, [props.data, page]);
 
-  const columns = useMemo<ColumnDef<Category>[]>(
-    () => [
-      {
-        header: "Name",
-        footer: (props) => props.column.id,
-        accessorKey: "name",
-      },
-      {
-        header: "Created At",
-        footer: (props) => props.column.id,
-        accessorKey: "createdAt",
-      },
-    ],
-    []
-  );
+  const columns = useMemo<ColumnDef<T>[]>(() => props.cols, []);
   const table = useReactTable({
     data,
     columns,
@@ -70,12 +55,12 @@ const Table = (props: Props) => {
     debugTable: true,
   });
 
-  const deleteHandler = (data: Row<Category>) => {
-    props.onDelete({ id: data.original.id });
+  const deleteHandler = (data: Row<T>) => {
+    props.onDelete(data.original);
   };
 
-  const editHandler = (data: Row<Category>) => {
-    props.onEditCell({ id: data.original.id });
+  const editHandler = (data: Row<T>) => {
+    props.onEditCell(data.original);
   };
   return (
     // apply the table props
@@ -212,6 +197,6 @@ const Table = (props: Props) => {
       </div>
     </>
   );
-};
+}
 
 export default Table;
