@@ -35,24 +35,7 @@ export const getCategories = createAsyncThunk(
     }
   }
 );
-export const sortCategories = createAsyncThunk(
-  "categories/sortCategories",
-  async (data: { id: string }) => {
-    try {
-      let sortString = "?_sort=";
-      if (data.id.includes("Dec")) {
-        sortString += data.id.replace("Dec", "") + "&_order=desc";
-      } else {
-        sortString += data.id.replace("Dec", "");
-      }
-      const response = await axios.get(`${CATEGORIES_URL}${sortString}`);
-      return [...response.data];
-    } catch (error) {
-      console.log(error);
-      return initialState;
-    }
-  }
-);
+
 export const deleteCategory = createAsyncThunk(
   "categories/deleteCategory",
   async (data: { body: string }) => {
@@ -126,9 +109,6 @@ export const categorySlice = createSlice({
     });
     builder.addCase(getCategories.rejected, (state) => {
       state.status = "failed";
-    });
-    builder.addCase(sortCategories.fulfilled, (state, action) => {
-      state.categories = action.payload as Category[];
     });
 
     builder.addCase(deleteCategory.fulfilled, (state, action) => {

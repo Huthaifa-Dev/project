@@ -29,24 +29,7 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
-export const sortProducts = createAsyncThunk(
-  "categories/sortProducts",
-  async (data: { id: string }) => {
-    try {
-      let sortString = "?_sort=";
-      if (data.id.includes("Dec")) {
-        sortString += data.id.replace("Dec", "") + "&_order=desc";
-      } else {
-        sortString += data.id.replace("Dec", "");
-      }
-      const response = await axios.get(`${PRODUCTS_URL}${sortString}`);
-      return [...response.data];
-    } catch (error) {
-      console.log(error);
-      return initialState;
-    }
-  }
-);
+
 export const deleteProduct = createAsyncThunk(
   "categories/deleteProduct",
   async (data: { body: string }) => {
@@ -110,9 +93,7 @@ export const productSilice = createSlice({
       state.products = action.payload as Product[];
       state.status = "idle";
     });
-    builder.addCase(sortProducts.fulfilled, (state, action) => {
-      state.products = action.payload as Product[];
-    });
+
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
       state.products = state.products.filter(
         (c) => c.id !== action.meta.arg.body
