@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,9 +20,10 @@ const POSPage: React.VFC = () => {
   const { register, watch, getValues, setValue } = useForm({
     defaultValues: {
       search: "",
-      cart: "1",
+      cart: "",
     },
   });
+
   // page state
   const [categoryState, setCategoryState] = useState("All");
   const [popUp, setPopUp] = useState(false);
@@ -32,6 +33,11 @@ const POSPage: React.VFC = () => {
   const carts = useSelector(cartsSelector);
   const categories = useSelector(selectCategories);
   let products = useSelector(selectProducts);
+
+  // side effects
+  useEffect(() => {
+    setValue("cart", carts[0]?.id || "");
+  }, [carts]);
 
   // products filter by category
   products =
@@ -199,9 +205,9 @@ const POSPage: React.VFC = () => {
               required: "Please select a cart",
             })}
           >
-            {carts.map((cart) => (
+            {carts.map((cart, index) => (
               <option key={cart.id} value={cart.id}>
-                Cart {cart.id} created at{" "}
+                Cart {index + 1} created at{" "}
                 {new Date(cart.createdAt).toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",

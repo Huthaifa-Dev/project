@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +34,10 @@ const COLS: Column<CartItem>[] = [
 const Checkout: React.VFC = () => {
   const carts = useSelector(cartsSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const [activeCart, setActiveCart] = useState("1");
+  const [activeCart, setActiveCart] = useState("");
+  useEffect(() => {
+    setActiveCart(carts[0]?.id || "");
+  }, []);
   const {
     register,
     handleSubmit,
@@ -62,13 +65,24 @@ const Checkout: React.VFC = () => {
   };
   const handleDeleteCart = () => {
     toast
-      .promise(dispatch(deleteCart({ body: `${carts.length}` })), {
-        loading: `Deleting Cart ${carts.length} ...`,
+      .promise(dispatch(deleteCart({ body: activeCart })), {
+        loading: `Deleting Cart ${activeCart} ...`,
         success: "Deleted Cart successfully",
         error: "There was an error",
       })
       .then(() => {
-        setActiveCart("1");
+        setActiveCart(carts[0]?.id || "");
+      });
+  };
+  const handleDeleteLastCart = () => {
+    toast
+      .promise(dispatch(deleteCart({ body: carts[carts.length - 1].id })), {
+        loading: `Deleting Cart ${carts.length - 1} ...`,
+        success: "Deleted Cart successfully",
+        error: "There was an error",
+      })
+      .then(() => {
+        setActiveCart(carts[0]?.id || "");
       });
   };
   const handleSubmitCart = () => {
@@ -89,14 +103,16 @@ const Checkout: React.VFC = () => {
       const convertedDiscount = discount / 100;
       return total * convertedDiscount;
     }
+    return 0;
   };
+
+  // form data for cart
   const tax = watch("tax");
   const discount = watch("discount");
   const cart = carts.find((cart) => cart.id === activeCart);
-  const data = cart?.items;
+  const data = cart?.items || [];
   const quantity = data?.reduce((acc, item) => +acc + +item.quantity, 0);
   const subTotal = data?.reduce((acc, item) => {
-    console.log(acc, item.total);
     return +acc + +item.total;
   }, 0);
 
@@ -104,7 +120,7 @@ const Checkout: React.VFC = () => {
     <div className="checkout">
       <header className="checkout__header">
         <div className="cart-filter">
-          {carts.map((cart) => {
+          {carts.map((cart, index) => {
             const checked = activeCart === cart.id;
             return (
               <div key={cart.id} className="cart-filter__item">
@@ -117,7 +133,7 @@ const Checkout: React.VFC = () => {
                   checked={checked}
                 />
                 <label htmlFor={cart.id}>
-                  {cart.id}
+                  {index + 1}
                   <span>
                     {new Date(cart.createdAt).toLocaleTimeString("en-US", {
                       hour: "2-digit",
@@ -134,7 +150,7 @@ const Checkout: React.VFC = () => {
           </Button>
           <Button
             className="cart-filter__action delete"
-            onClick={handleDeleteCart}
+            onClick={handleDeleteLastCart}
           >
             ➖
           </Button>
