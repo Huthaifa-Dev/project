@@ -9,39 +9,22 @@ import {
   selectProductById,
 } from "../../redux/slices/productSlice";
 import "./Form.scss";
-import { Category, COLORS, Option, Product } from "../../types";
+import {
+  Category,
+  COLORS,
+  Option,
+  Product,
+  ProductFormValues,
+} from "../../types";
 import {
   getCategories,
   selectCategories,
 } from "../../redux/slices/categorySlice";
 
-const defaultValues = {
-  name: "",
-  rawPrice: 0,
-  price: 0,
-  code: "",
-  category: "",
-  stack: 0,
-  expire: 0,
-  description: "",
-  color: "",
-};
-
-type FormValues = {
-  name: string;
-  rawPrice: number;
-  price: number;
-  code: string;
-  category: string;
-  stack: number;
-  expire: number;
-  description: string;
-  color: string;
-};
-
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/utils/Button/Button";
-import { watch } from "fs";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../firebase";
 
 const ProductsPage: React.VFC = () => {
   const navigate = useNavigate();
@@ -49,6 +32,7 @@ const ProductsPage: React.VFC = () => {
   const product = useSelector((state: RootState) =>
     selectProductById(state, ID.productId || "")
   );
+
   const categories = useSelector(selectCategories);
   const dispatch = useDispatch<AppDispatch>();
   const {
@@ -58,7 +42,7 @@ const ProductsPage: React.VFC = () => {
     control,
     watch,
     formState: { errors },
-  } = useForm<FormValues>({ defaultValues: product });
+  } = useForm<ProductFormValues>({ defaultValues: product });
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -71,16 +55,48 @@ const ProductsPage: React.VFC = () => {
       };
     }),
   ];
-  const submitHandler = (data: Partial<Product>) => {
+  const submitHandler = (data: ProductFormValues) => {
     if (ID.productId) {
-      toast.promise(
-        dispatch(editProductData({ id: ID.productId, newProduct: data })),
-        {
-          loading: "Editing...",
-          success: "Edited",
-          error: "Error",
-        }
-      );
+      if (!getValues("image")) {
+        toast.promise(
+          dispatch(
+            editProductData({
+              id: ID.productId,
+              newProduct: data as Partial<Product>,
+            })
+          ),
+          {
+            loading: "Editing...",
+            success: "Edited",
+            error: "Error",
+          }
+        );
+        navigate("/products");
+      } else if (ID.productId) {
+        const storageRef = ref(storage, "images/" + getValues("image")[0].name);
+        uploadBytes(storageRef, getValues("image")[0]).then((snapshot) => {
+          getDownloadURL(storageRef).then((url) => {
+            const product: Partial<Product> = {
+              ...data,
+              image: url,
+            };
+            toast.promise(
+              dispatch(
+                editProductData({
+                  id: ID.productId as string,
+                  newProduct: product,
+                })
+              ),
+              {
+                loading: "Editing...",
+                success: "Edited",
+                error: "Error",
+              }
+            );
+          });
+        });
+      }
+
       navigate("/products");
     }
     // onClose();
@@ -90,7 +106,7 @@ const ProductsPage: React.VFC = () => {
     <form
       className="page-form"
       onSubmit={handleSubmit((data) => {
-        submitHandler(data as Partial<Product>);
+        submitHandler(data);
       })}
     >
       <header>
@@ -193,6 +209,15 @@ const ProductsPage: React.VFC = () => {
           </div>
         </section>
         <section>
+          <label htmlFor="image">Image: </label>
+          <div className="form-group-wrapper">
+            <input {...register("image")} type="file" name="image" />
+            {errors.image && (
+              <p className="error-message">{errors.image.message}</p>
+            )}
+          </div>
+        </section>
+        <section>
           <label htmlFor="color">Choose color to Display in POS: </label>
           <div className="form-group-wrapper">
             <div className="color-picker">
@@ -255,14 +280,14 @@ const ProductsPage: React.VFC = () => {
           />
         </section>
         <section>
-          <label htmlFor="stack">Stack Count: </label>
+          <label htmlFor="stock">Stock Count: </label>
 
           <input
-            {...register("stack")}
+            {...register("stock")}
             type="number"
-            id="stack"
+            id="stock"
             className={`form-control ${
-              errors.stack ? "form-control--error" : ""
+              errors.stock ? "form-control--error" : ""
             }`}
           />
         </section>
