@@ -6,11 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../../components/utils/Button/Button";
 import Table from "../../components/utils/Table/Table";
 import { AppDispatch } from "../../redux";
-import {
-  getProducts,
-  selectProducts,
-  sortProducts,
-} from "../../redux/slices/productSlice";
+import { getProducts, selectProducts } from "../../redux/slices/productSlice";
 import { Product } from "../../types";
 import "./Products.scss";
 import Form from "./Form";

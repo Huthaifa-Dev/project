@@ -9,7 +9,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
   getCategories,
   selectCategories,
-  sortCategories,
 } from "../../redux/slices/categorySlice";
 import { Category } from "../../types";
 import "./Categories.scss";
@@ -40,14 +39,6 @@ const Categories: React.VFC = () => {
       error: " Failed to load Categories",
     });
   }, [dispatch]);
-
-  const onSortHandler = (id: string) => {
-    toast.promise(dispatch(sortCategories({ id })), {
-      loading: "Sorting...",
-      success: "Sorted",
-      error: "Error",
-    });
-  };
 
   const handleOpenNewForm = () => {
     setForm(true);
