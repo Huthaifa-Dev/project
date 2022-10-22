@@ -1,10 +1,7 @@
 @import "../../../assets/styles/variables";
 .table {
   border-collapse: collapse;
-  box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 0.25rem;
+
   //   background: green;
   &-head {
     &-row {
@@ -58,11 +55,11 @@
   }
   &-controls {
     border-collapse: collapse;
-    box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
+    // box-shadow: 0 5px 15px -10px rgb(0 0 0 / 50%);
     background: rgba($color: #ffffff, $alpha: 0.8);
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     border-radius: 0.25rem;
-    padding: 0.25rem;
+    // padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;

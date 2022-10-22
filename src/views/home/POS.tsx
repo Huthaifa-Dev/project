@@ -178,12 +178,6 @@ const POSPage: React.VFC = () => {
                     <div className="product-card__body" style={{}}>
                       {/* <img /> */}
                       <div className="product-name">{product.name}</div>
-                      <div className="product-price">${product.price}</div>
-                      {product.expire ? (
-                        <div className="product-expire">{date(product)}</div>
-                      ) : (
-                        ""
-                      )}
                       <Button
                         type="button"
                         className="add-to-cart"
@@ -193,6 +187,12 @@ const POSPage: React.VFC = () => {
                       >
                         ➕
                       </Button>
+                      <div className="product-price">${product.price}</div>
+                      {product.expire ? (
+                        <div className="product-expire">{date(product)}</div>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </li>
                 ))}

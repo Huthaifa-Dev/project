@@ -6,19 +6,22 @@
   width: 100%;
   min-height: 100%;
   .content {
-    width: 65%;
+    width: 75%;
     display: flex;
+    padding: 2rem;
+
     flex-direction: column;
+    box-shadow: 0 5px 20px -10px rgb(0 0 0 / 50%);
+    background: rgba($color: #ffffff, $alpha: 01);
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
     gap: 1rem;
     .actions {
       display: flex;
       justify-content: space-between;
       gap: 1rem;
       border-collapse: collapse;
-      box-shadow: 0 10px 20px -15px rgb(0 0 0 / 50%);
-      background: rgba($color: #ffffff, $alpha: 01);
-      border: 1px solid #ccc;
-      border-radius: 0.25rem;
+
       padding: 0.25rem;
       .actions {
         display: flex;
