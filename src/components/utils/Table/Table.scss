@@ -50,7 +50,8 @@
       }
       &__cell {
         border: 1px solid #ddd;
-
+        overflow-y: auto;
+        max-width: 100px;
         padding: 0.5rem;
       }
     }
