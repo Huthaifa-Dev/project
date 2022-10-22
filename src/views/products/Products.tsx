@@ -228,9 +228,7 @@ const Products: React.VFC = () => {
             onEditCell={(data) => {
               navigate(`/products/${data.id}/edit`);
             }}
-            onDelete={(data) => {
-              handleOpenDeleteForm({ id: data.id });
-            }}
+            onDelete={handleOpenDeleteForm}
           />
         </div>
       </div>
