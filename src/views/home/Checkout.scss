@@ -9,6 +9,12 @@
   flex-direction: column;
   overflow: hidden;
   max-height: 100%;
+  position: fixed;
+  //center the right side of the screen
+  right: 40%;
+  transform: translateX(80%);
+  width: 45%;
+  max-height: 75%;
   &__header {
     padding: 1rem;
     display: flex;
