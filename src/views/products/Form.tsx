@@ -3,12 +3,13 @@ import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../components/utils/Modal/Modal";
-import { AppDispatch } from "../../redux";
+import { AppDispatch, RootState } from "../../redux";
 import InputMask from "react-input-mask";
 import {
   addProductData,
   deleteProduct,
   editProductData,
+  selectProductById,
 } from "../../redux/slices/productSlice";
 import "./Form.scss";
 import { Category, COLORS, Option, Product } from "../../types";
@@ -47,6 +48,11 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   DELETE,
 }) => {
   const categories = useSelector(selectCategories);
+  const product = useSelector((state: RootState) => {
+    if (DELETE) {
+      return selectProductById(state, DELETE);
+    }
+  });
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -101,7 +107,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
       width={DELETE ? "400px" : "500px"}
     >
       {DELETE ? (
-        <p>Are you sure you want to delete {DELETE}?</p>
+        <p>Are you sure you want to delete {product?.name}?</p>
       ) : (
         <form
           onSubmit={handleSubmit((data) => {

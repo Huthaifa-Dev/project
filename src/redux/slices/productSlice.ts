@@ -4,7 +4,9 @@ import axios from "axios";
 import { RootState } from "..";
 import { createProduct } from "../../helpers/product";
 
-const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";
+const PRODUCTS_URL =
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/products";
+// const PRODUCTS_URL = "https://fts-product-manager-data.herokuapp.com/products";
 // const PRODUCTS_URL = "http://localhost:8000/products";
 
 interface STATE {
@@ -21,8 +23,13 @@ export const getProducts = createAsyncThunk(
   "categories/getProducts",
   async () => {
     try {
-      const response = await axios.get(PRODUCTS_URL);
-      return [...response.data];
+      const response = await axios.get(PRODUCTS_URL + ".json");
+      const result = Object.keys(response.data).map((key) => {
+        const product = response.data[key];
+        product.id = key;
+        return product;
+      });
+      return [...result];
     } catch (error) {
       console.log(error);
       return initialState;
@@ -34,7 +41,9 @@ export const deleteProduct = createAsyncThunk(
   "categories/deleteProduct",
   async (data: { body: string }) => {
     try {
-      const response = await axios.delete(`${PRODUCTS_URL}/${data.body}`);
+      const response = await axios.delete(
+        `${PRODUCTS_URL}/${data.body}` + ".json"
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -45,7 +54,7 @@ export const editProductData = createAsyncThunk(
   "categories/editProduct",
   async (data: { id: string; newProduct: Partial<Product> }) => {
     try {
-      const product = await axios.get(`${PRODUCTS_URL}/${data.id}`);
+      const product = await axios.get(`${PRODUCTS_URL}/${data.id}` + ".json");
       product.data = { ...data.newProduct };
       if (
         product.data.price !== undefined &&
@@ -59,12 +68,11 @@ export const editProductData = createAsyncThunk(
         ).toFixed(2);
         product.data.tax = parseInt(newTax);
       }
-
-      const response = await axios.put(
-        `${PRODUCTS_URL}/${data.id}`,
+      console.log(product.data);
+      const response = await axios.patch(
+        `${PRODUCTS_URL}/${data.id}` + ".json",
         product.data
       );
-
       return response.data;
     } catch (error) {
       console.log(error);
@@ -76,8 +84,14 @@ export const addProductData = createAsyncThunk(
   async (data: Partial<Product>) => {
     try {
       const product = createProduct(data as Product);
-      const response = await axios.post(`${PRODUCTS_URL}`, product);
-      return response.data;
+      await axios.post(`${PRODUCTS_URL}` + ".json", product);
+      const response = await axios.get(`${PRODUCTS_URL}` + ".json");
+      const result = Object.keys(response.data).map((key) => {
+        const product = response.data[key];
+        product.id = key;
+        return product;
+      });
+      return [...result];
     } catch (error) {
       console.log(error);
     }
@@ -100,14 +114,15 @@ export const productSilice = createSlice({
       );
     });
     builder.addCase(addProductData.fulfilled, (state, action) => {
-      state.products = [...state.products, action.payload as Product];
+      state.products = action.payload as Product[];
+      state.status = "idle";
     });
     builder.addCase(editProductData.fulfilled, (state, action) => {
-      state.products = state.products.map((c) => {
-        if (+c.id === +action.meta.arg.id) {
-          return action.payload as Product;
+      state.products = state.products.map((product) => {
+        if (product.id === action.meta.arg.id) {
+          return { ...product, ...action.meta.arg.newProduct };
         }
-        return c;
+        return product;
       });
     });
   },
@@ -116,6 +131,6 @@ export const productSilice = createSlice({
 export const selectProducts = (state: RootState) => state.products.products;
 export const selectProductById = (state: RootState, id: string) => {
   return state.products.products.find((p) => {
-    return +p.id === +id;
+    return p.id === id;
   });
 };
