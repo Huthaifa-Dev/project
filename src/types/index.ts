@@ -82,3 +82,16 @@ export type CategoryColumns = {
   accessor: string;
   isSortable: boolean;
 };
+
+export type ProductFormValues = {
+  name: string;
+  rawPrice: number;
+  price: number;
+  code: string;
+  category: string;
+  stock: number;
+  expire: number;
+  description: string;
+  color: string;
+  image: File | string;
+};

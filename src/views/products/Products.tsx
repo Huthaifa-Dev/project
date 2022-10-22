@@ -229,13 +229,7 @@ const Products: React.VFC = () => {
           />
         </div>
       </div>
-      {form && (
-        <Form
-          onClose={handleCloseNewForm}
-          ID={edittingID}
-          DELETE={deletingID}
-        />
-      )}
+      {form && <Form onClose={handleCloseNewForm} DELETE={deletingID} />}
     </>
   );
 };

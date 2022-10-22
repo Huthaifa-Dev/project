@@ -162,12 +162,20 @@ const POSPage: React.VFC = () => {
                 {products.map((product) => (
                   <li className="product-card" key={product.id}>
                     <div
+                      className="image"
+                      style={{
+                        background: `url(${product.image})`,
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                      }}
+                    ></div>
+                    <div
                       className="color"
                       style={{
                         backgroundColor: product.color || "white",
                       }}
                     ></div>
-                    <div className="product-card__body">
+                    <div className="product-card__body" style={{}}>
                       {/* <img /> */}
                       <div className="product-name">{product.name}</div>
                       <div className="product-price">${product.price}</div>

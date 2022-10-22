@@ -10,44 +10,46 @@ import {
   deleteProduct,
   editProductData,
   selectProductById,
+  selectProducts,
 } from "../../redux/slices/productSlice";
 import "./Form.scss";
-import { Category, COLORS, Option, Product } from "../../types";
+import {
+  Category,
+  COLORS,
+  Option,
+  Product,
+  ProductFormValues,
+} from "../../types";
 import {
   getCategories,
   selectCategories,
 } from "../../redux/slices/categorySlice";
-
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+} from "firebase/storage";
+import { storage } from "../../firebase";
 const defaultValues = {
   name: "",
   rawPrice: 0,
   price: 0,
   code: "",
   category: "",
-  stack: 0,
+  stock: 0,
   expire: 0,
   description: "",
   color: "",
 };
 
-type FormValues = {
-  name: string;
-  rawPrice: number;
-  price: number;
-  code: string;
-  category: string;
-  stack: number;
-  expire: number;
-  description: string;
-  color: string;
-};
-
 const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
   onClose,
-  ID,
   DELETE,
 }) => {
   const categories = useSelector(selectCategories);
+  const products = useSelector(selectProducts);
   const product = useSelector((state: RootState) => {
     if (DELETE) {
       return selectProductById(state, DELETE);
@@ -61,28 +63,38 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     control,
     watch,
     formState: { errors },
-  } = useForm<FormValues>({ defaultValues });
+  } = useForm<ProductFormValues>({ defaultValues });
   useEffect(() => {
     dispatch(getCategories());
   }, []);
-  const submitHandler = (data: Partial<Product>) => {
+  const submitHandler = (data: ProductFormValues) => {
     if (DELETE !== "" && DELETE !== undefined) {
       toast.promise(dispatch(deleteProduct({ body: DELETE })).unwrap(), {
         loading: "Deleting...",
         success: <b>{DELETE} Deleted Successfully</b>,
         error: <b>Could not Delete Category.</b>,
       });
-    } else if (ID !== "" && ID !== undefined) {
-      toast.promise(dispatch(editProductData({ id: ID, newProduct: data })), {
-        loading: "Editing...",
-        success: "Edited",
-        error: "Error",
-      });
     } else {
-      toast.promise(dispatch(addProductData(data)), {
-        loading: "Adding Category...",
-        success: <b>Category Added Successfully</b>,
-        error: <b>Could not Add Category.</b>,
+      // check if code is unique or not from the products list in the store
+      const isCodeUnique = products.find((p) => p.code === data.code);
+      if (isCodeUnique) {
+        toast.error("Code is not unique");
+        return;
+      }
+
+      const storageRef = ref(storage, "images/" + getValues("image")[0].name);
+      uploadBytes(storageRef, getValues("image")[0]).then((snapshot) => {
+        getDownloadURL(storageRef).then((url) => {
+          const product: Partial<Product> = {
+            ...data,
+            image: url,
+          };
+          toast.promise(dispatch(addProductData(product)), {
+            loading: "Adding Category...",
+            success: <b>Category Added Successfully</b>,
+            error: <b>Could not Add Category.</b>,
+          });
+        });
       });
     }
     onClose();
@@ -99,7 +111,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
 
   return (
     <Modal
-      title={DELETE ? "Confirm Delete" : ID ? "Edit Product" : "Create Product"}
+      title={DELETE ? "Confirm Delete" : "Create Product"}
       onClose={onClose}
       onSubmit={handleSubmit((data) => {
         submitHandler(data);
@@ -111,7 +123,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
       ) : (
         <form
           onSubmit={handleSubmit((data) => {
-            submitHandler(data as Partial<Product>);
+            submitHandler(data);
           })}
         >
           <div className="form-group">
@@ -199,7 +211,16 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                   render={({ field }) => (
                     <InputMask
                       mask="aaaa-aaaa-9999"
-                      {...field}
+                      {...register("code", {
+                        required: "Product code is required",
+                        validate: (value) => {
+                          if (value.includes("_")) {
+                            return "Code must be 14 characters long";
+                          } else {
+                            return true;
+                          }
+                        },
+                      })}
                       className={`form-control ${
                         errors.code ? "form-control--error" : ""
                       }`}
@@ -208,6 +229,21 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                 />
                 {errors.code && (
                   <p className="error-message">{errors.code.message}</p>
+                )}
+              </div>
+            </section>
+            <section>
+              <label htmlFor="image">Image: </label>
+              <div className="form-group-wrapper">
+                <input
+                  {...register("image", {
+                    required: "Product Image is required",
+                  })}
+                  type="file"
+                  name="image"
+                />
+                {errors.image && (
+                  <p className="error-message">{errors.image.message}</p>
                 )}
               </div>
             </section>
@@ -274,14 +310,14 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
               />
             </section>
             <section>
-              <label htmlFor="stack">Stack Count: </label>
+              <label htmlFor="stock">Stock Count: </label>
 
               <input
-                {...register("stack")}
+                {...register("stock")}
                 type="number"
-                id="stack"
+                id="stock"
                 className={`form-control ${
-                  errors.stack ? "form-control--error" : ""
+                  errors.stock ? "form-control--error" : ""
                 }`}
               />
             </section>
