@@ -8,7 +8,7 @@ import { AppDispatch } from "../../redux";
 import { addProductToCart, cartsSelector } from "../../redux/slices/cartSlice";
 import { selectCategories } from "../../redux/slices/categorySlice";
 import { selectProducts } from "../../redux/slices/productSlice";
-import { Category, Option } from "../../types";
+import { Category, Option, Product } from "../../types";
 
 const ALL = {
   value: "🏠",
@@ -45,7 +45,7 @@ const POSPage: React.VFC = () => {
   const categoryOptions: Option<Partial<Category>>[] = [
     ...categories.map((category: Category) => {
       return {
-        value: category.id as Partial<Category>,
+        value: category.name as Partial<Category>,
         label: category.name,
       };
     }),
@@ -91,6 +91,12 @@ const POSPage: React.VFC = () => {
     }
   };
 
+  const date = (product: Product) => {
+    if (product.expire) {
+      return new Date(product.expire).toLocaleDateString();
+    }
+    return "";
+  };
   return (
     <>
       <div className="home">
@@ -159,10 +165,10 @@ const POSPage: React.VFC = () => {
                       {/* <img /> */}
                       <div className="product-name">{product.name}</div>
                       <div className="product-price">${product.price}</div>
-                      {product.expire && (
-                        <div className="product-expire">
-                          {new Date(product.expire).toLocaleDateString()}
-                        </div>
+                      {product.expire ? (
+                        <div className="product-expire">{date(product)}</div>
+                      ) : (
+                        ""
                       )}
                       <Button
                         type="button"

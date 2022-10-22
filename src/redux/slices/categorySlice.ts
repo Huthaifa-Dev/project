@@ -3,7 +3,8 @@ import { Category } from "../../types";
 import axios from "axios";
 import { RootState } from "..";
 const CATEGORIES_URL =
-  "https://fts-product-manager-data.herokuapp.com/categories";
+  "https://product-manager-1903f-default-rtdb.firebaseio.com/categories";
+// "https://fts-product-manager-data.herokuapp.com/categories";
 // const CATEGORIES_URL = "http://localhost:8000/categories";
 
 interface STATE {
@@ -27,8 +28,13 @@ export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async () => {
     try {
-      const response = await axios.get(CATEGORIES_URL);
-      return [...response.data];
+      const response = await axios.get(CATEGORIES_URL + ".json");
+      const result = Object.keys(response.data).map((key) => {
+        const category = response.data[key];
+        category.id = key;
+        return category;
+      });
+      return [...result];
     } catch (error) {
       console.log(error);
       return initialState;
@@ -40,7 +46,9 @@ export const deleteCategory = createAsyncThunk(
   "categories/deleteCategory",
   async (data: { body: string }) => {
     try {
-      const response = await axios.delete(`${CATEGORIES_URL}/${data.body}`);
+      const response = await axios.delete(
+        `${CATEGORIES_URL}/${data.body}` + ".json"
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -51,12 +59,13 @@ export const editCategoryData = createAsyncThunk(
   "categories/editCategory",
   async (data: { id: string; newName: string }) => {
     try {
-      const category = await axios.get(`${CATEGORIES_URL}/${data.id}`);
+      const category = await axios.get(
+        `${CATEGORIES_URL}/${data.id}` + ".json"
+      );
       category.data.name = data.newName;
-      category.data.id = data.newName;
       category.data.updatedAt = Date.now();
-      const response = await axios.put(
-        `${CATEGORIES_URL}/${data.id}`,
+      const response = await axios.patch(
+        `${CATEGORIES_URL}/${data.id}` + ".json",
         category.data
       );
       return response.data;
@@ -70,7 +79,10 @@ export const addCategoryData = createAsyncThunk(
   async (data: { name: string }) => {
     try {
       const category = createdData(data);
-      const response = await axios.post(`${CATEGORIES_URL}`, category);
+      const response = await axios.post(
+        `${CATEGORIES_URL}` + ".json",
+        category
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -122,14 +134,12 @@ export const categorySlice = createSlice({
       );
     });
     builder.addCase(editCategoryData.fulfilled, (state, action) => {
-      const index = state.categories.findIndex(
-        (c) => c.id === action.meta.arg.id
-      );
-      if (index !== -1) {
-        state.categories[index].name = action.meta.arg.newName;
-        state.categories[index].id = action.meta.arg.newName;
-        state.categories[index].updatedAt = Date.now();
-      }
+      state.categories = state.categories.map((category) => {
+        if (category.id === action.meta.arg.id) {
+          return { ...category, name: action.meta.arg.newName };
+        }
+        return category;
+      });
     });
   },
 });
