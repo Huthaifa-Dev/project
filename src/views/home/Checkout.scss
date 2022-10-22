@@ -17,7 +17,7 @@
     box-shadow: 0 0px 10px -5px rgb(0 0 0 / 50%);
     .cart-filter {
       display: flex;
-      // overflow-x: scroll;
+      overflow-x: scroll;
       gap: 0.5rem;
       align-items: center;
       &__item {
@@ -94,10 +94,15 @@
     }
   }
   &__footer {
+    flex: 0.75;
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
     form {
       padding: 1rem;
       display: flex;
       flex-direction: column;
+      width: 100%;
       gap: 1rem;
     }
 

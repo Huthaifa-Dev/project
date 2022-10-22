@@ -8,6 +8,7 @@
   .home {
     display: flex;
     flex: 1;
+    max-width: 50%;
     flex-direction: column;
     &-container {
       // padding: 1rem;
@@ -52,18 +53,23 @@
           border-left: none;
         }
       }
+      overflow: hidden;
       .category-filter {
         display: flex;
         gap: 0.5rem;
         align-items: center;
-        overflow-x: auto;
+        overflow-x: scroll;
+
         &__item {
           border-radius: 0.25rem;
 
-          position: relative;
-
+          &:nth-child(1) {
+            min-width: auto;
+            width: auto;
+          }
           cursor: pointer;
           label {
+            white-space: nowrap;
             border-bottom: 3px solid rgb(46, 194, 46);
             background-color: #ddd;
             color: #555;
@@ -111,8 +117,9 @@
           &-gallery {
             list-style: none;
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
             flex-wrap: wrap;
+            justify-content: space-around;
           }
           &-card {
             display: flex;
