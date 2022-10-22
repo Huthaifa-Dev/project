@@ -129,7 +129,7 @@ const Categories: React.VFC = () => {
           </div>
           <Table
             cols={cols}
-            onDelete={(data) => {}}
+            onDelete={handleOpenDeleteForm}
             data={filteredCategories}
             onEditCell={handleOpenEditForm}
           />
