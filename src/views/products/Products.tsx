@@ -41,6 +41,7 @@ const Products: React.VFC = () => {
     handleSubmit,
     getValues,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
@@ -216,7 +217,7 @@ const Products: React.VFC = () => {
                     onClick={handleSearchButton}
                     backgroundColor="white"
                   >
-                    {getValues("search").length === 0 ? "🔍" : "❌"}
+                    {watch("search").length === 0 ? "🔍" : "❌"}
                   </Button>
                 </div>
               </div>
