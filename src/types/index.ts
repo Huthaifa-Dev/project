@@ -12,6 +12,7 @@ export type Category = {
   description?: string;
   createdAt: number;
   updatedAt: number;
+  isSorted?: boolean;
 };
 
 export interface Product {
@@ -66,4 +67,18 @@ export type CartItem = {
   price: number;
   quantity: number;
   total: number;
+};
+
+export type TableColData<T> = {
+  Header: string;
+  accessor: keyof Partial<T>;
+  isSortable: true;
+};
+
+// export type TableColumns<T> = TableColData<T>[];
+
+export type CategoryColumns = {
+  Header: string;
+  accessor: string;
+  isSortable: boolean;
 };

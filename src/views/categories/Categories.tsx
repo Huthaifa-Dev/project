@@ -33,16 +33,6 @@ const Categories: React.VFC = () => {
     },
   });
 
-  const cols: Column<Category>[] = [
-    {
-      Header: "Category Name",
-      accessor: "name",
-    },
-    {
-      Header: "Created At",
-      accessor: "createdAt",
-    },
-  ];
   useEffect(() => {
     toast.promise(dispatch(getCategories()), {
       loading: "Loading Categories...",
@@ -131,7 +121,6 @@ const Categories: React.VFC = () => {
               handleOpenDeleteForm(data);
             }}
             data={filteredCategories}
-            cols={cols}
             onEditCell={handleOpenEditForm}
             onSortHandler={(data: { id: string }) => {
               onSortHandler(data.id);

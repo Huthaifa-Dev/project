@@ -71,6 +71,20 @@
         align-items: center;
         &.delete {
           flex: 0.5;
+          .delete {
+            background: none;
+            outline: none;
+            border: none;
+            box-shadow: none;
+            font-size: 1rem;
+            color: #6e6e6e;
+            opacity: 0.5;
+            transition: $transition;
+            &:hover {
+              opacity: 1;
+              background-color: #ddd;
+            }
+          }
         }
         .quantity-actions {
           display: flex;

@@ -1,136 +1,114 @@
 import { Category } from "../../types";
-import { Column, Row, useTable } from "react-table";
-import { useMemo, useState } from "react";
-import { nanoid } from "@reduxjs/toolkit";
+import { useEffect, useMemo, useState } from "react";
 import "./Table.scss";
 import { Button } from "../../components/utils/Button/Button";
 import { BiSortDown, BiSortAlt2, BiSortUp } from "react-icons/bi";
 import { createDate, isDate } from "../../helpers/date";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+  Row,
+} from "@tanstack/react-table";
 
 type Props = {
   data: Category[];
-  cols: Column<Category>[];
   onDelete: (data: { id: string }) => void;
   onEditCell: (data: { id: string }) => void;
   onSortHandler: (data: { id: string }) => void;
 };
 
-type nameSort = "name" | "nameDec" | "normal";
-type createdAtSort = "createdAt" | "createdAtDec" | "normal";
-
 const Table = (props: Props) => {
-  const [nameCol, setNameCol] = useState<nameSort>("normal");
-  const [createdAtCol, setCreatedAtCol] = useState<createdAtSort>("normal");
+  // pegnate
   const [page, setPage] = useState({
     start: 0,
-    end: 10,
-    pegnate: 10,
+    end: 5,
+    pegnate: 5,
   });
-  const sectionedData = props.data.slice(page.start, page.end);
-  const data = useMemo(() => sectionedData, [sectionedData]);
+  const pegnate = (e) => {
+    const { value } = e.target;
+    const start = 0;
+    const end = value;
+    console.log(value, start, end);
+    setPage((prev) => ({ ...prev, start, end }));
+  };
 
-  const Cols: () => Column<Category>[] = () => props.cols;
-  const columns = useMemo(Cols, []);
-  const tableInstance = useTable({ columns, data });
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [data, setData] = useState<Category[]>([]);
+
+  useEffect(() => {
+    setData(props.data.slice(page.start, page.end));
+  }, [props.data, page]);
+
+  const columns = useMemo<ColumnDef<Category>[]>(
+    () => [
+      {
+        header: "Name",
+        footer: (props) => props.column.id,
+        accessorKey: "name",
+      },
+      {
+        header: "Created At",
+        footer: (props) => props.column.id,
+        accessorKey: "createdAt",
+      },
+    ],
+    []
+  );
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    debugTable: true,
+  });
 
   const deleteHandler = (data: Row<Category>) => {
     props.onDelete({ id: data.original.id });
   };
 
-  const onSortHandler = (col: string) => {
-    let value = "name";
-    if (col === "name") {
-      if (nameCol === "name") {
-        setNameCol("nameDec");
-        value = "nameDec";
-      } else {
-        setNameCol("name");
-        value = "name";
-      }
-      setCreatedAtCol("normal");
-    } else {
-      if (createdAtCol === "createdAt") {
-        setCreatedAtCol("createdAtDec");
-        value = "createdAtDec";
-      } else {
-        setCreatedAtCol("createdAt");
-        value = "createdAt";
-      }
-      setNameCol("normal");
-    }
-    props.onSortHandler({ id: value });
-  };
-
-  const pegnate = (e) => {
-    const { value } = e.target;
-    const start = (value - 1) * page.pegnate;
-    const end = value * page.pegnate;
-    setPage((prev) => ({ ...prev, start, end }));
-  };
   const editHandler = (data: Row<Category>) => {
     props.onEditCell({ id: data.original.id });
   };
   return (
     // apply the table props
     <>
-      <table className="table" {...getTableProps()}>
+      <table className="table">
         <thead className="table-head">
           {
             // Loop over the header rows
-            headerGroups.map((headerGroup) => (
+            table.getHeaderGroups().map((headerGroup) => (
               // Apply the header row props
-              <tr
-                className="table-head-row"
-                {...headerGroup.getHeaderGroupProps()}
-                key={nanoid()}
-              >
+              <tr className="table-head-row" key={headerGroup.id}>
                 {
                   // Loop over the headers in each row
-                  headerGroup.headers.map((column) => (
+                  headerGroup.headers.map((header) => (
                     // Apply the header cell props
-                    <th
-                      className="table-head-row__cell"
-                      {...column.getHeaderProps()}
-                      key={nanoid()}
-                    >
-                      {
-                        // Render the header
-                        column.render("Header")
-                      }
-                      {column.id === "name" && (
-                        <Button
-                          onClick={() => {
-                            onSortHandler(column.id);
-                          }}
-                          data-active={nameCol === "normal" ? false : true}
-                        >
-                          {nameCol === "name" ? (
-                            <BiSortDown />
-                          ) : nameCol === "nameDec" ? (
-                            <BiSortUp />
-                          ) : (
-                            <BiSortAlt2 />
-                          )}
-                        </Button>
+                    <th className="table-head-row__cell" key={header.id}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
                       )}
-                      {column.id === "createdAt" && (
-                        <Button
-                          onClick={() => {
-                            onSortHandler(column.id);
-                          }}
-                          data-active={createdAtCol === "normal" ? false : true}
-                        >
-                          {createdAtCol === "createdAt" ? (
-                            <BiSortDown />
-                          ) : createdAtCol === "createdAtDec" ? (
-                            <BiSortUp />
-                          ) : (
-                            <BiSortAlt2 />
-                          )}
-                        </Button>
-                      )}
+                      <button
+                        {...{
+                          onClick: header.column.getToggleSortingHandler(),
+                          className: "sort-btn",
+                        }}
+                        data-active={!!header.column.getIsSorted()}
+                      >
+                        {{
+                          asc: <BiSortUp />,
+                          desc: <BiSortDown />,
+                          false: <BiSortAlt2 />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </button>
                     </th>
                   ))
                 }
@@ -140,32 +118,26 @@ const Table = (props: Props) => {
           }
         </thead>
         {/* Apply the table body props */}
-        <tbody className="table-body" {...getTableBodyProps()}>
+        <tbody className="table-body">
           {
             // Loop over the table rows
-            rows.map((row) => {
+            table.getRowModel().rows.map((row) => {
               // Prepare the row for display
-              prepareRow(row);
               return (
                 // Apply the row props
-                <tr
-                  className="table-body-row"
-                  {...row.getRowProps()}
-                  key={nanoid()}
-                >
+                <tr className="table-body-row" key={row.id}>
                   {
                     // Loop over the rows cells
-                    row.cells.map((cell) => {
+                    row.getVisibleCells().map((cell) => {
                       // Apply the cell props
                       return (
-                        <td
-                          className="table-body-row__cell"
-                          {...cell.getCellProps()}
-                          key={nanoid()}
-                        >
+                        <td className="table-body-row__cell" key={cell.id}>
                           {isDate(cell.column.id)
-                            ? createDate(new Date(cell.value))
-                            : cell.render("Cell")}
+                            ? createDate(new Date(cell.getValue() as number))
+                            : flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
                         </td>
                       );
                     })
