@@ -227,7 +227,6 @@ const Products: React.VFC = () => {
           </div>
           <Table
             data={filteredData}
-            cols={cols}
             onEditCell={handleOpenEditForm}
             onSortHandler={(data: { id: string }) => {
               onSortHandler(data.id);
