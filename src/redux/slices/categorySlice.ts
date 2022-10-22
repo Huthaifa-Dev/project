@@ -134,14 +134,12 @@ export const categorySlice = createSlice({
       );
     });
     builder.addCase(editCategoryData.fulfilled, (state, action) => {
-      const index = state.categories.findIndex(
-        (c) => c.id === action.meta.arg.id
-      );
-      if (index !== -1) {
-        state.categories[index].name = action.meta.arg.newName;
-        state.categories[index].id = action.meta.arg.newName;
-        state.categories[index].updatedAt = Date.now();
-      }
+      state.categories = state.categories.map((category) => {
+        if (category.id === action.meta.arg.id) {
+          return { ...category, name: action.meta.arg.newName };
+        }
+        return category;
+      });
     });
   },
 });
