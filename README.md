@@ -1,4 +1,3 @@
-
 <p align="right"> <img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" alt="typescript" width="40" height="40"/></p>
 
 <p align="center">
@@ -20,6 +19,7 @@ The application also includes a number of features that make it easy to manage t
 The Product Management POS Application is a tool that can save businesses time and money by streamlining the process of managing inventory and sales. It is an essential tool for any business that wants to improve its efficiency and bottom line.
 
 ## Tech Stack
+
 <p align="left">
 <img width="40" height="40" alt="React" src="https://user-images.githubusercontent.com/62269745/151359683-6602ec17-a473-43a5-b7e7-866d8194c959.svg" />
 <img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" alt="typescript" width="40" height="40"/>
@@ -69,7 +69,7 @@ npm install
 npm start
 ```
 
-## <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="25" height="25"/> Deployment 
+## <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="25" height="25"/> Deployment
 
 This app is deployed on Firebase. You can view it [here](https://product-manager-1903f.web.app/home).
 
@@ -99,7 +99,6 @@ firebase init
 ```bash
 firebase deploy
 ```
-
 
 ## 🧑‍💻 Authors
 
