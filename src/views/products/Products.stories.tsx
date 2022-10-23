@@ -1,13 +1,13 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Products from "./index";
+import Products from "./Products";
 
 import { Provider } from "react-redux";
 import { store } from "../../redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 export default {
-  title: "Views/Products",
+  title: "Views/Products/Table",
   component: Products,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout

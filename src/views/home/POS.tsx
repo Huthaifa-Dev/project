@@ -9,7 +9,7 @@ import { addProductToCart, cartsSelector } from "../../redux/slices/cartSlice";
 import { selectCategories } from "../../redux/slices/categorySlice";
 import { selectProducts } from "../../redux/slices/productSlice";
 import { Category, Option, Product } from "../../types";
-
+import "./Home.scss";
 const ALL = {
   value: "🏠",
   label: "All",

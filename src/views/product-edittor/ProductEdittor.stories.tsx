@@ -1,25 +1,25 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ProductEditor from "./index";
+import ProductEdittor from "./ProductEdittor";
 
 import { Provider } from "react-redux";
 import { store } from "../../redux";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 export default {
-  title: "Views/ProductEditor",
-  component: ProductEditor,
+  title: "Views/Products/Form",
+  component: ProductEdittor,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen",
   },
-} as ComponentMeta<typeof ProductEditor>;
+} as ComponentMeta<typeof ProductEdittor>;
 
 const AppWrapper = (args) => (
   <Provider store={store}>
     <MemoryRouter>
       <Routes>
-        <Route path="/" element={<ProductEditor {...args} />} />
+        <Route path="/" element={<ProductEdittor {...args} />} />
       </Routes>
     </MemoryRouter>
   </Provider>
