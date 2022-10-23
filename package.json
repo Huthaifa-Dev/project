@@ -41,7 +41,8 @@
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --quiet",
-    "json:server": "json-server --watch \"data/db.json\" --port 3001"
+    "json:server": "json-server --watch \"data/db.json\" --port 3001",
+    "chromatic": "npx chromatic --project-token=f487b0574cc8"
   },
   "eslintConfig": {
     "extends": [
@@ -89,6 +90,7 @@
     "@typescript-eslint/parser": "^5.38.1",
     "autoprefixer": "^10.4.12",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "chromatic": "^6.10.5",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.1",
@@ -96,5 +98,7 @@
     "postcss": "^8.4.17",
     "prop-types": "^15.8.1",
     "webpack": "^5.74.0"
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "project@0.1.0"
 }

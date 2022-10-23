@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "product-manager-1903f"
+    "default": "product-manager-1903f",
+    "stories": "product-manager-data"
   }
 }

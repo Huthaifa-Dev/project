@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import Categories from "./index";
+import Categories from "./Categories";
 
 import { Provider } from "react-redux";
 import { store } from "../../redux";

@@ -36,8 +36,8 @@ const Checkout: React.VFC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [activeCart, setActiveCart] = useState("");
   useEffect(() => {
-    setActiveCart(carts[0]?.id || "");
-  }, []);
+    setActiveCart((prev) => prev || carts[0]?.id || "");
+  }, [carts]);
   const {
     register,
     handleSubmit,
@@ -57,7 +57,7 @@ const Checkout: React.VFC = () => {
     setActiveCart(e.target.value);
   };
   const handleAddCart = () => {
-    toast.promise(dispatch(addCart({ body: `${carts.length + 1}` })), {
+    toast.promise(dispatch(addCart()), {
       loading: "Adding new Cart ...",
       success: "Added a new Cart successfully",
       error: "There was an error",
