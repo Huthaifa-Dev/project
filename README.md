@@ -1,12 +1,33 @@
-# Product Management POS Application
 
-## Description
+<p align="right"> <img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" alt="typescript" width="40" height="40"/></p>
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/62269745/174906065-7bb63e14-879a-4740-849c-0821697aeec2.png#gh-light-mode-only" width="40%">
+    <img src="https://user-images.githubusercontent.com/62269745/174906068-aad23112-20fe-4ec8-877f-3ee1d9ec0a69.png#gh-dark-mode-only" width="40%">
+</p>
+
+<br>
+
+<h1 align="center"> Product Management POS System </h1>
+<br>
+
+## Overview
 
 The Product Management POS Application is a tool that streamlines the process of managing inventory and sales for businesses. It is designed to be user-friendly and easy to use, with a simple interface that makes it easy to keep track of products and sales.
 
 The application also includes a number of features that make it easy to manage the business. It includes a product management system that allows businesses to keep track of their inventory, as well as a sales management system that makes it easy to track sales.
 
 The Product Management POS Application is a tool that can save businesses time and money by streamlining the process of managing inventory and sales. It is an essential tool for any business that wants to improve its efficiency and bottom line.
+
+## Tech Stack
+<p align="left">
+<img width="40" height="40" alt="React" src="https://user-images.githubusercontent.com/62269745/151359683-6602ec17-a473-43a5-b7e7-866d8194c959.svg" />
+<img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" alt="typescript" width="40" height="40"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg" alt="scss" width="40" height="40"/>
+<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="40" height="40"/>
+<img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/>
+<img src="https://user-images.githubusercontent.com/62269745/197410201-d707e69d-5ec4-49a0-a482-c2df4d15662d.png" alt="storybook" width="40" height="40"/>
+</p>
 
 ## Features
 
@@ -16,7 +37,7 @@ The Product Management POS Application is a tool that can save businesses time a
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+> **Note**: These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
@@ -48,11 +69,11 @@ npm install
 npm start
 ```
 
-## Deployment
+## <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="25" height="25"/> Deployment 
 
 This app is deployed on Firebase. You can view it [here](https://product-manager-1903f.web.app/home).
 
-> **Note**:\*
+> **Note**:
 > You can also deploy it on your own Firebase account by following the steps below:
 
 1. Create a Firebase project
@@ -79,21 +100,13 @@ firebase init
 firebase deploy
 ```
 
-## Built With
 
-- <img width="20" height="20" alt="React" src="https://user-images.githubusercontent.com/62269745/151359683-6602ec17-a473-43a5-b7e7-866d8194c959.svg" /> React
-- <img src="https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg" alt="typescript" width="20" height="20"/> Typescript
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg" alt="scss" width="20" height="20"/> SCSS
-- <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg" alt="redux" width="20" height="20"/> ReduxToolkit
-- <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="20" height="20"/> Firebase
-- <img src="https://www.vectorlogo.zone/logos/storybookjs/storybookjs-icon.svg" alt="storybook" width="20" height="20"/> Storybook
-
-## Authors
+## 🧑‍💻 Authors
 
 - **Huthaifa Salman** - _Initial work_ - [Huthaifa-Dev](https://github.com/Huthaifa-Dev)
 - **Tamer H. Naana** - _Advisor_ - [TamerHN](https://github.com/TamerHN)
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
