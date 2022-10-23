@@ -21,6 +21,7 @@ const initialState: STATE = {
 export const getCarts = createAsyncThunk("carts/getCarts", async () => {
   try {
     const response = await axios.get(CARTS_URL + ".json");
+    if (response.data === null) return [];
     const result = Object.keys(response.data).map((key) => {
       const cart = response.data[key];
       cart.id = key;
@@ -62,24 +63,22 @@ export const deleteCart = createAsyncThunk(
   }
 );
 
-export const addCart = createAsyncThunk(
-  "carts/addCart",
-  async (data: { body: string }) => {
-    try {
-      const cart = createCart(data.body);
-      cart.items = [];
-      await axios.post(CARTS_URL + ".json", cart);
-      const response = await axios.get(CARTS_URL + ".json");
-      const result = Object.keys(response.data).map((key) => {
-        const cart = response.data[key];
-        return cart;
-      });
-      return [...result];
-    } catch (error) {
-      console.log(error);
-    }
+export const addCart = createAsyncThunk("carts/addCart", async () => {
+  try {
+    const cart = createCart();
+    cart.items = [];
+    await axios.post(CARTS_URL + ".json", cart);
+    const response = await axios.get(CARTS_URL + ".json");
+    const result = Object.keys(response.data).map((key) => {
+      const cart = response.data[key];
+      cart.id = key;
+      return cart;
+    });
+    return [...result];
+  } catch (error) {
+    console.log(error);
   }
-);
+});
 
 export const addProductToCart = createAsyncThunk(
   "carts/addProductToCart",
@@ -87,7 +86,6 @@ export const addProductToCart = createAsyncThunk(
     try {
       // Add product to cart, if it already exists, increase quantity, else add new item, then update cart in db and return updated cart
       // copy the cart to new object and keep track of types
-
       const newCart: Cart = {
         ...data.cart,
         items: data.cart.items ? [...data.cart.items] : [],

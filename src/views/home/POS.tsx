@@ -27,8 +27,7 @@ const POSPage: React.VFC = () => {
   // page state
   const [categoryState, setCategoryState] = useState("All");
   const [popUp, setPopUp] = useState(false);
-  const [addProduct, setAddProduct] = useState("");
-
+  const [productState, setProductState] = useState<Product | null>(null);
   // data selectors
   const carts = useSelector(cartsSelector);
   const categories = useSelector(selectCategories);
@@ -73,16 +72,18 @@ const POSPage: React.VFC = () => {
   const handleCategorySearch = (e) => {
     setCategoryState(e.target.value);
   };
-  const handleAddProduct = (data: { id: string }) => {
-    setAddProduct(data.id);
+  const handleAddProduct = (data: Product) => {
+    setProductState(data);
     setPopUp(true);
   };
   const handleClosePopUp = () => {
-    setAddProduct("");
+    setProductState(null);
     setPopUp(false);
   };
   const handleAddToCart = () => {
-    const addedProduct = products.find((product) => product.id === addProduct);
+    const addedProduct = products.find(
+      (product) => product.id === productState?.id
+    );
     const cart = carts.find((cart) => cart.id === getValues("cart"));
     if (addedProduct && cart) {
       toast.promise(
@@ -182,7 +183,7 @@ const POSPage: React.VFC = () => {
                         type="button"
                         className="add-to-cart"
                         onClick={() => {
-                          handleAddProduct({ id: product.id });
+                          handleAddProduct(product);
                         }}
                       >
                         ➕
@@ -213,16 +214,19 @@ const POSPage: React.VFC = () => {
               required: "Please select a cart",
             })}
           >
-            {carts.map((cart, index) => (
-              <option key={cart.id} value={cart.id}>
-                Cart {index + 1} created at{" "}
-                {new Date(cart.createdAt).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}
-              </option>
-            ))}
+            {carts.map((cart, index) => {
+              console.log(cart.id);
+              return (
+                <option key={index} value={cart.id}>
+                  Cart {index + 1} created at{" "}
+                  {new Date(cart.createdAt).toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}
+                </option>
+              );
+            })}
           </select>
         </Modal>
       )}

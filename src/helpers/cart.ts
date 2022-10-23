@@ -1,8 +1,8 @@
 import { Cart } from "../types";
 
-export const createCart: (data: string) => Cart = (data) => {
+export const createCart: () => Cart = () => {
   return {
-    id: data,
+    id: "",
     createdAt: Date.now(),
     items: [
       {
