@@ -100,6 +100,13 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
     onClose();
   };
 
+  const codeIsUnique = (code: string) => {
+    const isCodeUnique = products.find((p) => p.code === code);
+    if (isCodeUnique) {
+      return false;
+    }
+    return true;
+  };
   const options: Option<Partial<Category>>[] = [
     ...categories.map((category: Category) => {
       return {
@@ -216,6 +223,8 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE: string }> = ({
                         validate: (value) => {
                           if (value.includes("_")) {
                             return "Code must be 14 characters long";
+                          } else if (!codeIsUnique(value)) {
+                            return "Code must be unique";
                           } else {
                             return true;
                           }

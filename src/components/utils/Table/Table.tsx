@@ -153,7 +153,8 @@ function Table<T>(props: Props<T>) {
       </table>
       <div className="table-controls">
         <p>
-          Showing {+page.start + 1} to {+page.end} of {+data.length} entries
+          Showing {+page.start + 1} to {+Math.min(page.end, props.data.length)}{" "}
+          of {+props.data.length} entries
         </p>
         <div className="table-controls__actions">
           <div className="pegination">

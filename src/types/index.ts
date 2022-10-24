@@ -12,7 +12,6 @@ export type Category = {
   description?: string;
   createdAt: number;
   updatedAt: number;
-  isSorted?: boolean;
 };
 
 export interface Product {

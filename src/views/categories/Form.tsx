@@ -20,7 +20,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   const dispatch = useDispatch<AppDispatch>();
   // find the category of id ID from categories array
   const category = useSelector((state: RootState) =>
-    selectCatagoryById(state, ID || "")
+    selectCatagoryById(state, ID || DELETE || "")
   );
   const categories = useSelector(selectCategories);
   const {
@@ -37,7 +37,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
     if (DELETE) {
       toast.promise(dispatch(deleteCategory({ body: DELETE })).unwrap(), {
         loading: "Deleting...",
-        success: <b>{DELETE} Deleted Successfully</b>,
+        success: <b>{category?.name} Deleted Successfully</b>,
         error: <b>Could not Delete Category.</b>,
       });
     } else if (ID) {
@@ -67,7 +67,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
       })}
     >
       {DELETE ? (
-        <p>Are you sure you want to delete {DELETE}?</p>
+        <p>Are you sure you want to delete {category?.name}?</p>
       ) : (
         <form
           onSubmit={handleSubmit((data) => {
