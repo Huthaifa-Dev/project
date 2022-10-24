@@ -60,7 +60,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   };
   return (
     <Modal
-      title="Add Category"
+      title={`${DELETE ? "Delete" : ID ? "Edit" : "Add"} Category`}
       onClose={onClose}
       onSubmit={handleSubmit((data) => {
         submitHandler(data);
