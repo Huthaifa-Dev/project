@@ -75,13 +75,13 @@ const Checkout: React.VFC = () => {
         dispatch(
           deleteCart({
             body: carts[carts.length - 1].id,
-          })
+          }),
         ),
         {
           loading: `Deleting Cart ${carts.length - 1} ...`,
           success: "Deleted Cart successfully",
           error: "There was an error",
-        }
+        },
       )
       .then(() => {
         setActiveCart(carts[0]?.id || "");
