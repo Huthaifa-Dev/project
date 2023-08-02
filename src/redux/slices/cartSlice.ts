@@ -63,22 +63,26 @@ export const deleteCart = createAsyncThunk(
   }
 );
 
-export const addCart = createAsyncThunk("carts/addCart", async () => {
-  try {
-    const cart = createCart();
-    cart.items = [];
-    await axios.post(CARTS_URL + ".json", cart);
-    const response = await axios.get(CARTS_URL + ".json");
-    const result = Object.keys(response.data).map((key) => {
-      const cart = response.data[key];
-      cart.id = key;
-      return cart;
-    });
-    return [...result];
-  } catch (error) {
-    console.log(error);
+export const addCart = createAsyncThunk(
+  "carts/addCart",
+  async (num: number) => {
+    try {
+      const number = num ? num + 1 : 1;
+      const newCart = createCart(number);
+      await axios.post(CARTS_URL + ".json", newCart);
+      const response = await axios.get(CARTS_URL + ".json");
+      if (response.data === null) return [];
+      const result = Object.keys(response.data).map((key) => {
+        const cart = response.data[key];
+        cart.id = key;
+        return cart;
+      });
+      return [...result];
+    } catch (error) {
+      console.log(error);
+    }
   }
-});
+);
 
 export const addProductToCart = createAsyncThunk(
   "carts/addProductToCart",

@@ -109,14 +109,14 @@ const Products: React.VFC = () => {
       return products.filter((product) => {
         //return the product if the expire attribute is grater than startDate
         let flag = true;
-        if (product.expire) {
+        if (product?.expire) {
           // if the expire attribute is valid
           if (startDate) {
             // if the expire attribute is grater than startDate
-            flag = flag && product.expire > startDate;
+            flag = flag && product?.expire > startDate;
             if (endDate) {
               // if the expire attribute is less than endDate
-              flag = flag && product.expire < endDate;
+              flag = flag && product?.expire < endDate;
             }
           }
         }

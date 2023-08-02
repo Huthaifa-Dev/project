@@ -55,6 +55,7 @@ export const COLORS: Option<Color>[] = [
 
 export type Cart = {
   id: string;
+  number: number;
   createdAt: number;
   items: CartItem[];
   total: number;

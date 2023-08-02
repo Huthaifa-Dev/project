@@ -34,15 +34,10 @@ const COLS: Column<CartItem>[] = [
 const Checkout: React.VFC = () => {
   const carts = useSelector(cartsSelector);
   const dispatch = useDispatch<AppDispatch>();
-  const [activeCart, setActiveCart] = useState("");
-  useEffect(() => {
-    setActiveCart((prev) => prev || carts[0]?.id || "");
-  }, [carts]);
+  const [activeCart, setActiveCart] = useState(carts[0]?.id || "");
+
   const {
     register,
-    handleSubmit,
-    getValues,
-    setValue,
     watch,
     formState: { errors },
   } = useForm({
@@ -57,7 +52,7 @@ const Checkout: React.VFC = () => {
     setActiveCart(e.target.value);
   };
   const handleAddCart = () => {
-    toast.promise(dispatch(addCart()), {
+    toast.promise(dispatch(addCart(carts?.length)), {
       loading: "Adding new Cart ...",
       success: "Added a new Cart successfully",
       error: "There was an error",
@@ -76,11 +71,18 @@ const Checkout: React.VFC = () => {
   };
   const handleDeleteLastCart = () => {
     toast
-      .promise(dispatch(deleteCart({ body: carts[carts.length - 1].id })), {
-        loading: `Deleting Cart ${carts.length - 1} ...`,
-        success: "Deleted Cart successfully",
-        error: "There was an error",
-      })
+      .promise(
+        dispatch(
+          deleteCart({
+            body: carts[carts.length - 1].id,
+          })
+        ),
+        {
+          loading: `Deleting Cart ${carts.length - 1} ...`,
+          success: "Deleted Cart successfully",
+          error: "There was an error",
+        }
+      )
       .then(() => {
         setActiveCart(carts[0]?.id || "");
       });
@@ -89,11 +91,10 @@ const Checkout: React.VFC = () => {
     console.log("submit");
   };
 
-  const calculateTotal = (total, tax, discount) => {
+  const calculateTotal = (total, discount) => {
     // console.log(total, tax, discount);
-    const convertedTax = tax / 100;
     const convertedDiscount = discount / 100;
-    return total + total * convertedTax - total * convertedDiscount;
+    return total - total * convertedDiscount;
   };
   const calculateDifference = (total, tax?, discount?) => {
     if (tax) {
@@ -109,8 +110,8 @@ const Checkout: React.VFC = () => {
   // form data for cart
   const tax = watch("tax");
   const discount = watch("discount");
-  const cart = carts.find((cart) => cart.id === activeCart);
-  const data = cart?.items || [];
+  const selectedCart = carts.find((cart) => cart.id === activeCart);
+  const data = selectedCart?.items || [];
   const quantity = data?.reduce((acc, item) => +acc + +item.quantity, 0);
   const subTotal = data?.reduce((acc, item) => {
     return +acc + +item.total;
@@ -121,7 +122,6 @@ const Checkout: React.VFC = () => {
       <header className="checkout__header">
         <div className="cart-filter">
           {carts.map((cart, index) => {
-            const checked = activeCart === cart.id;
             return (
               <div key={cart.id} className="cart-filter__item">
                 <input
@@ -130,10 +130,10 @@ const Checkout: React.VFC = () => {
                   value={cart.id}
                   id={cart.id}
                   onChange={handleCartChange}
-                  checked={checked}
+                  checked={cart.id === activeCart}
                 />
                 <label htmlFor={cart.id}>
-                  {index + 1}
+                  {cart.number}
                   <span>
                     {new Date(cart.createdAt).toLocaleTimeString("en-US", {
                       hour: "2-digit",
@@ -194,7 +194,7 @@ const Checkout: React.VFC = () => {
                 className="mid"
                 style={{ color: "limegreen", fontWeight: "bold" }}
               >
-                ${calculateTotal(subTotal, tax, discount)}
+                ${calculateTotal(subTotal, discount)}
               </p>
             </div>
           </div>
