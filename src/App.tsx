@@ -30,7 +30,9 @@ const App: React.FC = () => {
       dispatch(getProducts()),
       dispatch(getCarts()),
     ]);
-    toast.promise(promise, {
+    toast.promise(
+      promise,
+       {
       loading: "Loading Data...",
       success: "Data Loaded",
       error: "Error",

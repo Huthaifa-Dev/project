@@ -123,7 +123,7 @@ export const addProductToCart = createAsyncThunk(
       // update total
       newCart.total = newCart.items.reduce((acc, item) => acc + item.total, 0);
       // update cart in db
-      await axios.patch(`${CARTS_URL}/${newCart.id}` + ".json", newCart);
+      await axios.put(`${CARTS_URL}/${newCart.id}` + ".json", newCart);
       // return updated carts
       const response = await axios.get(CARTS_URL + ".json");
       const result = Object.keys(response.data).map((key) => {
@@ -233,6 +233,6 @@ export const cartSlice = createSlice({
   },
 });
 
-export const cartsSelector = (state: RootState) => state.carts.carts;
+export const cartsSelector = (state: RootState) => state.carts.carts || [];
 
 export default cartSlice;

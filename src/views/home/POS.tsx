@@ -215,7 +215,6 @@ const POSPage: React.VFC = () => {
             })}
           >
             {carts.map((cart, index) => {
-              console.log(cart.id);
               return (
                 <option key={index} value={cart.id}>
                   Cart {index + 1} created at{" "}
