@@ -29,12 +29,15 @@ export const getCategories = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(CATEGORIES_URL + ".json");
-      const result = Object.keys(response.data).map((key) => {
-        const category = response.data[key];
-        category.id = key;
-        return category;
+      if (response.data === null) return [];
+      const result = Object.keys(response?.data)?.map((key) => {
+        const category = response?.data[key];
+        return {
+          ...category,
+          id: key,
+        };
       });
-      return [...result];
+      return result ? [...result] : [];
     } catch (error) {
       console.log(error);
       return initialState;
@@ -62,11 +65,13 @@ export const editCategoryData = createAsyncThunk(
       const category = await axios.get(
         `${CATEGORIES_URL}/${data.id}` + ".json"
       );
-      category.data.name = data.newName;
-      category.data.updatedAt = Date.now();
       const response = await axios.patch(
         `${CATEGORIES_URL}/${data.id}` + ".json",
-        category.data
+        {
+          ...category.data,
+          name: data.newName,
+          updatedAt: Date.now(),
+        }
       );
       return response.data;
     } catch (error) {

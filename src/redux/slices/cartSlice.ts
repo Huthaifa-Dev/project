@@ -22,10 +22,11 @@ export const getCarts = createAsyncThunk("carts/getCarts", async () => {
   try {
     const response = await axios.get(CARTS_URL + ".json");
     if (response.data === null) return [];
-    const result = Object.keys(response.data).map((key) => {
-      const cart = response.data[key];
-      cart.id = key;
-      return cart;
+    const result = Object.keys(response?.data)?.map((key) => {
+      return {
+        ...response.data[key],
+        id: key,
+      };
     });
     return [...result];
   } catch (error) {

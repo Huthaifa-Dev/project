@@ -109,7 +109,7 @@ const Checkout: React.VFC = () => {
   // form data for cart
   const tax = watch("tax");
   const discount = watch("discount");
-  const cart = carts?.find((cart) => cart.id === activeCart);
+  const cart = carts?.find((cart) => cart?.id === activeCart);
   const data = cart?.items || [];
   const quantity = data?.reduce((acc, item) => +acc + +item.quantity, 0);
   const subTotal = data?.reduce((acc, item) => {
