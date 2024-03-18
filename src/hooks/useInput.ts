@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 const useInput = (validate: (value: string) => boolean) => {
-  const [inoutValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const isValid = validate(inoutValue);
+  const isValid = validate(inputValue);
   const hasError = !isValid && isTouched;
 
   const valueChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,7 @@ const useInput = (validate: (value: string) => boolean) => {
     reset: () => void;
     hasError: boolean;
   } = {
-    value: inoutValue,
+    value: inputValue,
     onChange: valueChangeHandler,
     onBlur: inputBlurHandler,
     reset,
