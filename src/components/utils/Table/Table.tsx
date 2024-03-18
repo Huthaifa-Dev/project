@@ -79,7 +79,7 @@ function Table<T>(props: Props<T>) {
                     <th className="table-head-row__cell" key={header.id}>
                       {flexRender(
                         header.column.columnDef.header,
-                        header.getContext()
+                        header.getContext(),
                       )}
                       <button
                         {...{
@@ -121,7 +121,7 @@ function Table<T>(props: Props<T>) {
                             ? createDate(new Date(cell.getValue() as number))
                             : flexRender(
                                 cell.column.columnDef.cell,
-                                cell.getContext()
+                                cell.getContext(),
                               )}
                         </td>
                       );

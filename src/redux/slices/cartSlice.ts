@@ -40,13 +40,13 @@ export const updateCart = createAsyncThunk(
     try {
       const response = await axios.patch(
         `${CARTS_URL}/${data.id}` + ".json",
-        data.body
+        data.body,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const deleteCart = createAsyncThunk(
@@ -54,13 +54,13 @@ export const deleteCart = createAsyncThunk(
   async (data: { body: string }) => {
     try {
       const response = await axios.delete(
-        `${CARTS_URL}/${data.body}` + ".json"
+        `${CARTS_URL}/${data.body}` + ".json",
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const addCart = createAsyncThunk(
@@ -81,7 +81,7 @@ export const addCart = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const addProductToCart = createAsyncThunk(
@@ -138,7 +138,7 @@ export const addProductToCart = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const removeProductFromCart = createAsyncThunk(
@@ -146,7 +146,7 @@ export const removeProductFromCart = createAsyncThunk(
   async (data: { body: CartItem; cart: Cart }) => {
     try {
       const newItems = data.cart.items.filter(
-        (item) => item.id !== data.body.id
+        (item) => item.id !== data.body.id,
       );
       const newCart = {
         id: data.cart.id,
@@ -157,13 +157,13 @@ export const removeProductFromCart = createAsyncThunk(
       // console.log(newCart);
       const response = await axios.patch(
         `${CARTS_URL}/${data.cart.id}` + ".json",
-        newCart
+        newCart,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const updateProductFromCart = createAsyncThunk(
@@ -186,13 +186,13 @@ export const updateProductFromCart = createAsyncThunk(
       // console.log(data, newItems, newCart);
       const response = await axios.patch(
         `${CARTS_URL}/${data.cart.id}` + ".json",
-        newCart
+        newCart,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const cartSlice = createSlice({

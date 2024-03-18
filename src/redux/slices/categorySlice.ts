@@ -39,7 +39,7 @@ export const getCategories = createAsyncThunk(
       console.log(error);
       return initialState;
     }
-  }
+  },
 );
 
 export const deleteCategory = createAsyncThunk(
@@ -47,32 +47,32 @@ export const deleteCategory = createAsyncThunk(
   async (data: { body: string }) => {
     try {
       const response = await axios.delete(
-        `${CATEGORIES_URL}/${data.body}` + ".json"
+        `${CATEGORIES_URL}/${data.body}` + ".json",
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 export const editCategoryData = createAsyncThunk(
   "categories/editCategory",
   async (data: { id: string; newName: string }) => {
     try {
       const category = await axios.get(
-        `${CATEGORIES_URL}/${data.id}` + ".json"
+        `${CATEGORIES_URL}/${data.id}` + ".json",
       );
       category.data.name = data.newName;
       category.data.updatedAt = Date.now();
       const response = await axios.patch(
         `${CATEGORIES_URL}/${data.id}` + ".json",
-        category.data
+        category.data,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 export const addCategoryData = createAsyncThunk(
   "categories/addCategory",
@@ -81,13 +81,13 @@ export const addCategoryData = createAsyncThunk(
       const category = createdData(data);
       const response = await axios.post(
         `${CATEGORIES_URL}` + ".json",
-        category
+        category,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const categorySlice = createSlice({
@@ -99,7 +99,7 @@ export const categorySlice = createSlice({
     },
     editCategory: (state, action) => {
       const index = state.categories.findIndex(
-        (c) => c.id === action.payload.id
+        (c) => c.id === action.payload.id,
       );
       if (index !== -1) {
         state.categories[index] = action.payload;
@@ -107,7 +107,7 @@ export const categorySlice = createSlice({
     },
     removeCategory: (state, action) => {
       state.categories = state.categories.filter(
-        (c) => c.id !== action.payload.id
+        (c) => c.id !== action.payload.id,
       );
     },
   },
@@ -125,12 +125,12 @@ export const categorySlice = createSlice({
 
     builder.addCase(deleteCategory.fulfilled, (state, action) => {
       state.categories = state.categories.filter(
-        (c) => c.id !== action.meta.arg.body
+        (c) => c.id !== action.meta.arg.body,
       );
     });
     builder.addCase(addCategoryData.fulfilled, (state, action) => {
       state.categories.push(
-        createdData({ name: action.meta.arg.name }) as Category
+        createdData({ name: action.meta.arg.name }) as Category,
       );
     });
     builder.addCase(editCategoryData.fulfilled, (state, action) => {

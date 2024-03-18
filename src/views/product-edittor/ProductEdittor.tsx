@@ -30,7 +30,7 @@ const ProductsPage: React.VFC = () => {
   const navigate = useNavigate();
   const ID = useParams<{ productId: string }>();
   const product = useSelector((state: RootState) =>
-    selectProductById(state, ID.productId || "")
+    selectProductById(state, ID.productId || ""),
   );
 
   const categories = useSelector(selectCategories);
@@ -63,13 +63,13 @@ const ProductsPage: React.VFC = () => {
             editProductData({
               id: ID.productId,
               newProduct: data as Partial<Product>,
-            })
+            }),
           ),
           {
             loading: "Editing...",
             success: "Edited",
             error: "Error",
-          }
+          },
         );
         navigate("/products");
       } else if (ID.productId) {
@@ -85,13 +85,13 @@ const ProductsPage: React.VFC = () => {
                 editProductData({
                   id: ID.productId as string,
                   newProduct: product,
-                })
+                }),
               ),
               {
                 loading: "Editing...",
                 success: "Edited",
                 error: "Error",
-              }
+              },
             );
           });
         });

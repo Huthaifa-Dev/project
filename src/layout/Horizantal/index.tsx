@@ -14,7 +14,7 @@ interface Props {
 const Blank: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const userStore = useSelector<RootState, Partial<User>>(
-    (state) => state.user
+    (state) => state.user,
   );
   const onLogin = () => {
     navigate("/sign-in");
