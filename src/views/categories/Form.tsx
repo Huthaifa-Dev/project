@@ -20,7 +20,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
   const dispatch = useDispatch<AppDispatch>();
   // find the category of id ID from categories array
   const category = useSelector((state: RootState) =>
-    selectCatagoryById(state, ID || DELETE || "")
+    selectCatagoryById(state, ID || DELETE || ""),
   );
   const categories = useSelector(selectCategories);
   const {
@@ -47,7 +47,7 @@ const Form: React.FC<{ onClose: () => void; ID?: string; DELETE?: string }> = ({
           loading: "Editing...",
           success: "Edited",
           error: "Error",
-        }
+        },
       );
     } else {
       toast.promise(dispatch(addCategoryData(data)), {

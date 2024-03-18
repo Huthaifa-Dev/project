@@ -18,7 +18,7 @@ const useLogin = () => {
           id: localUser.id,
           username: localUser.fullName,
           role: localUser.role,
-        })
+        }),
       );
 
       return localUser;
@@ -34,7 +34,7 @@ const useLogin = () => {
             id: newUser.id,
             username: newUser.fullName,
             role: newUser.role,
-          })
+          }),
         );
         navigate("/categories");
       }

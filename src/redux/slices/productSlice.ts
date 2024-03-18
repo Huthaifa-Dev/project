@@ -34,7 +34,7 @@ export const getProducts = createAsyncThunk(
       console.log(error);
       return initialState;
     }
-  }
+  },
 );
 
 export const deleteProduct = createAsyncThunk(
@@ -42,13 +42,13 @@ export const deleteProduct = createAsyncThunk(
   async (data: { body: string }) => {
     try {
       const response = await axios.delete(
-        `${PRODUCTS_URL}/${data.body}` + ".json"
+        `${PRODUCTS_URL}/${data.body}` + ".json",
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 export const editProductData = createAsyncThunk(
   "categories/editProduct",
@@ -71,13 +71,13 @@ export const editProductData = createAsyncThunk(
       console.log(product.data);
       const response = await axios.patch(
         `${PRODUCTS_URL}/${data.id}` + ".json",
-        product.data
+        product.data,
       );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 export const addProductData = createAsyncThunk(
   "categories/addProductData",
@@ -95,7 +95,7 @@ export const addProductData = createAsyncThunk(
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 );
 
 export const productSilice = createSlice({
@@ -110,7 +110,7 @@ export const productSilice = createSlice({
 
     builder.addCase(deleteProduct.fulfilled, (state, action) => {
       state.products = state.products.filter(
-        (c) => c.id !== action.meta.arg.body
+        (c) => c.id !== action.meta.arg.body,
       );
     });
     builder.addCase(addProductData.fulfilled, (state, action) => {

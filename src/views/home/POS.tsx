@@ -43,8 +43,8 @@ const POSPage: React.VFC = () => {
     categoryState === "All"
       ? products
       : categoryState !== ""
-      ? products.filter((product) => product.category === categoryState)
-      : products;
+        ? products.filter((product) => product.category === categoryState)
+        : products;
 
   // Category filter options
   const categoryOptions: Option<Partial<Category>>[] = [
@@ -82,7 +82,7 @@ const POSPage: React.VFC = () => {
   };
   const handleAddToCart = () => {
     const addedProduct = products.find(
-      (product) => product.id === productState?.id
+      (product) => product.id === productState?.id,
     );
     const cart = carts.find((cart) => cart.id === getValues("cart"));
     if (addedProduct && cart) {
@@ -92,7 +92,7 @@ const POSPage: React.VFC = () => {
           loading: "Adding to cart...",
           success: "Added to cart",
           error: "Error",
-        }
+        },
       );
       setPopUp(false);
     }

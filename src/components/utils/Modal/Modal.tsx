@@ -31,7 +31,7 @@ const Modal = ({ children, onClose, onSubmit, title, width }: Props) => {
         </div>
       </div>
     </>,
-    document.body
+    document.body,
   );
 };
 export default Modal;

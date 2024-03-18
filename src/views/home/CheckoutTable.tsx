@@ -67,7 +67,7 @@ const Table = (props: Props) => {
             loading: "Loading",
             success: "Success",
             error: "Error",
-          }
+          },
         );
       } else {
         toast.promise(
@@ -76,7 +76,7 @@ const Table = (props: Props) => {
             loading: "Loading",
             success: "Success",
             error: "Error",
-          }
+          },
         );
       }
     }
@@ -174,7 +174,7 @@ const Table = (props: Props) => {
                                 onChange={(e) => {
                                   changeQuantity(
                                     row.original,
-                                    parseInt(e.target.value)
+                                    parseInt(e.target.value),
                                   );
                                 }}
                                 onBlur={(e) => {
