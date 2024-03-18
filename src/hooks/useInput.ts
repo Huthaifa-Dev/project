@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 const useInput = (validate: (value: string) => boolean) => {
-  const [inoutValue, setInputValue] = useState("");
+  const [value, setValue] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const isValid = validate(inoutValue);
+  const isValid = validate(value);
   const hasError = !isValid && isTouched;
 
   const valueChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    setValue(event.target.value);
   };
 
   const inputBlurHandler = () => {
@@ -16,7 +16,7 @@ const useInput = (validate: (value: string) => boolean) => {
   };
 
   const reset = () => {
-    setInputValue("");
+    setValue("");
     setIsTouched(false);
   };
 
@@ -27,7 +27,7 @@ const useInput = (validate: (value: string) => boolean) => {
     reset: () => void;
     hasError: boolean;
   } = {
-    value: inoutValue,
+    value,
     onChange: valueChangeHandler,
     onBlur: inputBlurHandler,
     reset,
